@@ -24,7 +24,7 @@ function invoke($action, $request, $user) {
 # sie als Objekt zurück
 function getKonto($id) {
     $db = getDbConnection();
-    $rs = mysqli_query($db, "select * from fi_konto where kontonummer = $id");
+    $rs = mysqli_query($db, "select * from fi_konto where kontonummer = $id order by buchungsnummer desc");
     $erg = mysqli_fetch_object($rs);
     mysqli_close($db); 
     return $erg;
@@ -34,7 +34,7 @@ function getKonto($id) {
 function getKonten() {
     $db = getDbConnection();
     $result = array();
-    $rs = mysqli_query($db, "select * from fi_konto");
+    $rs = mysqli_query($db, "select * from fi_konto order by kontenart_id, kontonummer");
     while($obj = mysqli_fetch_object($rs)) {
         $result[] = $obj;
     }
