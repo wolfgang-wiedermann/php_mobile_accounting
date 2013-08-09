@@ -1,0 +1,9 @@
+<?php
+
+function getDbConnection() {
+    $db = mysqli_connect("hostname", "username", "password");
+    mysqli_select_db($db, "databasename");
+    return $db;
+}
+
+?>
