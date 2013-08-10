@@ -140,7 +140,6 @@ function AppViewModel() {
     }
 
     self.saveBuchung = function(tmpModel) {
-        alert(ko.toJSON(tmpModel.buchung()));
         buchungenForm.create(ko.toJSON(tmpModel.buchung()));
     }
 }
