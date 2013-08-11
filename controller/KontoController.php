@@ -5,8 +5,14 @@ class KontoController {
 # Einsprungpunkt, hier übergibt das Framework
 function invoke($action, $request, $user) {
     switch($action) {
-        case "get":
-            return $this->getKonto($request['id']);
+        case "get": 
+	    if(is_numeric($request['id']) {
+                return $this->getKonto($request['id']);
+            } else { 
+                $message = array();
+                $message['message'] = "Error: id is not numeric";
+                return $message;
+            }
         case "list":
             return $this->getKonten();
         case "save":
@@ -46,7 +52,6 @@ function getKonten() {
 function saveKonto($request) {
     $db = getDbConnection();
     $inputJSON = file_get_contents('php://input');
-#    error_log("JSON: ".$inputJSON);
     $input = json_decode( $inputJSON, TRUE ); 
     $sql = "update fi_konto set bezeichnung = '".$input['bezeichnung']."', kontenart_id = ".$input['kontenart_id']
           ." where kontonummer = ".$input['kontonummer'];
@@ -59,7 +64,6 @@ function saveKonto($request) {
 function createKonto($request) {
     $db = getDbConnection();
     $inputJSON = file_get_contents('php://input');
-#    error_log("JSON: ".$inputJSON);
     $input = json_decode( $inputJSON, TRUE );
     $sql = "insert into fi_konto values ('".$input['kontonummer']."', '".$input['bezeichnung']
           ."', ".$input['kontenart_id'].")";
