@@ -45,24 +45,33 @@ function getTop10($request) {
 function getListByKonto($request) {
     $db = getDbConnection();
     $kontonummer = $request['konto'];
-    // TODO: Regex Prüfung ob Kontonummer nur Ziffern enthaelt!
-    $rs = mysqli_query($db, "SELECT buchungsnummer, buchungstext, gegenkonto, betrag, datum FROM `fi_buchungen_view` where konto = '$kontonummer'");
-    $result = array();
-    $result_list = array();
-    // Buchungen laden
-    while($obj = mysqli_fetch_object($rs)) {
-        $result_list[] = $obj;
-    }
-    $result['list'] = $result_list;
-    // Saldo laden
-    $rs = mysqli_query($db, "select sum(betrag) as saldo from fi_buchungen_view where konto = '$kontonummer'");
-    if($obj = mysqli_fetch_object($rs)) {
-        $result['saldo'] = $obj->saldo;
+    # Nur verarbeiten, wenn konto eine Ziffernfolge ist, um SQL-Injections zu vermeiden
+    if(is_numeric($request['konto'])) {
+        $rs = mysqli_query($db, "SELECT buchungsnummer, buchungstext, gegenkonto, betrag, datum FROM `fi_buchungen_view` "
+                               ."where konto = '$kontonummer'");
+        $result = array();
+        $result_list = array();
+        // Buchungen laden
+        while($obj = mysqli_fetch_object($rs)) {
+            $result_list[] = $obj;
+        }
+        $result['list'] = $result_list;
+        // Saldo laden
+        $rs = mysqli_query($db, "select sum(betrag) as saldo from fi_buchungen_view where konto = '$kontonummer'");
+        if($obj = mysqli_fetch_object($rs)) {
+            $result['saldo'] = $obj->saldo;
+        } else {
+            $result['saldo'] = "unbekannt";
+        }
+        mysqli_close($db);
+        return $result;
+    # Wenn konto keine Ziffernfolge ist, leeres Ergebnis zurück liefern
     } else {
-        $result['saldo'] = "unbekannt";
+        $result = array();
+        $result['list'] = array();
+        $result['saldo'] = 0;
+        return $result;
     }
-    mysqli_close($db);
-    return $result;
 }
 
 }

@@ -6,7 +6,7 @@ class KontoController {
 function invoke($action, $request, $user) {
     switch($action) {
         case "get": 
-	    if(is_numeric($request['id']) {
+	    if(is_numeric($request['id'])) {
                 return $this->getKonto($request['id']);
             } else { 
                 $message = array();
