@@ -48,11 +48,24 @@ function getGuV() {
     $db = getDbConnection();
     $rs = mysqli_query($db, "select konto, kontenname, saldo from fi_ergebnisrechnungen where kontenart_id in (3, 4)");
     $zeilen = array();
+    $result = array();
     while($erg = mysqli_fetch_object($rs)) {
         $zeilen[] = $erg;
     }
+    $result['zeilen'] = $zeilen;
+    $rs = mysqli_query($db, "select kontenart_id, sum(saldo) saldo from fi_ergebnisrechnungen
+        where kontenart_id in (3, 4)
+        group by kontenart_id
+        union 
+        select '5', sum(saldo) saldo from fi_ergebnisrechnungen 
+        where kontenart_id in (3, 4)");
+    $ergebnisse = array();
+    while($erg = mysqli_fetch_object($rs)) {
+        $ergebnisse[] = $erg;
+    }
+    $result['ergebnisse'] = $ergebnisse;
     mysqli_close($db);
-    return $zeilen;
+    return $result;
 }
 
 

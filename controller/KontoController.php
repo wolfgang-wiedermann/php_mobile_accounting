@@ -46,7 +46,7 @@ function getKonten() {
 function saveKonto($request) {
     $db = getDbConnection();
     $inputJSON = file_get_contents('php://input');
-    error_log("JSON: ".$inputJSON);
+#    error_log("JSON: ".$inputJSON);
     $input = json_decode( $inputJSON, TRUE ); 
     $sql = "update fi_konto set bezeichnung = '".$input['bezeichnung']."', kontenart_id = ".$input['kontenart_id']
           ." where kontonummer = ".$input['kontonummer'];
@@ -59,7 +59,7 @@ function saveKonto($request) {
 function createKonto($request) {
     $db = getDbConnection();
     $inputJSON = file_get_contents('php://input');
-    error_log("JSON: ".$inputJSON);
+#    error_log("JSON: ".$inputJSON);
     $input = json_decode( $inputJSON, TRUE );
     $sql = "insert into fi_konto values ('".$input['kontonummer']."', '".$input['bezeichnung']
           ."', ".$input['kontenart_id'].")";
@@ -67,7 +67,6 @@ function createKonto($request) {
     mysqli_close($db);
     return $void = array();
 }
-
 
 }
 

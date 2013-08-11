@@ -60,9 +60,19 @@ loadGuV : function() {
     doGET("ergebnis", "guv", [], 
         function(data) {
             var html = "Gewinn und Verlust:<br/><table>";
-            for(var key in data) {
-                var line = data[key];
+            for(var key in data.zeilen) {
+                var line = data.zeilen[key];
                 html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td><td>"+line.saldo+"</td></tr>";
+            }
+            html += "</table>";
+            html += "<br/><b>Ergebnis:</b><br/><table>";
+            for(var key in data.ergebnisse) {
+                var erg = data.ergebnisse[key];
+                var bezeichnung;
+                if(erg.kontenart_id == '3') bezeichnung = 'Aufwand';
+                else if(erg.kontenart_id == '4') bezeichnung = 'Ertrag';
+                else if(erg.kontenart_id == '5') bezeichnung = 'Saldo';
+                html += "<tr><td>"+bezeichnung+"</td><td> "+erg.saldo+"</td></tr>";
             }
             html += "</table>";
             $("#ergebnis_form_guv").html(html);
