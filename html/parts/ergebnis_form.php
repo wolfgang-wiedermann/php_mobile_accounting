@@ -43,11 +43,16 @@ loadBilanz : function() {
                 html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td><td>"+line.saldo+"</td></tr>";
             }
             html += "</table>";
-            html += "Ergebnis:<br/>";
+            html += "<br/><b>Ergebnis:</b><br/><table>";
             for(var key in data.ergebnisse) {
                 var erg = data.ergebnisse[key];
-                html += erg.kontenart_id+" "+erg.saldo+"<br/>";
+                var bezeichnung;
+                if(erg.kontenart_id == '1') bezeichnung = 'Aktiva';
+                else if(erg.kontenart_id == '2') bezeichnung = 'Passiva';
+                else if(erg.kontenart_id == '5') bezeichnung = 'Saldo'; 
+                html += "<tr><td>"+bezeichnung+"</td><td>"+erg.saldo+"</td></tr>";
             }
+            html += "</table>";
             $("#ergebnis_form_bilanz").html(html);
         }, 
         function(error) {
