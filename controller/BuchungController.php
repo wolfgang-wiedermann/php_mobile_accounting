@@ -22,11 +22,9 @@ function invoke($action, $request, $user) {
 function createBuchung($request) {
     $db = getDbConnection();
     $inputJSON = file_get_contents('php://input');
-    error_log("JSON: ".$inputJSON);
     $input = json_decode( $inputJSON, TRUE );
     $sql = "insert into fi_buchungen (buchungstext, sollkonto, habenkonto, betrag, datum) values ('".$input['buchungstext']
           ."', '".$input['sollkonto']."', '".$input['habenkonto']."', ".$input['betrag'].", '".$input['datum']."')";
-    error_log("SQL: ".$sql);
     mysqli_query($db, $sql);
     mysqli_close($db);
     return $void = array();
