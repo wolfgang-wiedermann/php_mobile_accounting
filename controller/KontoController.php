@@ -5,13 +5,12 @@ class KontoController {
 # Einsprungpunkt, hier übergibt das Framework
 function invoke($action, $request, $user) {
     switch($action) {
-        case "get": 
-	    if(is_numeric($request['id'])) {
+        case "get":
+            if(is_numeric($request['id'])) { 
                 return $this->getKonto($request['id']);
-            } else { 
-                $message = array();
-                $message['message'] = "Error: id is not numeric";
-                return $message;
+            } else {
+                # nichts zurückliefern, da ungültige ID
+                return null;
             }
         case "list":
             return $this->getKonten();
@@ -26,11 +25,11 @@ function invoke($action, $request, $user) {
     }
 }
 
-# Liest eines einzelne Kontenart aus und liefert
+# Liest eines einzelnes Konto aus und liefert
 # sie als Objekt zurück
 function getKonto($id) {
     $db = getDbConnection();
-    $rs = mysqli_query($db, "select * from fi_konto where kontonummer = $id order by buchungsnummer desc");
+    $rs = mysqli_query($db, "select * from fi_konto where kontonummer = $id");
     $erg = mysqli_fetch_object($rs);
     mysqli_close($db); 
     return $erg;
