@@ -8,7 +8,9 @@ function invoke($action, $request, $user) {
         case 'get':
              return $this->getQuickMenuById($request);
         default:
-            return array();
+            $message = array();
+            $message['message'] = "Unbekannte Action";
+            return $message;
     }
 }
 
