@@ -42,8 +42,28 @@ var menu = {
 
     handleQuickMenuEvent: function(event) {
         var id = this.getAttribute("data-key");
-        alert('Klick: '+id);
+        alert('Klick auf Template Nr. '+id);
+        // Template-Inhalt laden
+	doGET("menu", "get", {'id': id}, function(data) {
+            menu.loadQuickNodeTemplate(data, model);
+            buchungenForm.showErfassen();
+            $("#header_home_button").show();
+            $("#buchung_form_erfassung_betrag").focus();
+        }, function(error) {
+            alert("Fehler beim Laden des Templates aufgetreten");
+        });
     },
+
+   loadQuickNodeTemplate: function(data, viewModel) {
+       // TODO: hier weitercoden
+       viewModel.buchung().buchungstext(data.buchungstext);
+       viewModel.buchung().sollkonto(data.sollkonto);
+       viewModel.buchung().habenkonto(data.habenkonto);
+       viewModel.buchung().datum(JSON.stringify(new Date()).substring(1,11));
+
+       $("#buchung_form_erfassung_sollkonto").selectmenu("refresh", true);
+       $("#buchung_form_erfassung_habenkonto").selectmenu("refresh", true);
+   },
 };
 
 // Schnellbuchungsmenue laden und Handler fuer die Eintraege registrieren
