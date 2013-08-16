@@ -42,7 +42,6 @@ var menu = {
 
     handleQuickMenuEvent: function(event) {
         var id = this.getAttribute("data-key");
-        alert('Klick auf Template Nr. '+id);
         // Template-Inhalt laden
 	doGET("menu", "get", {'id': id}, function(data) {
             menu.loadQuickNodeTemplate(data, model);
