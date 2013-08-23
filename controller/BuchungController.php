@@ -7,8 +7,8 @@ function invoke($action, $request, $user) {
     switch($action) {
         case "create":
             return $this->createBuchung($request);
-        case "top10":
-            return $this->getTop10($request);
+        case "aktuellste":
+            return $this->getTop25($request);
         case "listbykonto":
             return $this->getListByKonto($request);
         default:
@@ -30,11 +30,11 @@ function createBuchung($request) {
     return $void = array();
 }
 
-# liest die aktuellsten 10 Buchungen aus
-function getTop10($request) {
+# liest die aktuellsten 25 Buchungen aus
+function getTop25($request) {
     $db = getDbConnection();
     $top10 = array();
-    $rs = mysqli_query($db, "select * from fi_buchungen order by buchungsnummer desc limit 10");
+    $rs = mysqli_query($db, "select * from fi_buchungen order by buchungsnummer desc limit 25");
     while($obj = mysqli_fetch_object($rs)) {
         $top10[] = $obj;
     }

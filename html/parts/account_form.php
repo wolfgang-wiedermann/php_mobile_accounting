@@ -16,8 +16,6 @@
            Buchungen anzeigen</a></li>
        <li><a href="#" id="account_form_operations_edit_account" class="account_form_operations_buttons">
            Konto bearbeiten</a></li>
-       <li><a href="#" id="account_form_operations_inactivate_account" class="account_form_operations_buttons">
-           Konto deaktivieren</a></li>
    </ul> 
 </div>
 <!-- Editor-Maske fuer Konten -->
@@ -55,7 +53,6 @@ var kontenForm = {
         $("#account_form_operations_show_saldo").click(kontenForm.showSaldoHandler);
         $("#account_form_operations_show_buchungen").click(kontenForm.showBuchungenHandler);
         $("#account_form_operations_edit_account").click(kontenForm.editAccountHandler);
-        $("#account_form_operations_inactivate_account").click(kontenForm.inactivateAccountHandler);
     },
  
     // Handler fuer das Ereignis: Klick auf Konto in Liste
@@ -138,10 +135,6 @@ var kontenForm = {
         $(".content_form").hide();
         $("#account_form_edit").show();
         handlers.loadKonto(kontenForm.selectedKontonummer);
-    },
-
-    inactivateAccountHandler : function() {
-        alert("Deaktivieren");
     },
 
 };

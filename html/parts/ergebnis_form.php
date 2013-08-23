@@ -55,9 +55,9 @@ loadBilanz : function() {
             for(var key in data.ergebnisse) {
                 var erg = data.ergebnisse[key];
                 var bezeichnung;
-                if(erg.kontenart_id == '1') bezeichnung = 'Aktiva';
-                else if(erg.kontenart_id == '2') bezeichnung = 'Passiva';
-                else if(erg.kontenart_id == '5') bezeichnung = 'Saldo'; 
+                if(erg.kontenart_id === '1') bezeichnung = 'Aktiva';
+                else if(erg.kontenart_id === '2') bezeichnung = 'Passiva';
+                else if(erg.kontenart_id === '5') bezeichnung = 'Saldo'; 
                 html += "<tr><td>"+bezeichnung+"</td><td>"+erg.saldo+"</td></tr>";
             }
             html += "</table>";
@@ -82,9 +82,9 @@ loadGuV : function() {
             for(var key in data.ergebnisse) {
                 var erg = data.ergebnisse[key];
                 var bezeichnung;
-                if(erg.kontenart_id == '3') bezeichnung = 'Aufwand';
-                else if(erg.kontenart_id == '4') bezeichnung = 'Ertrag';
-                else if(erg.kontenart_id == '5') bezeichnung = 'Saldo';
+                if(erg.kontenart_id === '3') bezeichnung = 'Aufwand';
+                else if(erg.kontenart_id === '4') bezeichnung = 'Ertrag';
+                else if(erg.kontenart_id === '5') bezeichnung = 'Saldo';
                 html += "<tr><td>"+bezeichnung+"</td><td> "+erg.saldo+"</td></tr>";
             }
             html += "</table>";
@@ -109,9 +109,9 @@ loadGuVMonth : function() {
             for(var key in data.ergebnisse) {
                 var erg = data.ergebnisse[key];
                 var bezeichnung;
-                if(erg.kontenart_id == '3') bezeichnung = 'Aufwand';
-                else if(erg.kontenart_id == '4') bezeichnung = 'Ertrag';
-                else if(erg.kontenart_id == '5') bezeichnung = 'Saldo';
+                if(erg.kontenart_id === '3') bezeichnung = 'Aufwand';
+                else if(erg.kontenart_id === '4') bezeichnung = 'Ertrag';
+                else if(erg.kontenart_id === '5') bezeichnung = 'Saldo';
                 html += "<tr><td>"+bezeichnung+"</td><td> "+erg.saldo+"</td></tr>";
             }
             html += "</table>";
