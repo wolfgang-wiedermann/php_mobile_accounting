@@ -101,7 +101,14 @@ var kontenForm = {
 
 
     showSaldoHandler : function() {
-	alert("Saldo: "+kontenForm.selectedKontonummer);
+        doGET("konto", "saldo", {'id':kontenForm.selectedKontonummer}, 
+            function(data) {
+                alert("Saldo von Konto "+kontenForm.selectedKontonummer+" = "+data+" Euro");
+            }, 
+            function(error) {
+                alert(JSON.stringify(error));
+            }
+        ); 
     },
 
     showBuchungenHandler : function() {

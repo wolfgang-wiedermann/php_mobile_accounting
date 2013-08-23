@@ -6,18 +6,15 @@ class KontoController {
 function invoke($action, $request, $user) {
     switch($action) {
         case "get":
-            if(is_numeric($request['id'])) { 
-                return $this->getKonto($request['id']);
-            } else {
-                # nichts zurückliefern, da ungültige ID
-                return null;
-            }
+            return $this->getKonto($request['id']);
         case "list":
             return $this->getKonten();
         case "save":
             return $this->saveKonto($request);
         case "create":
             return $this->createKonto($request);
+        case "saldo":
+            return $this->getSaldo($request['id']);
         default:
             $message = array();
             $message['message'] = "Unbekannte Action";
@@ -28,11 +25,23 @@ function invoke($action, $request, $user) {
 # Liest eines einzelnes Konto aus und liefert
 # sie als Objekt zurück
 function getKonto($id) {
-    $db = getDbConnection();
-    $rs = mysqli_query($db, "select * from fi_konto where kontonummer = $id");
-    $erg = mysqli_fetch_object($rs);
-    mysqli_close($db); 
-    return $erg;
+    if(is_numeric($id)) {
+        $db = getDbConnection();
+        $rs = mysqli_query($db, "select * from fi_konto where kontonummer = $id");
+        $erg = mysqli_fetch_object($rs);
+        mysqli_close($db); 
+        return $erg;
+    } else throw Exception("Kontonummer nicht numerisch");
+}
+
+function getSaldo($id) {
+    if(is_numeric($id)) {
+        $db = getDbConnection();
+        $rs = mysqli_query($db, "select saldo from fi_ergebnisrechnungen where konto = '$id'");
+        $erg = mysqli_fetch_object($rs);
+        mysqli_close($db);
+        return $erg->saldo;
+    } else throw Exception("Kontonummer nicht numerisch");
 }
 
 # Erstellt eine Liste aller Kontenarten
