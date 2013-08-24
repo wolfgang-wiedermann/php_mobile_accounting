@@ -85,12 +85,10 @@ function getListByKonto($request) {
 # Validiert ein Buchungsobjekt und prüft die Gültigkeit
 # der einzelnen Felder des Objekts
 function isValidBuchung($buchung) {
-    error_log("Test: ".sizeof($buchung));
     if(count($buchung) < 6 && count($buchung) > 7) {
         return false;
     }
     foreach($buchung as $key => $value) {
-        error_log("Key: ".$key." => ".$value);
         if(!$this->isInValidFields($key)) return false;
         if(!$this->isValidValueForField($key, $value)) return false;       
     }
