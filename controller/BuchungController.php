@@ -23,23 +23,27 @@ function createBuchung($request) {
     $db = getDbConnection();
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
-    $sql = "insert into fi_buchungen (buchungstext, sollkonto, habenkonto, betrag, datum) values ('".$input['buchungstext']
-          ."', '".$input['sollkonto']."', '".$input['habenkonto']."', ".$input['betrag'].", '".$input['datum']."')";
-    mysqli_query($db, $sql);
-    mysqli_close($db);
-    return $void = array();
+    if($this->isValidBuchung($input)) {
+        $sql = "insert into fi_buchungen (buchungstext, sollkonto, habenkonto, betrag, datum) values ('".$input['buchungstext']
+              ."', '".$input['sollkonto']."', '".$input['habenkonto']."', ".$input['betrag'].", '".$input['datum']."')";
+        mysqli_query($db, $sql);
+        mysqli_close($db);
+        return $void = array();
+    } else {
+        throw new ErrorException("Das Buchungsobjekt enthält nicht gültige Elemente");
+    }
 }
 
 # liest die aktuellsten 25 Buchungen aus
 function getTop25($request) {
     $db = getDbConnection();
-    $top10 = array();
+    $top = array();
     $rs = mysqli_query($db, "select * from fi_buchungen order by buchungsnummer desc limit 25");
     while($obj = mysqli_fetch_object($rs)) {
-        $top10[] = $obj;
+        $top[] = $obj;
     }
     mysqli_close($db);
-    return $top10;
+    return $top;
 }
 
 function getListByKonto($request) {
@@ -48,7 +52,7 @@ function getListByKonto($request) {
     # Nur verarbeiten, wenn konto eine Ziffernfolge ist, um SQL-Injections zu vermeiden
     if(is_numeric($request['konto'])) {
         $rs = mysqli_query($db, "SELECT buchungsnummer, buchungstext, gegenkonto, betrag, datum FROM `fi_buchungen_view` "
-                               ."where konto = '$kontonummer'");
+                               ."where konto = '$kontonummer' order by buchungsnummer desc");
         $result = array();
         $result_list = array();
         // Buchungen laden
@@ -72,6 +76,60 @@ function getListByKonto($request) {
         $result['saldo'] = 0;
         return $result;
     }
+}
+
+# -----------------------------------------------------
+# Eingabevalidierung
+# -----------------------------------------------------
+
+# Validiert ein Buchungsobjekt und prüft die Gültigkeit
+# der einzelnen Felder des Objekts
+function isValidBuchung($buchung) {
+    error_log("Test: ".sizeof($buchung));
+    if(count($buchung) < 6 && count($buchung) > 7) {
+        return false;
+    }
+    foreach($buchung as $key => $value) {
+        error_log("Key: ".$key." => ".$value);
+        if(!$this->isInValidFields($key)) return false;
+        if(!$this->isValidValueForField($key, $value)) return false;       
+    }
+    return true;
+}
+
+# Prüft, ob das gegebene Feld in der Menge der
+# gueltigen Felder enthalten ist.
+function isInValidFields($key) {
+   switch($key) {
+       case 'buchungsnummer': return true;
+       case 'buchungstext':   return true;
+       case 'sollkonto':      return true;
+       case 'habenkonto':     return true;
+       case 'betrag':         return true;
+       case 'datum':          return true;
+       case 'benutzer':       return true;
+       default:               return false;
+   }
+}
+
+# Prüft, ob jeder Feldinhalt valide sein kann
+function isValidValueForField($key, $value) {
+   switch($key) {
+       case 'buchungsnummer':
+       case 'betrag':
+            return is_numeric($value);
+       case 'sollkonto':
+       case 'habenkonto':
+            $pattern = '/[^0-9]/';
+            preg_match($pattern, $value, $results);
+            return count($results) == 0;
+       case 'buchungstext':
+       case 'datum':
+            $pattern = '/[\']/';
+            preg_match($pattern, $value, $results);
+            return count($results) == 0;
+       default: return true;
+   }
 }
 
 }
