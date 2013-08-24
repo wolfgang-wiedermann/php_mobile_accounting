@@ -71,10 +71,7 @@ function getListByKonto($request) {
         return $result;
     # Wenn konto keine Ziffernfolge ist, leeres Ergebnis zurück liefern
     } else {
-        $result = array();
-        $result['list'] = array();
-        $result['saldo'] = 0;
-        return $result;
+        throw new ErrorException("Die Kontonummer ist nicht numerisch");
     }
 }
 

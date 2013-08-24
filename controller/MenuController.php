@@ -29,13 +29,17 @@ function getQuickMenu($request) {
 function getQuickMenuById($request) {
     $db = getDbConnection();
     $id = $request['id'];
-    $rs = mysqli_query($db, "select * from fi_quick_config where config_id = $id");
-    if($obj = mysqli_fetch_object($rs)) {
-        mysqli_close($db);
-        return $obj;
+    if(is_numeric($id)) {
+        $rs = mysqli_query($db, "select * from fi_quick_config where config_id = $id");
+        if($obj = mysqli_fetch_object($rs)) {
+            mysqli_close($db);
+            return $obj;
+        } else {
+            mysqli_close($db);
+            return null;
+        }
     } else {
-        mysqli_close($db);
-        return null;
+        throw new ErrorException("Die fi_quick_config id ist fehlerhaft");
     }
 }
 }
