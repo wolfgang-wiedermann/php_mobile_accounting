@@ -5,7 +5,7 @@ class MenuController {
 function invoke($action, $request, $user) {
     switch($action) {
         case 'quick':
-    	     return $this->getQuickMenu($request);
+    	     return $this->getQuickMenu();
         case 'get':
              return $this->getQuickMenuById($request);
         default:
@@ -13,7 +13,7 @@ function invoke($action, $request, $user) {
     }
 }
 
-function getQuickMenu($request) {
+function getQuickMenu() {
     $db = getDbConnection();
     $lst = array();
     $rs = mysqli_query($db, "select * from fi_quick_config order by config_knz");
