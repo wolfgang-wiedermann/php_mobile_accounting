@@ -6,19 +6,19 @@
             <li><a href="#" id="menu_buchen">Buchen</a></li>
             <li><a href="#" id="menu_konten">Konten</a></li>
             <li><a href="#" id="menu_auswerten">Auswertungen</a></li>
-            <li data-role="list-divider">Schnellbuchungen</li>
-            <li class="menu_quick_item"><a href="#" class="menu_quick_item">Tanken</a></li>
-<!--
+            <!--
             <li data-role="list-divider">Administration</li>
             <li><a href="#" id="menu_config">Einstellungen</a></li>
--->
+            -->
+            <li data-role="list-divider">Schnellbuchungen</li>
+            <li class="menu_quick_item"><a href="#" class="menu_quick_item">Tanken</a></li>
         </ul>
         </div>
 <script type="text/javascript">
 var menu = {
     loadQuickMenuItems: function () {
         doGET("menu", "quick", [], function(data) {
-            // TODO: Alte menu_quick_items entfernen, neue laden
+            // Alte menu_quick_items entfernen, neue laden
             $(".menu_quick_item").remove();
             var listview = $("#navigation_menu_listview");
             for(var key in data) {
@@ -43,7 +43,7 @@ var menu = {
     handleQuickMenuEvent: function(event) {
         var id = this.getAttribute("data-key");
         // Template-Inhalt laden
-	doGET("menu", "get", {'id': id}, function(data) {
+        doGET("menu", "get", {'id': id}, function(data) {
             menu.loadQuickNodeTemplate(data, model);
             buchungenForm.showErfassen();
             $("#header_home_button").show();
