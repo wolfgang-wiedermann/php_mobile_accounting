@@ -1,5 +1,6 @@
 <?php
 
+# Controller für die Schnellbuchungs-Menüeinträge
 class MenuController {
 function invoke($action, $request, $user) {
     switch($action) {
@@ -8,9 +9,7 @@ function invoke($action, $request, $user) {
         case 'get':
              return $this->getQuickMenuById($request);
         default:
-            $message = array();
-            $message['message'] = "Unbekannte Action";
-            return $message;
+            throw new ErrorException("Unbekannte Action");
     }
 }
 

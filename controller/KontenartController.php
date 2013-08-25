@@ -10,20 +10,22 @@ function invoke($action, $request, $user) {
         case "list":
             return $this->getKontenarten();
         default:
-            $message = array();
-            $message['message'] = "Unbekannte Action";
-            return $message;
+            throw new ErrorException("Unbekannte Action");
     }
 }
 
 # Liest eines einzelne Kontenart aus und liefert
 # sie als Objekt zurück
 function getKontenart($id) {
-    $db = getDbConnection();
-    $rs = mysqli_query($db, "select * from fi_kontenart where kontenart_id = $id");
-    $erg = mysqli_fetch_object($rs);
-    mysqli_close($db); 
-    return $erg;
+    if(is_numeric($id)) {
+        $db = getDbConnection();
+        $rs = mysqli_query($db, "select * from fi_kontenart where kontenart_id = $id");
+        $erg = mysqli_fetch_object($rs);
+        mysqli_close($db);
+        return $erg;
+    } else {
+        throw new ErrorException("Eine nicht numerische Kontenart-ID ist ungültig");
+    }
 }
 
 # Erstellt eine Liste aller Kontenarten

@@ -16,9 +16,7 @@ function invoke($action, $request, $user) {
         case "saldo":
             return $this->getSaldo($request['id']);
         default:
-            $message = array();
-            $message['message'] = "Unbekannte Action";
-            return $message;
+            throw new ErrorException("Unbekannte Action");
     }
 }
 
