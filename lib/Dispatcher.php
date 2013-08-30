@@ -1,11 +1,15 @@
 <?php
 
+# Die Klasse Dispatcher kapselt die Funktionalitaet,
+# zur Weiterleitung der Anfragen an die passenden
+# Controller-Klassen.
 class Dispatcher {
 
 # Attribute
 private $request, $user;
 
 # Einstiegspunkt in den Dispatcher
+# (wird automatisch aus ../index.php aufgerufen)
 function invoke($request) {
     $this->request = $request;
     if($this->isValidControllerName()) {
@@ -17,7 +21,7 @@ function invoke($request) {
     }    
 }
 
-# Benutzer übergeben
+# Methode zum uebergeben des Benutzers an den Dispatcher
 function setRemoteUser($user) {
     $this->user = $user;
     logX("Remote use ".$this->user." registered");
@@ -26,13 +30,16 @@ function setRemoteUser($user) {
 # Ein Objekt der angefragten Controller-Klasse laden
 function getControllerObject() {
     $name = $this->getControllerString();
-    // TODO: Prüfen, ob $name eine ungültigen Zeichen enthält
-    $fileName = "./controller/".ucwords($name)."Controller.php";
-    logX("Controller-Datei: ".$fileName);
-    require_once($fileName);
-    $className = ucwords($name)."Controller";
-    $obj = new $className;
-    return $obj;
+    if($this->isValidControllerName()) {
+        $fileName = "./controller/".ucwords($name)."Controller.php";
+        logX("Controller-Datei: ".$fileName);
+        require_once($fileName);
+        $className = ucwords($name)."Controller";
+        $obj = new $className;
+        return $obj;
+    } else {
+        throw new ErrorException("Controller-Name ungueltig");
+    }
 }
 
 # Den angefragten Controller ermitteln
