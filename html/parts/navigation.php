@@ -10,12 +10,18 @@
             <li data-role="list-divider">Administration</li>
             <li><a href="#" id="menu_config">Einstellungen</a></li>
             -->
-            <li data-role="list-divider">Schnellbuchungen</li>
+            <li data-role="list-divider" id="menu_schnellbuchungen_divider">Schnellbuchungen</li>
             <li class="menu_quick_item"><a href="#" class="menu_quick_item">Tanken</a></li>
         </ul>
         </div>
 <script type="text/javascript">
+/*
+* Javascript-Code für das Schnellbuchungs-Menü
+*/
 var menu = {
+    /*
+    * Laden des Schnellbuchungs-Menüs
+    */
     loadQuickMenuItems: function () {
         doGET("menu", "quick", [], function(data) {
             // Alte menu_quick_items entfernen, neue laden
@@ -35,11 +41,22 @@ var menu = {
         });
     },
 
+    /*
+    * Privat: Methode zum Registrieren der Ereignisse im 
+    *         geladenen Schnellbuchungsmenü
+    */
     registerQuickMenuEvents: function() {
         $(".menu_quick_item_a").unbind("click");
         $(".menu_quick_item_a").click(menu.handleQuickMenuEvent);
     },
 
+    /*
+    * Generischer Event-Handler für die Items des Schnell-
+    * buchungs-Menüs. Bestimmt, aufgrund des Wertes des
+    * Attributs data-key, welcher Menü-Eintrag ausgewählt
+    * wurde und lädt die entsprechende Vorlage in die
+    * Buchungsmaske. 
+    */
     handleQuickMenuEvent: function(event) {
         var id = this.getAttribute("data-key");
         // Template-Inhalt laden
@@ -53,11 +70,17 @@ var menu = {
         });
     },
 
-   loadQuickNodeTemplate: function(data, viewModel) {
-       // TODO: hier weitercoden
+    /*
+    * Privat: Laden eines konkreten Templates in das Knockout.js-Model
+    *         der Buchungsmaske.
+    */
+    loadQuickNodeTemplate: function(data, viewModel) {
        viewModel.buchung().buchungstext(data.buchungstext);
        viewModel.buchung().sollkonto(data.sollkonto);
        viewModel.buchung().habenkonto(data.habenkonto);
+       if(!!data.betrag) { // Wenn der Betrag nicht null ist
+           viewModel.buchung().betrag(data.betrag);
+       }
        viewModel.buchung().datum(JSON.stringify(new Date()).substring(1,11));
 
        $("#buchung_form_erfassung_sollkonto").selectmenu("refresh", true);
@@ -65,7 +88,11 @@ var menu = {
    },
 };
 
-// Schnellbuchungsmenue laden und Handler fuer die Eintraege registrieren
+/* 
+* Schnellbuchungsmenue nach dem Laden der Applikation
+* automatisch laden und 
+* die Event-Handler fuer die Eintraege registrieren
+*/
 $(document).ready(function() {
     menu.loadQuickMenuItems();
 });
