@@ -28,9 +28,12 @@
     <div data-role="footer" data-position="fixed" data-theme="b"><center>&copy; 2013 by Wolfgang Wiedermann</center></div>
 </div>
 <script type="text/javascript">
-
 var model = new AppViewModel();
 
+/*
+* Konstruktor-Funktion, initialisiert nach dem Laden der Seite
+* die Ansicht und registriert die Event-Handler der Haupt-View
+*/
 $(document).ready(function() {
     ko.applyBindings(model);
     gotoMainPage();
@@ -41,6 +44,9 @@ $(document).ready(function() {
     $("#menu_schnellbuchungen_divider").click(menu.loadQuickMenuItems);
 });
 
+/*
+* Handler fuer das Klick-Event des Home-Buttons
+*/
 function gotoMainPage() {
     $("#header_text").text("Buchhaltung");
     $(".content_form").hide();
@@ -49,6 +55,9 @@ function gotoMainPage() {
     $("#header_home_button").hide();
 }
 
+/*
+* Handler fuer das Klick-Event des Konten-Buttons
+*/
 function gotoKonten() {
     $(".content_form").hide();
     $("#account_form").show();
@@ -59,6 +68,9 @@ function gotoKonten() {
     handlers.refreshKonten();
 }
 
+/*
+* Handler fuer das Klick-Event des Buchen-Buttons
+*/
 function gotoBuchen() {
     $(".content_form").hide();
     $("#header_home_button").show();
@@ -67,6 +79,9 @@ function gotoBuchen() {
     buchungenForm.registerBuchungFormEvents();
 }
 
+/*
+* Handler fuer das Klick-Event des Auswerten-Buttons
+*/
 function gotoAuswerten() {
     $(".content_form").hide();
     $("#header_home_button").show();
