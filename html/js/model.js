@@ -87,7 +87,7 @@ m.privat.initKontenarten = function(self) {
     self.refreshKontenarten();
 
     self.loadKontenart = function(kontenart_id) {
-        doGET("kontenart", "get", {'id':kontenart_id},
+        doGETwithCache("kontenart", "get", {'id':kontenart_id},
             function(data) {
                 self.kontenart().kontenart_id(data.kontenart_id);
                 self.kontenart().bezeichnung(data.bezeichnung);
@@ -108,7 +108,7 @@ m.privat.initKonten = function(self) {
     // Konten
     self.konten = ko.observableArray([]);
     self.refreshKonten = function () {    
-        doGET("konto", "list", [], 
+        doGETwithCache("konto", "list", [], 
             function(data) {
                 self.konten($.map(data, function(item) {return new Konto(item) }));
                 $(".konto_auswahl_button").unbind("click");
@@ -123,7 +123,7 @@ m.privat.initKonten = function(self) {
     self.refreshKonten();
 
     self.loadKonto = function(kontoNummer) {
-        doGET("konto", "get", {'id':kontoNummer},
+        doGETwithCache("konto", "get", {'id':kontoNummer},
             function(data) {
                  //self.konto(new Konto(data));
                  self.konto().kontonummer(data.kontonummer);

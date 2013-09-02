@@ -43,7 +43,7 @@ showGuVMonth : function() {
 },
 
 loadBilanz : function() {
-    doGET("ergebnis", "bilanz", [], 
+    doGETwithCache("ergebnis", "bilanz", [], 
         function(data) {
             var html = "Bilanzdarstellung:<br/><table>";
             for(var key in data.zeilen) {
@@ -70,7 +70,7 @@ loadBilanz : function() {
 },
 
 loadGuV : function() {
-    doGET("ergebnis", "guv", [], 
+    doGETwithCache("ergebnis", "guv", [], 
         function(data) {
             var html = "Gewinn und Verlust:<br/><table>";
             for(var key in data.zeilen) {
@@ -97,7 +97,7 @@ loadGuV : function() {
 },
 
 loadGuVMonth : function() {
-    doGET("ergebnis", "guv_month", [], 
+    doGETwithCache("ergebnis", "guv_month", [], 
         function(data) {
             var html = "<b>Gewinn und Verlust</b><br/> aktueller Monat:<br/><table>";
             for(var key in data.zeilen) {

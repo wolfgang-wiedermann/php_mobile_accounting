@@ -23,7 +23,7 @@ var menu = {
     * Laden des Schnellbuchungs-Menüs
     */
     loadQuickMenuItems: function () {
-        doGET("menu", "quick", [], function(data) {
+        doGETwithCache("menu", "quick", [], function(data) {
             // Alte menu_quick_items entfernen, neue laden
             $(".menu_quick_item").remove();
             var listview = $("#navigation_menu_listview");
@@ -60,7 +60,7 @@ var menu = {
     handleQuickMenuEvent: function(event) {
         var id = this.getAttribute("data-key");
         // Template-Inhalt laden
-        doGET("menu", "get", {'id': id}, function(data) {
+        doGETwithCache("menu", "get", {'id': id}, function(data) {
             menu.loadQuickNodeTemplate(data, model);
             buchungenForm.showErfassen();
             $("#header_home_button").show();
