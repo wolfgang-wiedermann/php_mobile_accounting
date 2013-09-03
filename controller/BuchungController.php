@@ -50,7 +50,7 @@ function getListByKonto($request) {
     $db = getDbConnection();
     $kontonummer = $request['konto'];
     # Nur verarbeiten, wenn konto eine Ziffernfolge ist, um SQL-Injections zu vermeiden
-    if(is_numeric($request['konto'])) {
+    if(is_numeric($kontonummer)) {
         $rs = mysqli_query($db, "SELECT buchungsnummer, buchungstext, gegenkonto, betrag, datum FROM `fi_buchungen_view` "
                                ."where konto = '$kontonummer' order by buchungsnummer desc");
         $result = array();
