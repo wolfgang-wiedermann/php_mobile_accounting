@@ -51,9 +51,11 @@ $(document).ready(function() {
 */
 function updateHtml5AppCache() {
     var appCache = window.applicationCache;
+    if(!!appCache) {
     appCache.update();
-    if(appCache.status == window.applicationCache.UPDATEREADY) {
-        appCache.swapCache();
+        if(appCache.status == window.applicationCache.UPDATEREADY) {
+            appCache.swapCache();
+        }
     }
 }
 
