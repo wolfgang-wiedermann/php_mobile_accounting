@@ -35,7 +35,7 @@ var model = new AppViewModel();
 * die Ansicht und registriert die Event-Handler der Haupt-View
 */
 $(document).ready(function() {
-    updateHtml5AppCache();
+//    updateHtml5AppCache();
     ko.applyBindings(model);
     gotoMainPage();
     $("#header_home_button").click(gotoMainPage);
