@@ -1,6 +1,6 @@
 <?php define("MAIN_PAGE", 1); ?>
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" manifest="manifest.php">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./css/jquery.mobile-1.3.1.css" />
@@ -35,6 +35,7 @@ var model = new AppViewModel();
 * die Ansicht und registriert die Event-Handler der Haupt-View
 */
 $(document).ready(function() {
+    updateHtml5AppCache();
     ko.applyBindings(model);
     gotoMainPage();
     $("#header_home_button").click(gotoMainPage);
@@ -43,6 +44,18 @@ $(document).ready(function() {
     $("#menu_auswerten").click(gotoAuswerten);
     $("#menu_schnellbuchungen_divider").click(menu.loadQuickMenuItems);
 });
+
+/*
+* Cache neu laden ...
+* vgl. http://www.html5rocks.com/de/tutorials/appcache/beginner/
+*/
+function updateHtml5AppCache() {
+    var appCache = window.applicationCache;
+    appCache.update();
+    if(appCache.status == window.applicationCache.UPDATEREADY) {
+        appCache.swapCache();
+    }
+}
 
 /*
 * Handler fuer das Klick-Event des Home-Buttons
