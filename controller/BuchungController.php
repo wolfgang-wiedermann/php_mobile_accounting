@@ -2,8 +2,11 @@
 
 class BuchungController {
 
+private $dispatcher;
+
 # Einsprungpunkt, hier übergibt das Framework
-function invoke($action, $request, $user) {
+function invoke($action, $request, $dispatcher) {
+    $this->dispatcher = $dispatcher;
     switch($action) {
         case "create":
             return $this->createBuchung($request);

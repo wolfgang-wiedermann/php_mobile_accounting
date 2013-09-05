@@ -4,6 +4,7 @@
 
 DROP TABLE IF EXISTS `fi_buchungen`;
 CREATE TABLE IF NOT EXISTS `fi_buchungen` (
+  `mandant_id` int(11) NOT NULL,
   `buchungsnummer` int(11) NOT NULL AUTO_INCREMENT,
   `buchungstext` varchar(256) DEFAULT NULL,
   `sollkonto` varchar(20) NOT NULL,
@@ -86,17 +87,38 @@ INSERT INTO `fi_kontenart` (`kontenart_id`, `bezeichnung`) VALUES
 
 DROP TABLE IF EXISTS `fi_konto`;
 CREATE TABLE IF NOT EXISTS `fi_konto` (
+  `mandant_id` int(11) NOT NULL,
   `kontonummer` varchar(20) NOT NULL,
   `bezeichnung` varchar(256) NOT NULL,
   `kontenart_id` int(11) NOT NULL,
   PRIMARY KEY (`kontonummer`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Daten für Tabelle `fi_konto`
+) ENGINE=InnoDtruktur für Tabelle `fi_user`
 --
 
+DROP TABLE IF EXISTS `fi_user`;
+CREATE TABLE IF NOT EXISTS `fi_user` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(50) NOT NULL,
+  `user_description` varchar(256) DEFAULT NULL,
+  `mandant_id` int(11) NOT NULL,
+  `create_date` date NOT NULL default now(),
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY (`user_name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+--
+-- Tabellenstruktur für Tabelle `fi_mandant`
+--
+
+DROP TABLE IF EXISTS `fi_mandant`;
+CREATE TABLE IF NOT EXISTS `fi_mandant` (
+  `mandant_id` int(11) NOT NULL AUTO_INCREMENT,
+  `mandant_description` varchar(256) DEFAULT NULL,
+  `primary_user_id` int(11) NOT NULL,
+  `create_date` date NOT NULL,
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+ DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 

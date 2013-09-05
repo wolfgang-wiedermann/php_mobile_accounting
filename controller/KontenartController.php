@@ -2,8 +2,11 @@
 
 class KontenartController {
 
+private $dispatcher;
+
 # Einsprungpunkt, hier übergibt das Framework
-function invoke($action, $request, $user) {
+function invoke($action, $request, $dispatcher) {
+    $this->dispatcher = $dispatcher;
     switch($action) {
         case "get":
             return $this->getKontenart($request['id']);

@@ -2,7 +2,7 @@
 
 # Controller für die Schnellbuchungs-Menüeinträge
 class MenuController {
-function invoke($action, $request, $user) {
+function invoke($action, $request, $dispatcher) {
     switch($action) {
         case 'quick':
     	     return $this->getQuickMenu();

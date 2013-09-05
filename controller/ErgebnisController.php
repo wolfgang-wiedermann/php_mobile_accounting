@@ -3,7 +3,7 @@
 class ErgebnisController {
 
 # Einsprungpunkt, hier übergibt das Framework
-function invoke($action, $request, $user) {
+function invoke($action, $request, $dispatcher) {
     switch($action) {
         case "bilanz":
             return $this->getBilanz();

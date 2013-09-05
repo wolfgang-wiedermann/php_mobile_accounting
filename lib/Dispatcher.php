@@ -6,7 +6,7 @@
 class Dispatcher {
 
 # Attribute
-private $request, $user;
+private $request, $user, $mandant;
 
 # Einstiegspunkt in den Dispatcher
 # (wird automatisch aus ../index.php aufgerufen)
@@ -15,15 +15,28 @@ function invoke($request) {
     if($this->isValidControllerName()) {
         $controller = $this->getControllerObject();
         $action = $this->getActionName();
-        return json_encode($controller->invoke($action, $this->request, $this->user));
+        return json_encode($controller->invoke($action, $this->request, $this));
     } else {
           return "{'message':'ControllerName enthält ungültige Zeichen'}";
     }    
 }
 
+function getMandantId() {
+    return $this->mandant;
+}
+
 # Methode zum uebergeben des Benutzers an den Dispatcher
+# ermittelt den zugeordneten Mandanten und setzt dessen id in das Feld $this->mandant_id
 function setRemoteUser($user) {
+    $db = getDbConnection();
     $this->user = $user;
+    $rs = mysqli_query($db, "select mandant_id from fi_user where user_name = '$user'");
+    if($rs && $obj = mysqli_fetch_object($rs)) {
+        $this->mandant = $obj->mandant_id;
+    } else {
+        throw new Exception("Kein Mandant für den Benutzer $user konfiguriert");
+    }
+    mysqli_close($db);
     logX("Remote use ".$this->user." registered");
 }
 

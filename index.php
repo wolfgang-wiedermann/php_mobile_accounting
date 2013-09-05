@@ -10,9 +10,11 @@ include_once("./lib/ErrorsToExceptions.php");
 require_once("./lib/Dispatcher.php");
 $disp = new Dispatcher();
 try {
-    $disp->setRemoteUser($_SERVER['REMOTE_USER']);
-} catch(ErrorException $ex) {
-    $disp->setRemoteUser(null);
+    $user = $_SERVER['REMOTE_USER'];
+    $disp->setRemoteUser($user);
+} catch(ErrorException $ex) { 
+    throw new Exception("Unauthenticated");
+    //$disp->setRemoteUser(null);
 }
 echo $disp->invoke($_REQUEST);
 
