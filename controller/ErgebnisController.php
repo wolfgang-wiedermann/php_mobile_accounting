@@ -2,8 +2,14 @@
 
 class ErgebnisController {
 
+private $dispatcher, $mandant_id;
+
 # Einsprungpunkt, hier übergibt das Framework
 function invoke($action, $request, $dispatcher) {
+
+    $this->dispatcher = $dispatcher;
+    $this->mandant_id = $dispatcher->getMandantId();
+
     switch($action) {
         case "bilanz":
             return $this->getBilanz();
@@ -23,18 +29,18 @@ function invoke($action, $request, $dispatcher) {
 function getBilanz() {
     $result = array();
     $db = getDbConnection();
-    $rs = mysqli_query($db, "select konto, kontenname, saldo from fi_ergebnisrechnungen where kontenart_id in (1, 2)");
+    $rs = mysqli_query($db, "select konto, kontenname, saldo from fi_ergebnisrechnungen where mandant_id = $this->mandant_id and kontenart_id in (1, 2)");
     $zeilen = array();
     while($erg = mysqli_fetch_object($rs)) {
         $zeilen[] = $erg;
     }
     $result['zeilen'] = $zeilen;
     $rs = mysqli_query($db, "select kontenart_id, sum(saldo) saldo from fi_ergebnisrechnungen
-        where kontenart_id in (1, 2)
+        where kontenart_id in (1, 2) and mandant_id = $this->mandant_id
         group by kontenart_id
         union 
         select '5', sum(saldo) saldo from fi_ergebnisrechnungen 
-        where kontenart_id in (1, 2)");
+        where kontenart_id in (1, 2) and mandant_id = $this->mandant_id");
     $ergebnisse = array();
     while($erg = mysqli_fetch_object($rs)) {
         $ergebnisse[] = $erg;
@@ -48,7 +54,8 @@ function getBilanz() {
 # sie als Array zurück
 function getGuV() {
     $db = getDbConnection();
-    $rs = mysqli_query($db, "select konto, kontenname, saldo from fi_ergebnisrechnungen where kontenart_id in (3, 4)");
+    $rs = mysqli_query($db, "select konto, kontenname, saldo from fi_ergebnisrechnungen "
+          ." where mandant_id = $this->mandant_id and kontenart_id in (3, 4)");
     $zeilen = array();
     $result = array();
     while($erg = mysqli_fetch_object($rs)) {
@@ -56,11 +63,11 @@ function getGuV() {
     }
     $result['zeilen'] = $zeilen;
     $rs = mysqli_query($db, "select kontenart_id, sum(saldo) saldo from fi_ergebnisrechnungen
-        where kontenart_id in (3, 4)
+        where kontenart_id in (3, 4) and mandant_id = $this->mandant_id
         group by kontenart_id
         union 
         select '5', sum(saldo) saldo from fi_ergebnisrechnungen 
-        where kontenart_id in (3, 4)");
+        where kontenart_id in (3, 4) and mandant_id = $this->mandant_id");
     $ergebnisse = array();
     while($erg = mysqli_fetch_object($rs)) {
         $ergebnisse[] = $erg;
@@ -73,7 +80,8 @@ function getGuV() {
 # sie als Array zurück
 function getGuVMonth() {
     $db = getDbConnection();
-    $rs = mysqli_query($db, "select konto, kontenname, sum(betrag) as saldo from fi_ergebnisrechnungen_base where month(datum) = month(now()) and kontenart_id in (3, 4) group by konto, kontenname");
+    $rs = mysqli_query($db, "select konto, kontenname, sum(betrag) as saldo from fi_ergebnisrechnungen_base ".
+          " where mandant_id = $this->mandant_id and month(datum) = month(now()) and kontenart_id in (3, 4) group by konto, kontenname");
     $zeilen = array();
     $result = array();
     while($erg = mysqli_fetch_object($rs)) {
@@ -81,11 +89,11 @@ function getGuVMonth() {
     }
     $result['zeilen'] = $zeilen;
     $rs = mysqli_query($db, "select kontenart_id, sum(betrag) saldo from fi_ergebnisrechnungen_base
-        where kontenart_id in (3, 4) and month(datum) = month(now())
+        where mandant_id = $this->mandant_id and kontenart_id in (3, 4) and month(datum) = month(now())
         group by kontenart_id
         union 
         select '5', sum(betrag) saldo from fi_ergebnisrechnungen_base 
-        where kontenart_id in (3, 4) and month(datum) = month(now())");
+        where mandant_id = $this->mandant_id and kontenart_id in (3, 4) and month(datum) = month(now())");
     $ergebnisse = array();
     while($erg = mysqli_fetch_object($rs)) {
         $ergebnisse[] = $erg;

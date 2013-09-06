@@ -128,6 +128,7 @@ CREATE TABLE IF NOT EXISTS `fi_mandant` (
 
 DROP TABLE IF EXISTS `fi_quick_config`;
 CREATE TABLE IF NOT EXISTS `fi_quick_config` (
+  `mandant_id` int(11) NOT NULL,
   `config_id` int(11) NOT NULL AUTO_INCREMENT,
   `config_knz` varchar(50) NOT NULL,
   `sollkonto` varchar(50) DEFAULT NULL,
@@ -193,61 +194,84 @@ CREATE TABLE IF NOT EXISTS `fi_salden_view` (
 --
 -- Struktur des Views `fi_buchungen_view`
 --
-DROP TABLE IF EXISTS `fi_buchungen_view`;
 
-CREATE  VIEW `fi_buchungen_view` AS select 'S' AS `KNZ`,`fi_buchungen`.`buchungsnummer` AS `buchungsnummer`,`fi_buchungen`.`buchungstext` AS `buchungstext`,`fi_buchungen`.`sollkonto` AS `konto`,`fi_buchungen`.`habenkonto` AS `gegenkonto`,`fi_buchungen`.`betrag` AS `betrag`,`fi_buchungen`.`datum` AS `datum` from `fi_buchungen` union select 'H' AS `H`,`fi_buchungen`.`buchungsnummer` AS `buchungsnummer`,`fi_buchungen`.`buchungstext` AS `buchungstext`,`fi_buchungen`.`habenkonto` AS `habenkonto`,`fi_buchungen`.`sollkonto` AS `sollkonto`,(`fi_buchungen`.`betrag` * -(1)) AS `betrag*-1`,`fi_buchungen`.`datum` AS `datum` from `fi_buchungen` order by `buchungsnummer`;
+DROP TABLE IF EXISTS `fi_buchungen_view`;
+DROP VIEW IF EXISTS `fi_buchungen_view`;
+
+CREATE  VIEW `fi_buchungen_view` AS 
+select mandant_id as mandant_id
+, 'S' AS `KNZ`
+, `fi_buchungen`.`buchungsnummer` AS `buchungsnummer`
+, `fi_buchungen`.`buchungstext` AS `buchungstext`
+, `fi_buchungen`.`sollkonto` AS `konto`
+, `fi_buchungen`.`habenkonto` AS `gegenkonto`
+, `fi_buchungen`.`betrag` AS `betrag`
+, `fi_buchungen`.`datum` AS `datum` 
+from `fi_buchungen` 
+union 
+select mandant_id as mandant_id
+, 'H' AS `H`
+, `fi_buchungen`.`buchungsnummer` AS `buchungsnummer`
+, `fi_buchungen`.`buchungstext` AS `buchungstext`
+, `fi_buchungen`.`habenkonto` AS `habenkonto`
+, `fi_buchungen`.`sollkonto` AS `sollkonto`
+, (`fi_buchungen`.`betrag` * -(1)) AS `betrag*-1`
+, `fi_buchungen`.`datum` AS `datum` 
+from `fi_buchungen` 
+order by `buchungsnummer`;
 
 -- --------------------------------------------------------
 
 --
 -- Struktur des Views `fi_ergebnisrechnungen`
 --
-DROP TABLE IF EXISTS `fi_ergebnisrechnungen`;
 
-CREATE  VIEW `fi_ergebnisrechnungen` AS select `base`.`konto` AS `konto`,`base`.`kontenname` AS `kontenname`,`base`.`kontenart_id` AS `kontenart_id`,sum(`base`.`betrag`) AS `saldo` from `fi_ergebnisrechnungen_base` `base` group by `base`.`konto`,`base`.`kontenname`,`base`.`kontenart_id` order by `base`.`konto`;
+DROP TABLE IF EXISTS `fi_ergebnisrechnungen`;
+DROP VIEW IF EXISTS `fi_ergebnisrechnungen`;
+
+CREATE  VIEW `fi_ergebnisrechnungen` AS 
+select `mandant_id` AS `mandant_id`
+, `base`.`konto` AS `konto`
+, `base`.`kontenname` AS `kontenname`
+, `base`.`kontenart_id` AS `kontenart_id`
+, sum(`base`.`betrag`) AS `saldo` 
+from `fi_ergebnisrechnungen_base` `base` 
+group by `base`.`konto`,`base`.`kontenname`,`base`.`kontenart_id` 
+order by `base`.`konto`;
 
 -- --------------------------------------------------------
 
 --
 -- Struktur des Views `fi_ergebnisrechnungen_base`
 --
+
 DROP TABLE IF EXISTS `fi_ergebnisrechnungen_base`;
+DROP VIEW IF EXISTS `fi_ergebnisrechnungen_base`;
 
-CREATE  VIEW `fi_ergebnisrechnungen_base` AS select 'S' AS `buchungsart`,`b`.`buchungsnummer` AS `buchungsnummer`,`b`.`buchungstext` AS `buchungstext`,`b`.`sollkonto` AS `konto`,`k`.`bezeichnung` AS `kontenname`,`k`.`kontenart_id` AS `kontenart_id`,`b`.`betrag` AS `betrag`,`b`.`datum` AS `datum` from (`fi_buchungen` `b` join `fi_konto` `k` on((`b`.`sollkonto` = `k`.`kontonummer`))) union select 'H' AS `buchungsart`,`b`.`buchungsnummer` AS `buchungsnummer`,`b`.`buchungstext` AS `buchungstext`,`b`.`habenkonto` AS `konto`,`k`.`bezeichnung` AS `kontenname`,`k`.`kontenart_id` AS `kontenart_id`,(`b`.`betrag` * -(1)) AS `betrag`,`b`.`datum` AS `datum` from (`fi_buchungen` `b` join `fi_konto` `k` on((`b`.`habenkonto` = `k`.`kontonummer`))) order by `buchungsnummer`,`buchungsart`;
-
--- --------------------------------------------------------
-
---
--- Struktur des Views `fi_salden_jaehrlich_view`
---
-DROP TABLE IF EXISTS `fi_salden_jaehrlich_view`;
-
-CREATE  VIEW `fi_salden_jaehrlich_view` AS select year(`fi_buchungen_view`.`datum`) AS `jahr`,`fi_buchungen_view`.`konto` AS `konto`,sum(`fi_buchungen_view`.`betrag`) AS `saldo` from `fi_buchungen_view` group by year(`fi_buchungen_view`.`datum`),`fi_buchungen_view`.`konto`;
-
--- --------------------------------------------------------
-
---
--- Struktur des Views `fi_salden_monatlich_view`
---
-DROP TABLE IF EXISTS `fi_salden_monatlich_view`;
-
-CREATE  VIEW `fi_salden_monatlich_view` AS select month(`fi_buchungen_view`.`datum`) AS `monat`,year(`fi_buchungen_view`.`datum`) AS `jahr`,`fi_buchungen_view`.`konto` AS `konto`,sum(`fi_buchungen_view`.`betrag`) AS `saldo` from `fi_buchungen_view` group by month(`fi_buchungen_view`.`datum`),year(`fi_buchungen_view`.`datum`),`fi_buchungen_view`.`konto`;
-
--- --------------------------------------------------------
-
---
--- Struktur des Views `fi_salden_taeglich_view`
---
-DROP TABLE IF EXISTS `fi_salden_taeglich_view`;
-
-CREATE  VIEW `fi_salden_taeglich_view` AS select dayofmonth(`fi_buchungen_view`.`datum`) AS `tag`,month(`fi_buchungen_view`.`datum`) AS `monat`,year(`fi_buchungen_view`.`datum`) AS `jahr`,`fi_buchungen_view`.`konto` AS `konto`,sum(`fi_buchungen_view`.`betrag`) AS `saldo` from `fi_buchungen_view` group by dayofmonth(`fi_buchungen_view`.`datum`),month(`fi_buchungen_view`.`datum`),year(`fi_buchungen_view`.`datum`),`fi_buchungen_view`.`konto`;
+CREATE  VIEW `fi_ergebnisrechnungen_base` AS 
+select b.mandant_id as mandant_id
+, 'S' AS `buchungsart`
+, `b`.`buchungsnummer` AS `buchungsnummer`
+, `b`.`buchungstext` AS `buchungstext`
+, `b`.`sollkonto` AS `konto`
+, `k`.`bezeichnung` AS `kontenname`
+, `k`.`kontenart_id` AS `kontenart_id`
+, `b`.`betrag` AS `betrag`
+, `b`.`datum` AS `datum` 
+from (`fi_buchungen` `b` join `fi_konto` `k` on((`b`.`sollkonto` = `k`.`kontonummer`))) 
+union 
+select b.mandant_id as mandant_id
+, 'H' AS `buchungsart`
+, `b`.`buchungsnummer` AS `buchungsnummer`
+, `b`.`buchungstext` AS `buchungstext`
+, `b`.`habenkonto` AS `konto`
+, `k`.`bezeichnung` AS `kontenname`
+, `k`.`kontenart_id` AS `kontenart_id`
+, (`b`.`betrag` * -(1)) AS `betrag`
+, `b`.`datum` AS `datum` 
+from (`fi_buchungen` `b` join `fi_konto` `k` on((`b`.`habenkonto` = `k`.`kontonummer`))) 
+order by `buchungsnummer`,`buchungsart`;
 
 -- --------------------------------------------------------
 
---
--- Struktur des Views `fi_salden_view`
---
-DROP TABLE IF EXISTS `fi_salden_view`;
-
-CREATE  VIEW `fi_salden_view` AS select `fi_buchungen_view`.`konto` AS `konto`,sum(`fi_buchungen_view`.`betrag`) AS `saldo` from `fi_buchungen_view` group by `fi_buchungen_view`.`konto`;
 

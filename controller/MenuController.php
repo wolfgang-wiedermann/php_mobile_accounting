@@ -2,7 +2,12 @@
 
 # Controller für die Schnellbuchungs-Menüeinträge
 class MenuController {
+
+private $dispatcher, $mandant_id;
+
 function invoke($action, $request, $dispatcher) {
+    $this->dispatcher = $dispatcher;
+    $this->mandant_id = $dispatcher->getMandantId();
     switch($action) {
         case 'quick':
     	     return $this->getQuickMenu();
@@ -16,7 +21,7 @@ function invoke($action, $request, $dispatcher) {
 function getQuickMenu() {
     $db = getDbConnection();
     $lst = array();
-    $rs = mysqli_query($db, "select * from fi_quick_config order by config_knz");
+    $rs = mysqli_query($db, "select * from fi_quick_config where mandant_id = $this->mandant_id order by config_knz");
     while($obj = mysqli_fetch_object($rs)) {
         $lst[] = $obj;
     }
@@ -29,7 +34,7 @@ function getQuickMenuById($request) {
     $db = getDbConnection();
     $id = $request['id'];
     if(is_numeric($id)) {
-        $rs = mysqli_query($db, "select * from fi_quick_config where config_id = $id");
+        $rs = mysqli_query($db, "select * from fi_quick_config where mandant_id = $this->mandant_id and config_id = $id");
         if($obj = mysqli_fetch_object($rs)) {
             mysqli_close($db);
             return $obj;

@@ -2,11 +2,14 @@
 
 class BuchungController {
 
-private $dispatcher;
+private $dispatcher, $mandant_id;
 
 # Einsprungpunkt, hier übergibt das Framework
 function invoke($action, $request, $dispatcher) {
+
     $this->dispatcher = $dispatcher;
+    $this->mandant_id = $dispatcher->getMandantId();
+
     switch($action) {
         case "create":
             return $this->createBuchung($request);
@@ -27,7 +30,8 @@ function createBuchung($request) {
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
     if($this->isValidBuchung($input)) {
-        $sql = "insert into fi_buchungen (buchungstext, sollkonto, habenkonto, betrag, datum) values ('".$input['buchungstext']
+        $sql = "insert into fi_buchungen (mandant_id, buchungstext, sollkonto, habenkonto, betrag, datum) values ($this->mandant_id, '"
+	      .$input['buchungstext']
               ."', '".$input['sollkonto']."', '".$input['habenkonto']."', ".$input['betrag'].", '".$input['datum']."')";
         mysqli_query($db, $sql);
         mysqli_close($db);
@@ -41,7 +45,7 @@ function createBuchung($request) {
 function getTop25($request) {
     $db = getDbConnection();
     $top = array();
-    $rs = mysqli_query($db, "select * from fi_buchungen order by buchungsnummer desc limit 25");
+    $rs = mysqli_query($db, "select * from fi_buchungen where mandant_id = $this->mandant_id order by buchungsnummer desc limit 25");
     while($obj = mysqli_fetch_object($rs)) {
         $top[] = $obj;
     }
@@ -55,7 +59,7 @@ function getListByKonto($request) {
     # Nur verarbeiten, wenn konto eine Ziffernfolge ist, um SQL-Injections zu vermeiden
     if(is_numeric($kontonummer)) {
         $rs = mysqli_query($db, "SELECT buchungsnummer, buchungstext, gegenkonto, betrag, datum FROM `fi_buchungen_view` "
-                               ."where konto = '$kontonummer' order by buchungsnummer desc");
+                               ."where mandant_id = $this->mandant_id and konto = '$kontonummer' order by buchungsnummer desc");
         $result = array();
         $result_list = array();
         // Buchungen laden
@@ -64,7 +68,7 @@ function getListByKonto($request) {
         }
         $result['list'] = $result_list;
         // Saldo laden
-        $rs = mysqli_query($db, "select sum(betrag) as saldo from fi_buchungen_view where konto = '$kontonummer'");
+        $rs = mysqli_query($db, "select sum(betrag) as saldo from fi_buchungen_view where mandant_id = $this->mandant_id and konto = '$kontonummer'");
         if($obj = mysqli_fetch_object($rs)) {
             $result['saldo'] = $obj->saldo;
         } else {
@@ -99,6 +103,7 @@ function isValidBuchung($buchung) {
 # gueltigen Felder enthalten ist.
 function isInValidFields($key) {
    switch($key) {
+       case 'mandant_id':     return true;
        case 'buchungsnummer': return true;
        case 'buchungstext':   return true;
        case 'sollkonto':      return true;
@@ -114,6 +119,7 @@ function isInValidFields($key) {
 function isValidValueForField($key, $value) {
    switch($key) {
        case 'buchungsnummer':
+       case 'mandant_id':
        case 'betrag':
             return is_numeric($value);
        case 'sollkonto':

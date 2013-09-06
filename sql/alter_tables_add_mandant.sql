@@ -30,4 +30,5 @@ CREATE TABLE IF NOT EXISTS `fi_mandant` (
 --- Tabellenanpassungen: Mandant-Feld hinzufügen
 ---
 ALTER TABLE `fi_konto` ADD COLUMN `mandant_id` int(11);
-ALTER TABLE `fi_buchungen`ADD COLUMN `mandant_id` int(11);
+ALTER TABLE `fi_buchungen` ADD COLUMN `mandant_id` int(11);
+ALTER TABLE `fi_quick_config` ADD COLUMN `mandant_id` int(11);
