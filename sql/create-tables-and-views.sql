@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `fi_konto` (
   `kontonummer` varchar(20) NOT NULL,
   `bezeichnung` varchar(256) NOT NULL,
   `kontenart_id` int(11) NOT NULL,
-  PRIMARY KEY (`kontonummer`)
+  PRIMARY KEY (`mandant_id`, `kontonummer`)
 ) ENGINE=InnoDtruktur für Tabelle `fi_user`
 --
 
