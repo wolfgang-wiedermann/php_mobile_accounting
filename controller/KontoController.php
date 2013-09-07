@@ -19,6 +19,8 @@ function invoke($action, $request, $dispatcher) {
             return $this->createKonto($request);
         case "saldo":
             return $this->getSaldo($request['id']);
+        case "monatssalden":
+            return $this->getMonatsSalden($request['id']);
         default:
             throw new ErrorException("Unbekannte Action");
     }
@@ -36,6 +38,7 @@ function getKonto($id) {
     } else throw Exception("Kontonummer nicht numerisch");
 }
 
+# Ermittelt den aktuellen Saldo des Kontos
 function getSaldo($id) {
     if(is_numeric($id)) {
         $db = getDbConnection();
@@ -43,6 +46,43 @@ function getSaldo($id) {
         $erg = mysqli_fetch_object($rs);
         mysqli_close($db);
         return $erg->saldo;
+    } else throw Exception("Kontonummer nicht numerisch");
+}
+
+# Ermittelt die Monats-Salden des Kontos
+function getMonatsSalden($kontonummer) {
+    if(is_numeric($kontonummer)) {
+        $db = getDbConnection();
+        $rs = mysqli_query($db, "select kontenart_id from fi_konto where kontonummer = '$kontonummer'");
+        if($kontenart_id = mysqli_fetch_object($rs)->kontenart_id) {
+            mysqli_free_result($rs);
+            if($kontenart_id == 3 || $kontenart_id == 4) {
+                // Monatssummen, fuer Aufwands- und Ertragskonten
+                $rs = mysqli_query($db, "select grouping, saldo from "
+                      ."(select grouping, konto, sum(konto) as saldo from "
+                      ."(select (year(datum)*100)+month(datum) as grouping, konto, betrag "
+                      ."from fi_buchungen_view where mandant_id = $this->mandant_id) as x "
+                      ."group by grouping, konto) as y where y.konto = '$kontonummer'");
+            } else {
+                // Laufende Summen, fuer Bestandskonten
+                $rs = mysqli_query($db, "select x1.grouping, sum(x2.betrag) as saldo "
+                      ."from (select distinct (year(datum)*100)+month(datum) as grouping from fi_buchungen_view "
+                      ."where mandant_id = '$this->mandant_id') x1 "
+                      ."inner join (select (year(datum)*100+month(datum)) as grouping, konto, betrag "
+                      ."from fi_buchungen_view where mandant_id = '$this->mandant_id') x2 "
+                      ."on x2.grouping <= x1.grouping where konto = '$kontonummer' group by grouping, konto");
+            }
+            $result = array();
+            while($obj = mysqli_fetch_object($rs)) {
+                $result[] = $obj;
+            }
+            mysqli_free_result($rs);
+            mysqli_close($db);
+            return $result;
+        } else {
+            mysqli_close($db);
+            throw new Exception("Kontonummer unbekannt");
+        }
     } else throw Exception("Kontonummer nicht numerisch");
 }
 
