@@ -128,14 +128,10 @@ var kontenForm = {
                 code += '<canvas id="account_show_monatssalden_canvas" width="300px" height="300px"></canvas>';
                 $("#account_show_monatssalden").html(code);
                 d.init("account_show_monatssalden_canvas");
-
-                console.log(JSON.stringify(data));
-
                 var diagrammData = [];
                 for(var key in data) {
                     diagrammData.push(data[key].saldo);
                 }
-                console.log(JSON.stringify(diagrammData));
                 d.drawDiagramFor(diagrammData);
             }, 
             function(error) {
