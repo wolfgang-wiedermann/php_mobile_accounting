@@ -59,7 +59,7 @@ function getMonatsSalden($kontonummer) {
             if($kontenart_id == 3 || $kontenart_id == 4) {
                 // Monatssummen, fuer Aufwands- und Ertragskonten
                 $rs = mysqli_query($db, "select grouping, saldo from "
-                      ."(select grouping, konto, sum(konto) as saldo from "
+                      ."(select grouping, konto, sum(betrag) as saldo from "
                       ."(select (year(datum)*100)+month(datum) as grouping, konto, betrag "
                       ."from fi_buchungen_view where mandant_id = $this->mandant_id) as x "
                       ."group by grouping, konto) as y where y.konto = '$kontonummer'");
