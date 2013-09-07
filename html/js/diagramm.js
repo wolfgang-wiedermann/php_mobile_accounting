@@ -17,12 +17,12 @@ var d = {
         var max = d.util.getMax(values) - first;
         var min = d.util.getMin(values) - first;
         var absMax = d.util.getAbs(min)>d.util.getAbs(max)?d.util.getAbs(min):d.util.getAbs(max);
-        var stepSize = 400 / (values.length - 1);
+        var stepSize = 300 / (values.length - 1);
         var scaleFactor = 90 / absMax;
         var currentStep = 0;
         // Fläche neuzeichnen
-        d.drawRect(0, 0, 400, 200);
-        d.drawLine(0, 100, 400, 100);
+        d.drawRect(0, 0, 300, 200);
+        d.drawLine(0, 100, 300, 100);
         // Schrittweise zeichnen
         var ctx = d.context;
         ctx.fillStyle = "darkblue"; //"hsla(30,80%,60%,4.9)";

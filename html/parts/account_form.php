@@ -12,6 +12,8 @@
    <ul data-role="listview">
        <li><a href="#" id="account_form_operations_show_saldo" class="account_form_operations_buttons">
            Saldo anzeigen</a></li>
+       <li><a href="#" id="account_form_operations_show_salden" class="account_form_operations_buttons">
+           Monatssalden</a></li>
        <li><a href="#" id="account_form_operations_show_buchungen" class="account_form_operations_buttons">
            Buchungen anzeigen</a></li>
        <li><a href="#" id="account_form_operations_edit_account" class="account_form_operations_buttons">
@@ -41,6 +43,9 @@
 <!-- Buchungen anzeigen Maske -->
 <div id="account_show_bookings" class="content_form">
 </div>
+<!-- Manatssalden-Diagramm Maske -->
+<div id="account_show_monatssalden" class="content_form">
+</div>
 <!-- CODE -->
 <script type="text/javascript">
 var kontenForm = {
@@ -51,6 +56,7 @@ var kontenForm = {
     registerAccountFormOperationsEvents : function() {
         $(".account_form_operations_buttons").unbind("click");
         $("#account_form_operations_show_saldo").click(kontenForm.showSaldoHandler);
+        $("#account_form_operations_show_salden").click(kontenForm.showMonatsSaldenHandler);
         $("#account_form_operations_show_buchungen").click(kontenForm.showBuchungenHandler);
         $("#account_form_operations_edit_account").click(kontenForm.editAccountHandler);
     },
@@ -109,6 +115,32 @@ var kontenForm = {
                 alert(JSON.stringify(error));
             }
         ); 
+    },
+
+    showMonatsSaldenHandler : function() {
+        $(".content_form").hide();
+        $("#account_show_monatssalden").show();
+        $("#account_show_monatssalden").html("Monatssalden werden geladen");
+
+        doGET("konto", "monatssalden", {'id':kontenForm.selectedKontonummer},
+            function(data) {
+                var code = "<b>Monatssalden: "+kontenForm.selectedKontonummer+"</b><br/>";
+                code += '<canvas id="account_show_monatssalden_canvas" width="300px" height="300px"></canvas>';
+                $("#account_show_monatssalden").html(code);
+                d.init("account_show_monatssalden_canvas");
+
+                console.log(JSON.stringify(data));
+
+                var diagrammData = [];
+                for(var key in data) {
+                    diagrammData.push(data[key].saldo);
+                }
+                console.log(JSON.stringify(diagrammData));
+                d.drawDiagramFor(diagrammData);
+            }, 
+            function(error) {
+            }
+        );
     },
 
     showBuchungenHandler : function() {

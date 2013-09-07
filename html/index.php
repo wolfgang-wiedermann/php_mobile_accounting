@@ -11,6 +11,7 @@
     <!-- App-spezifische Code-Dateien -->
     <script src="./js/helper.js"></script>
     <script src="./js/model.js"></script>
+    <script src="./js/diagramm.js"></script>
 </head>
 <body>
 <div data-role="page" id="main_menu" class="page">
