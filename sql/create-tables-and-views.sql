@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `fi_buchungen` (
   `betrag` decimal(10,2) NOT NULL,
   `datum` date NOT NULL,
   PRIMARY KEY (`buchungsnummer`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=99 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Stellvertreter-Struktur des Views `fi_buchungen_view`
@@ -46,7 +46,8 @@ CREATE TABLE IF NOT EXISTS `fi_ergebnisrechnungen` (
 --
 DROP VIEW IF EXISTS `fi_ergebnisrechnungen_base`;
 CREATE TABLE IF NOT EXISTS `fi_ergebnisrechnungen_base` (
-`buchungsart` varchar(1)
+`mandant_id` int(11)
+,`buchungsart` varchar(1)
 ,`buchungsnummer` int(11)
 ,`buchungstext` varchar(256)
 ,`konto` varchar(20)
@@ -92,7 +93,10 @@ CREATE TABLE IF NOT EXISTS `fi_konto` (
   `bezeichnung` varchar(256) NOT NULL,
   `kontenart_id` int(11) NOT NULL,
   PRIMARY KEY (`mandant_id`, `kontonummer`)
-) ENGINE=InnoDtruktur für Tabelle `fi_user`
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Tabellenstruktur für Tabelle `fi_user`
 --
 
 DROP TABLE IF EXISTS `fi_user`;
@@ -101,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `fi_user` (
   `user_name` varchar(50) NOT NULL,
   `user_description` varchar(256) DEFAULT NULL,
   `mandant_id` int(11) NOT NULL,
-  `create_date` date NOT NULL default now(),
+  `create_date` date NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY (`user_name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -116,9 +120,8 @@ CREATE TABLE IF NOT EXISTS `fi_mandant` (
   `mandant_description` varchar(256) DEFAULT NULL,
   `primary_user_id` int(11) NOT NULL,
   `create_date` date NOT NULL,
-  PRIMARY KEY (`user_id`)
+  PRIMARY KEY (`mandant_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
- DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -136,60 +139,10 @@ CREATE TABLE IF NOT EXISTS `fi_quick_config` (
   `buchungstext` varchar(256) DEFAULT NULL,
   `betrag` decimal(12,2) DEFAULT NULL,
   PRIMARY KEY (`config_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
-
---
--- Daten für Tabelle `fi_quick_config`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
---
--- Stellvertreter-Struktur des Views `fi_salden_jaehrlich_view`
---
-DROP VIEW IF EXISTS `fi_salden_jaehrlich_view`;
-CREATE TABLE IF NOT EXISTS `fi_salden_jaehrlich_view` (
-`jahr` int(4)
-,`konto` varchar(20)
-,`saldo` decimal(33,2)
-);
--- --------------------------------------------------------
-
---
--- Stellvertreter-Struktur des Views `fi_salden_monatlich_view`
---
-DROP VIEW IF EXISTS `fi_salden_monatlich_view`;
-CREATE TABLE IF NOT EXISTS `fi_salden_monatlich_view` (
-`monat` int(2)
-,`jahr` int(4)
-,`konto` varchar(20)
-,`saldo` decimal(33,2)
-);
--- --------------------------------------------------------
-
---
--- Stellvertreter-Struktur des Views `fi_salden_taeglich_view`
---
-DROP VIEW IF EXISTS `fi_salden_taeglich_view`;
-CREATE TABLE IF NOT EXISTS `fi_salden_taeglich_view` (
-`tag` int(2)
-,`monat` int(2)
-,`jahr` int(4)
-,`konto` varchar(20)
-,`saldo` decimal(33,2)
-);
--- --------------------------------------------------------
-
---
--- Stellvertreter-Struktur des Views `fi_salden_view`
---
-DROP VIEW IF EXISTS `fi_salden_view`;
-CREATE TABLE IF NOT EXISTS `fi_salden_view` (
-`konto` varchar(20)
-,`saldo` decimal(33,2)
-);
--- --------------------------------------------------------
 
 --
 -- Struktur des Views `fi_buchungen_view`
