@@ -30,4 +30,9 @@ At next please go to the ./sql-Folder, it contains a file named create-tables-an
 
 Next step ist to configure your database connection. Therefore the file "Database.php" in the folder "lib" can be used. To prepare this please copy "Database.php.template" to "Database.php" and open it with your favorite Texteditor. Replace the placeholders for databasehost, database, username and password to enable access to the database you created one step before.
 
+At next you have to create a .htpasswd-File in the root-Directory of php_mobile_accounting. The best way to do this ist to use the htpasswd commandline tool which is automatically
+installed if you have a running apache2 server on a Linux machine. Go to the target directory and type htpasswd -c .htpasswd username and the file will be created automatically.
+
 At next please copy the whole content of the expanded ZIP-File to your target webspace and go to its ./html/index.php file with your browser. If everything is done right "php mobile accounting" should open.
+
+
