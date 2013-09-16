@@ -102,7 +102,6 @@ function getKonten() {
 function saveKonto($request) {
     $db = getDbConnection();
     $inputJSON = file_get_contents('php://input');
-error_log($inputJSON);
     $input = json_decode( $inputJSON, TRUE );
     if($this->isValidKonto($input)) { 
         $sql = "update fi_konto set bezeichnung = '".$input['bezeichnung']."', kontenart_id = ".$input['kontenart_id']
