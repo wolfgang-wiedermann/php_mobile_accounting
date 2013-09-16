@@ -93,13 +93,37 @@ var broker = {
     isConnected:true,
 
     /*
+    * Objekt, in dem die Handler für das Reconnected-Event registriert werden können
+    */
+    reconnectHandler: {
+        // Array zur Aufnahme der Handler
+        handlers: [],
+        
+        add:function(handler) {
+            broker.reconnectHandler.handlers.push(handler);
+        },
+
+        removeAll:function() {
+            broker.reconnectHandler.handlers = [];
+        },
+
+        call:function(eventSource) {
+            for(var key in broker.reconnectHandler.handlers) {
+                var handler = broker.reconnectHandler.handlers[key];
+                handler(eventSource);
+            }
+        },
+    },
+
+    /*
     * Setzt das isConnected-Flag auf true
     */
     setConnected:function() {
         var isReconnected = !broker.isConnected;
         broker.isConnected = true;
         if(isReconnected) {
-            // TODO: ggf. sowas wie ein reconnected-Event anbieten.
+            // Reconnected-Event auslösen
+            broker.reconnectHandler.call(broker);
         }
     },
         
@@ -116,10 +140,9 @@ var broker = {
     /*
     * Pruefen, ob wieder eine Verbindung besteht. Wenn nein, dann eine
     * erneute Pruefung in 30 Sek. initiieren.
+    * Die Datei ping.php muss in manifest.php explizit in der Section NETWORK stehen!
     */
     checkConnection:function() {
-        // TODO: hier noch statt dessen eine Datei ping.txt oder so, die ich im
-        //       Manifest dann explizit aus dem Caching ausnehmen kann...
         $.get("./ping.php").done( 
             function() {
                 broker.setConnected();
