@@ -102,12 +102,17 @@ function getKonten() {
 function saveKonto($request) {
     $db = getDbConnection();
     $inputJSON = file_get_contents('php://input');
-    $input = json_decode( $inputJSON, TRUE ); 
-    $sql = "update fi_konto set bezeichnung = '".$input['bezeichnung']."', kontenart_id = ".$input['kontenart_id']
-          ." where kontonummer = ".$input['kontonummer']." and mandant_id = ".$this->mandant_id;
-    mysqli_query($db, $sql);
-    mysqli_close($db);
-    return $void = array();
+error_log($inputJSON);
+    $input = json_decode( $inputJSON, TRUE );
+    if($this->isValidKonto($input)) { 
+        $sql = "update fi_konto set bezeichnung = '".$input['bezeichnung']."', kontenart_id = ".$input['kontenart_id']
+              ." where kontonummer = ".$input['kontonummer']." and mandant_id = ".$this->mandant_id;
+        mysqli_query($db, $sql);
+        mysqli_close($db);
+        return $void = array();
+    } else {
+        throw new Exception("Kontenobjekt enthaelt ungueltige Zeichen");
+    }
 }
 
 # legt das als JSON-Objekt übergebene Konto an
@@ -115,12 +120,45 @@ function createKonto($request) {
     $db = getDbConnection();
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
-    $sql = "insert into fi_konto (kontonummer, bezeichnung, kontenart_id, mandant_id) values ('"
-          .$input['kontonummer']."', '".$input['bezeichnung']
-          ."', ".$input['kontenart_id'].", ".$this->mandant_id.")";
-    mysqli_query($db, $sql);
-    mysqli_close($db);
-    return $void = array();
+    if($this->isValidKonto($input)) {
+        $sql = "insert into fi_konto (kontonummer, bezeichnung, kontenart_id, mandant_id) values ('"
+              .$input['kontonummer']."', '".$input['bezeichnung']
+              ."', ".$input['kontenart_id'].", ".$this->mandant_id.")";
+        mysqli_query($db, $sql);
+        mysqli_close($db);
+        return $void = array();
+    } else {
+        throw new Exception("Kontenobjekt enthaelt ungueltige Zeichen");
+    }
+}
+
+# Prüft, ob das angegebene Konto valide ist
+# (passende Typen, richtige Felder etc.)
+function isValidKonto($konto) {
+    if(count($konto) < 3 && count($konto) > 4) {
+        return false;
+    }
+    foreach($konto as $key => $value) {
+        if(!$this->isValidFieldAndValue($key, $value)) return false;
+    }
+    return true;
+}
+
+# Prüft ein einzelnes Feld und seinen Inhalt auf Gültigkeit
+function isValidFieldAndValue($key, $value) {
+    switch($key) {
+        case 'kontonummer': 
+        case 'kontenart_id':
+        case 'mandant_id': 
+            return is_numeric($value);
+        case 'bezeichnung':
+        case 'tostring':
+            $pattern = '/[\']/';
+            preg_match($pattern, $value, $results);
+            return count($results) == 0;
+        default:
+            return false;
+    }
 }
 
 }
