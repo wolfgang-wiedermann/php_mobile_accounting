@@ -4,7 +4,7 @@ function logX($what) {
     if(defined("DEBUG")) {
         echo "DEBUG: ".$what."\n";
     } else {
-#        syslog($what);
+#        error_log($what);
     }
 }
 
