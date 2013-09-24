@@ -11,12 +11,24 @@ var d = {
         d.context = d.canvas.getContext("2d");
     },
 
+    // Setzt die Breite des Canvas auf die Breite des Fensters,
+    // in dem er angezeigt wird.
+    // Gleichzeitig wird auch die Höhe auf 10/14 der Breite gesetzt
+    setToWindowWidth: function() {
+        if(!!d.canvas) {
+            d.canvas.width = window.innerWidth - 35;
+            d.canvas.height = (d.canvas.width * 10) / 14
+        } else throw Exception("Init noch nicht aufgerufen!");
+    },
+
+    // Ermittelt die Breite des zugrundeliegenden Canvas
     getWidth: function() {
         if(!!d.canvas) {
             return d.canvas.width;
         } else throw Exception("Init noch nicht aufgerufen!");
     },
 
+    // Ermittelt die Höhe des zugrundeliegenden Canvas
     getHeight: function() {
         if(!!d.canvas) {
             return d.canvas.height;
@@ -24,14 +36,14 @@ var d = {
     },
 
     // Diagramm zeichnen
-    drawDiagramFor: function(values) {
+    drawLineDiagramFor: function(values) {
         var first = values[0];
         var max = d.util.getMax(values) - first;
         var min = d.util.getMin(values) - first;
         var absMax = d.util.getAbs(min)>d.util.getAbs(max)?d.util.getAbs(min):d.util.getAbs(max);
         var stepSize = (d.getWidth()-10) / (values.length - 1);
-        var scaleFactor = (d.getHeight() / 2) / absMax;
-        var currentStep = 0;
+        var scaleFactor = ((d.getHeight()-20) / 2) / absMax;
+        var currentStep = 5;
         // Fläche neuzeichnen
         d.drawRect(0, 0, d.getWidth(), d.getHeight());
         d.drawLine(0, d.getHeight()/2, d.getWidth(), d.getHeight()/2);

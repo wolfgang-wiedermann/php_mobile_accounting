@@ -130,6 +130,7 @@ var kontenForm = {
                 code += '<canvas id="account_show_monatssalden_canvas" width="300px" height="300px"></canvas>';
                 $("#account_show_monatssalden").html(code);
                 d.init("account_show_monatssalden_canvas");
+                d.setToWindowWidth();
                 var diagrammData = [];
                 for(var key in data) {
                     diagrammData.push(data[key].saldo);
@@ -137,7 +138,7 @@ var kontenForm = {
                 }
                 table += "</table>";
                 $("#account_show_monatssalden_table").html(table);
-                d.drawDiagramFor(diagrammData);
+                d.drawLineDiagramFor(diagrammData);
             }, 
             function(error) {
             }
