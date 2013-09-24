@@ -13,6 +13,8 @@ function invoke($action, $request, $dispatcher) {
     	     return $this->getQuickMenu();
         case 'get':
              return $this->getQuickMenuById($request);
+        case 'add':
+             return $this->addQuickMenu($request);
         default:
             throw new ErrorException("Unbekannte Action");
     }
@@ -44,6 +46,69 @@ function getQuickMenuById($request) {
         }
     } else {
         throw new ErrorException("Die fi_quick_config id ist fehlerhaft");
+    }
+}
+
+function addQuickMenu($request) {
+    $db = getDbConnection();
+    $inputJSON = file_get_contents('php://input');
+    $input = json_decode( $inputJSON, TRUE );
+    if($this->isValidQuickMenu($input)) {
+        $sql = "insert into fi_quick_config(config_knz, sollkonto, habenkonto, buchungstext,";
+        $sql .= " mandant_id) values ('$input->config_knz', '$input->sollkonto', ";
+        $sql .= "'$input->habenkonto', '$input->buchungstext', $this->mandant_id)";
+
+        mysqli_query($db, $sql);
+        mysqli_close($db);
+        return "";
+    } else {
+        mysqli_close($db);
+        throw new ErrorException("Die uebergebene Schnellbuchungsvorlage ist nicht valide");
+    }
+}
+
+function removeQuickMenu($request) {
+    $db = getDbConnection();
+    $id = $request['id'];
+    if(is_numeric($id)) {
+        $sql =  "delete from fi_quick_config where mandant_id = $this->mandant_id";
+        $sql .= " and config_id = $id";
+
+        mysqli_query($db, $sql);
+        mysqli_close($db);
+    } else {
+        throw new ErrorException("Die id der Schnellbuchungsvorlage muss numerisch sein!");
+    }
+}
+
+# Prüft ob $menu ein valides QuickMenu-Objekt ist
+# Typen und Felder prüfen
+function isValidQuickMenu($menu) {
+    if(count($menu) < 4 && count($menu) > 7) {
+        return false;
+    } 
+    foreach($menu as $key => $value) {
+        if(!$this->isValidFieldAndValue($key, $value)) return false;
+    }
+    return true;
+}
+
+# Prüft ein einzelnes Feld uns seinen Inhalt auf Gültigkeit
+function isValidFieldAndValue($key, $value) {
+    switch($key) {
+        case 'config_id': 
+        case 'sollkonto':
+        case 'habenkonto': 
+        case 'betrag':
+        case 'mandant_id':
+            return is_numeric($value);
+        case 'buchungstext':
+        case 'config_knz':
+            $pattern = '/[\']/';
+            preg_match($pattern, $value, $results);
+            return count($results) == 0;
+        default: 
+            return false;
     }
 }
 }
