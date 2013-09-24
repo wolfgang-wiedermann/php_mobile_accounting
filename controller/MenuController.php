@@ -15,6 +15,8 @@ function invoke($action, $request, $dispatcher) {
              return $this->getQuickMenuById($request);
         case 'add':
              return $this->addQuickMenu($request);
+        case 'remove':
+             return $this->removeQuickMenu($request);
         default:
             throw new ErrorException("Unbekannte Action");
     }
