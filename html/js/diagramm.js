@@ -109,6 +109,7 @@ var d = {
         if(!!d.context) {
             d.context.fillStyle = "lightblue";
             d.context.lineStyle = 3;
+            d.context.lineWidth = 0.5;
             d.context.fillRect(x1, y1, x2 - x1, y2 - y1); 
         } else {
             alert('Fehler: d ist nicht initialisiert');
@@ -120,7 +121,7 @@ var d = {
         if(!!d.context) {
             var ctx = d.context;
             ctx.strokeStyle = "hsla(30,80%,60%,0.9)";
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.lineTo(x1, y1);
             ctx.stroke();

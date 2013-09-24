@@ -124,14 +124,19 @@ var kontenForm = {
 
         doGET("konto", "monatssalden", {'id':kontenForm.selectedKontonummer},
             function(data) {
+                var table = "<table>";
                 var code = "<b>Monatssalden: "+kontenForm.selectedKontonummer+"</b><br/>";
+                code += '<div id="account_show_monatssalden_table"></div>';
                 code += '<canvas id="account_show_monatssalden_canvas" width="300px" height="300px"></canvas>';
                 $("#account_show_monatssalden").html(code);
                 d.init("account_show_monatssalden_canvas");
                 var diagrammData = [];
                 for(var key in data) {
                     diagrammData.push(data[key].saldo);
+                    table += "<tr><td>"+data[key].grouping+"</td><td>"+data[key].saldo+"</td></tr>";
                 }
+                table += "</table>";
+                $("#account_show_monatssalden_table").html(table);
                 d.drawDiagramFor(diagrammData);
             }, 
             function(error) {
