@@ -11,38 +11,50 @@ var d = {
         d.context = d.canvas.getContext("2d");
     },
 
+    getWidth: function() {
+        if(!!d.canvas) {
+            return d.canvas.width;
+        } else throw Exception("Init noch nicht aufgerufen!");
+    },
+
+    getHeight: function() {
+        if(!!d.canvas) {
+            return d.canvas.height;
+        } else throw Exception("Init noch nicht aufgerufen!");
+    },
+
     // Diagramm zeichnen
     drawDiagramFor: function(values) {
         var first = values[0];
         var max = d.util.getMax(values) - first;
         var min = d.util.getMin(values) - first;
         var absMax = d.util.getAbs(min)>d.util.getAbs(max)?d.util.getAbs(min):d.util.getAbs(max);
-        var stepSize = 300 / (values.length - 1);
-        var scaleFactor = 90 / absMax;
+        var stepSize = (d.getWidth()-10) / (values.length - 1);
+        var scaleFactor = (d.getHeight() / 2) / absMax;
         var currentStep = 0;
         // Fläche neuzeichnen
-        d.drawRect(0, 0, 300, 200);
-        d.drawLine(0, 100, 300, 100);
+        d.drawRect(0, 0, d.getWidth(), d.getHeight());
+        d.drawLine(0, d.getHeight()/2, d.getWidth(), d.getHeight()/2);
         // Schrittweise zeichnen
         var ctx = d.context;
         ctx.fillStyle = "darkblue"; //"hsla(30,80%,60%,4.9)";
         ctx.strokeStyle = "darkblue"; //"hsla(30,80%,60%,4.9)";
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.lineTo(0, 100);
+        ctx.lineTo(0, d.getHeight()/2);
         for(var idx in values) {
             var val = (values[idx] - first) * scaleFactor;
-            ctx.lineTo(currentStep, 100 - val);
-            ctx.fillRect (currentStep - 5, 100 - val - 5, 10, 10);
+            ctx.lineTo(currentStep, (d.getHeight()/2) - val);
+            ctx.fillRect (currentStep - 5, (d.getHeight()/2) - val - 5, 10, 10);
             ctx.stroke();
             currentStep += stepSize;
             //console.log("Value["+idx+"]="+val);
             //console.log("Y="+currentStep);
         }
         ctx.stroke();
-        ctx.lineTo(400, 100);
-        ctx.closePath();
-        ctx.stroke();
+        //ctx.lineTo(400, (d.getHeight()/2));
+        //ctx.closePath();
+        //ctx.stroke();
         // Debug-Ausgabe
         //console.log("Min:"+min+" Max:"+max);
         //console.log("Schritt:"+stepSize);

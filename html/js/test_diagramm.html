@@ -1,0 +1,17 @@
+<html>
+<head>
+<script src="./jquery-2.0.2.min.js"></script>
+<script src="./diagramm.js"></script>
+</head>
+<body>
+<h1>Diagramm-Test</h1>
+<script type="text/javascript">
+$(document).ready(function() {
+    d.init("dcanvas");
+    d.drawDiagramFor([1, 3, 2, 4, 3, 5]);
+});
+</script>
+<canvas id="dcanvas" width="400" height="400">
+</canvas>
+</body>
+</html>
