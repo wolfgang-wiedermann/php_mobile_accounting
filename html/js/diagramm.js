@@ -60,17 +60,8 @@ var d = {
             ctx.fillRect (currentStep - 5, (d.getHeight()/2) - val - 5, 10, 10);
             ctx.stroke();
             currentStep += stepSize;
-            //console.log("Value["+idx+"]="+val);
-            //console.log("Y="+currentStep);
         }
         ctx.stroke();
-        //ctx.lineTo(400, (d.getHeight()/2));
-        //ctx.closePath();
-        //ctx.stroke();
-        // Debug-Ausgabe
-        //console.log("Min:"+min+" Max:"+max);
-        //console.log("Schritt:"+stepSize);
-        //console.log("Skalierung:"+scaleFactor);
     },
 
     // Begin-Utilities
