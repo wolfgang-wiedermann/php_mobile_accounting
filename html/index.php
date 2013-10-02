@@ -25,6 +25,7 @@
         <?php include("./parts/account_form.php"); ?>
         <?php include("./parts/buchung_form.php"); ?>
         <?php include("./parts/ergebnis_form.php"); ?>
+        <?php include("./parts/admin_form.php"); ?>
     </div>
     <div data-role="footer" data-position="fixed" data-theme="b"><center>&copy; 2013 by Wolfgang Wiedermann</center></div>
 </div>
@@ -43,6 +44,7 @@ $(document).ready(function() {
     $("#menu_konten").click(gotoKonten);
     $("#menu_buchen").click(gotoBuchen);
     $("#menu_auswerten").click(gotoAuswerten);
+    $("#menu_admin_quick").click(gotoQuickAdmin);
     $("#menu_schnellbuchungen_divider").click(menu.loadQuickMenuItems);
 });
 
@@ -103,6 +105,16 @@ function gotoAuswerten() {
     $("#header_home_button").show();
     $("#ergebnis_form").show();
     ergebnisForm.registerErgebnisFormEvents();
+}
+
+/*
+* Handler fuer das ...
+*/
+function gotoQuickAdmin() {
+    $(".content_form").hide();
+    $("#header_home_button").show();
+    $("#admin_quick_select_view").show();
+    adminForm.registerQuickAdminFormEvents();
 }
 </script>
 </body>

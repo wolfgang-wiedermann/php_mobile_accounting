@@ -41,6 +41,20 @@ function Buchung(data) {
 }
 
 /*
+* Modell-Typ für Quick-Buchung
+*/
+function Quick(data) {
+   var self = this;
+   self.config_id = ko.observable(data.config_id);
+   self.config_knz = ko.observable(data.config_knz);
+   self.buchungstext = ko.observable(data.buchungstext);
+   self.sollkonto = ko.observable(data.sollkonto);
+   self.habenkonto = ko.observable(data.habenkonto);
+   self.betrag = ko.observable(data.betrag);
+   self.mandant_id = ko.observable(data.mandant_id);
+}
+
+/*
 * Konstruktor-Funktion für das Knockout.js Model
 */
 function AppViewModel() {
@@ -54,6 +68,8 @@ function AppViewModel() {
     m.privat.initKontenarten(self);
     // Konten
     m.privat.initKonten(self);  
+    // Schnellbuchungen
+    m.privat.initQuick(self);
     // Buchungen
     self.saveBuchung = function(tmpModel) {
         buchungenForm.create(ko.toJSON(tmpModel.buchung()));
@@ -74,7 +90,7 @@ m.privat.initKontenarten = function(self) {
     // Kontenarten
     self.kontenarten = ko.observableArray([]);
     self.refreshKontenarten = function() {
-        doGET("kontenart", "list", [], 
+        doGETwithCache("kontenart", "list", [], 
             function(data) {
                 self.kontenarten($.map(data, function(item) {return new Kontenart(item); }));
             }, 
@@ -146,4 +162,26 @@ m.privat.initKonten = function(self) {
     self.createKonto = function(tmpModel) {
         kontenForm.create(ko.toJSON(tmpModel.konto()));
     }
+};
+
+m.privat.initQuick = function(self) {
+    self.quickentries = ko.observableArray([]);
+    self.selectedquick = new Quick({config_id:0, config_knz:'', sollkonto:'', habenkonto:'', buchungstext:'', betrag:0, mandant_id:0});
+    self.refreshQuick = function () {
+        doGETwithCache("menu", "quick", [],
+            function(data) {
+                self.quickentries($.map(data, function(item) {return new Quick(item) }));
+            },
+            function(error) {
+                alert("Fehler aufgetreten: "+error);
+            }
+        );
+    };
+
+    self.onQuickClick = function() {
+        alert('onQuickClicked');
+    };
+    handlers.refreshQuick = self.refreshQuick;
+    self.refreshQuick();
+
 };

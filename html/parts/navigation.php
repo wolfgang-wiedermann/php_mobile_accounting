@@ -6,10 +6,11 @@
             <li><a href="#" id="menu_buchen">Buchen</a></li>
             <li><a href="#" id="menu_konten">Konten</a></li>
             <li><a href="#" id="menu_auswerten">Auswertungen</a></li>
-            <!--
             <li data-role="list-divider">Administration</li>
-            <li><a href="#" id="menu_config">Einstellungen</a></li>
-            -->
+            <li><a href="#" id="menu_admin_quick">Schnellbuchungen verw.</a></li>
+            <!--
+            <li><a href="#" id="admin_reports">Auswertungen verw.</a></li>
+             -->
             <li data-role="list-divider" id="menu_schnellbuchungen_divider">Schnellbuchungen</li>
             <li class="menu_quick_item"><a href="#" class="menu_quick_item">Tanken</a></li>
         </ul>
