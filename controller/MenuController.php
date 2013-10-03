@@ -55,17 +55,17 @@ function addQuickMenu($request) {
     $db = getDbConnection();
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
-    if($this->isValidQuickMenu($input)) {
+    if($this->isValidQuickMenu($input)) { 
         $sql = "insert into fi_quick_config(config_knz, sollkonto, habenkonto, buchungstext,";
-        $sql .= " mandant_id) values ('$input->config_knz', '$input->sollkonto', ";
-        $sql .= "'$input->habenkonto', '$input->buchungstext', $this->mandant_id)";
+        $sql .= " mandant_id) values ('".$input['config_knz']."', '".$input['sollkonto']."', ";
+        $sql .= "'".$input['habenkonto']."', '".$input['buchungstext']."', ".$this->mandant_id.")";
 
         mysqli_query($db, $sql);
         mysqli_close($db);
         return "";
     } else {
         mysqli_close($db);
-        throw new ErrorException("Die uebergebene Schnellbuchungsvorlage ist nicht valide");
+        throw new ErrorException("Die uebergebene Schnellbuchungsvorlage ist nicht valide: ".$inputJSON);
     }
 }
 
@@ -85,10 +85,10 @@ function removeQuickMenu($request) {
 
 # Prüft ob $menu ein valides QuickMenu-Objekt ist
 # Typen und Felder prüfen
-function isValidQuickMenu($menu) {
+function isValidQuickMenu($menu) {/*
     if(count($menu) < 4 && count($menu) > 7) {
         return false;
-    } 
+    }*/ 
     foreach($menu as $key => $value) {
         if(!$this->isValidFieldAndValue($key, $value)) return false;
     }
@@ -103,13 +103,13 @@ function isValidFieldAndValue($key, $value) {
         case 'habenkonto': 
         case 'betrag':
         case 'mandant_id':
-            return is_numeric($value);
+            return $value == null || is_numeric($value);
         case 'buchungstext':
         case 'config_knz':
             $pattern = '/[\']/';
             preg_match($pattern, $value, $results);
             return count($results) == 0;
-        default: 
+        default: // throw new ErrorException("Key: $key, Value: $value");
             return false;
     }
 }

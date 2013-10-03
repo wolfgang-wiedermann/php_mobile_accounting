@@ -178,10 +178,37 @@ m.privat.initQuick = function(self) {
         );
     };
 
-    self.onQuickClick = function() {
-        alert('onQuickClicked');
+    /*
+    * Event-Handler für Klicks auf die Quick-Einträge
+    * (zum Öffnen der Bearbeiten-Maske)
+    */
+    self.onQuickClick = function(quick) {
+        self.selectedquick.config_id(quick.config_id());
+        self.selectedquick.config_knz(quick.config_knz());
+        self.selectedquick.sollkonto(quick.sollkonto());
+        self.selectedquick.habenkonto(quick.habenkonto());
+        self.selectedquick.buchungstext(quick.buchungstext());
+        self.selectedquick.betrag(quick.betrag());
+        self.selectedquick.mandant_id(quick.mandant_id());
+
+	adminForm.loadAdminQuickFormView(quick);
     };
     handlers.refreshQuick = self.refreshQuick;
     self.refreshQuick();
 
+    /*
+    * Event-Handler für Klicks auf den Speichern-Button
+    * in der Bearbeiten-Maske des aktuellen Quick-Eintrags
+    */
+    self.saveSelectedQuick = function() {
+        adminForm.saveAdminQuickTemplate(self.selectedquick);
+    };
+
+    /*
+    * Event-Handler für Klicks auf den Löschen-Button
+    * in der Bearbeiten-Maske des aktuellen Quick-Eintrags
+    */
+    self.deleteSelectedQuick = function() {
+        adminForm.deleteAdminQuickTemplate(self.selectedquick);
+    }
 };

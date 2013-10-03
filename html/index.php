@@ -114,7 +114,10 @@ function gotoQuickAdmin() {
     $(".content_form").hide();
     $("#header_home_button").show();
     $("#admin_quick_select_view").show();
-    adminForm.registerQuickAdminFormEvents();
+
+// in diesem Fall erstmal unnötig, da die Events für Quick 
+// via knockout.js im Model verbaut sind
+//    adminForm.registerQuickAdminFormEvents();
 }
 </script>
 </body>
