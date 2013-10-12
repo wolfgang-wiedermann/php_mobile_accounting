@@ -85,10 +85,10 @@ function removeQuickMenu($request) {
 
 # Prüft ob $menu ein valides QuickMenu-Objekt ist
 # Typen und Felder prüfen
-function isValidQuickMenu($menu) {/*
+function isValidQuickMenu($menu) {
     if(count($menu) < 4 && count($menu) > 7) {
         return false;
-    }*/ 
+    } 
     foreach($menu as $key => $value) {
         if(!$this->isValidFieldAndValue($key, $value)) return false;
     }
