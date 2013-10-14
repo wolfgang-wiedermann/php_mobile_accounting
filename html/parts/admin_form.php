@@ -1,7 +1,7 @@
 <?php defined("MAIN_PAGE") or die("Fehlende Berechtigung, Seite darf nur aus index.php geladen werden"); ?>
 <!-- Auswahl der Quick-Eintraege zur Administration -->
 <div id="admin_quick_select_view" class="content_form">
-<ul data-bind="foreach: quickentries"
+<ul data-bind="foreach: quickentries, jqmRefreshList: quickentries"
     data-role="listview" data-filter="true" data-filter-placeholder="Search Item..." data-theme="d">
 <li><a href="#" data-bind="text: config_knz, attr: {'data-key': config_id}, click: $root.onQuickClick"></a></li>
 </ul>
