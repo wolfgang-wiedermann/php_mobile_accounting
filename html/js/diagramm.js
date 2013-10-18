@@ -74,7 +74,7 @@ var d = {
             if(max === 'null') {
                 max = val;
             }
-            if(max < val) {
+            if((max*1) < (val*1)) {
                 max = val;
             }
         }
@@ -89,7 +89,7 @@ var d = {
             if(min === 'null') {
                 min = val;
             }
-            if(min > val) {
+            if((min*1) > (val*1)) {
                 min = val;
             }
         }
