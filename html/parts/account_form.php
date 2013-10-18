@@ -1,7 +1,7 @@
 <?php defined("MAIN_PAGE") or die("Fehlende Berechtigung, Seite darf nur aus index.php geladen werden"); ?>
 <!-- Auswahlliste fuer Konten -->
 <div id="account_form" class="content_form">
-    <ul data-role="listview" data-filter="true" data-filter-placeholder="Search account" data-bind="foreach: konten">
+    <ul data-role="listview" data-filter="true" data-filter-placeholder="Search account" data-bind="foreach: konten, jqmRefreshList: konten">
         <li><a href="#" data-bind="text: tostring, attr: {'data-key': kontonummer}" class="konto_auswahl_button"></a></li>
     </ul>
     <br/>
