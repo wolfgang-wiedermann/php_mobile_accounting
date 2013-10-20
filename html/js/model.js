@@ -166,7 +166,8 @@ m.privat.initKonten = function(self) {
 
 m.privat.initQuick = function(self) {
     self.quickentries = ko.observableArray([]);
-    self.selectedquick = new Quick({config_id:0, config_knz:'', sollkonto:'', habenkonto:'', buchungstext:'', betrag:0, mandant_id:0});
+    self.selectedquick = new Quick({config_id:0, config_knz:'', sollkonto:'', habenkonto:''
+                                    , buchungstext:'', betrag:0, mandant_id:0});
     self.refreshQuick = function () {
         doGETwithCache("menu", "quick", [],
             function(data) {

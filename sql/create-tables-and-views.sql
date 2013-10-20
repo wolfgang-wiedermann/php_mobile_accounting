@@ -211,7 +211,8 @@ select b.mandant_id as mandant_id
 , `k`.`kontenart_id` AS `kontenart_id`
 , `b`.`betrag` AS `betrag`
 , `b`.`datum` AS `datum` 
-from (`fi_buchungen` `b` join `fi_konto` `k` on((`b`.`sollkonto` = `k`.`kontonummer`))) 
+from (`fi_buchungen` `b` join `fi_konto` `k` 
+  on((`b`.`sollkonto` = `k`.`kontonummer`) and (b.mandant_id = k.mandant_id))) 
 union 
 select b.mandant_id as mandant_id
 , 'H' AS `buchungsart`
@@ -222,7 +223,8 @@ select b.mandant_id as mandant_id
 , `k`.`kontenart_id` AS `kontenart_id`
 , (`b`.`betrag` * -(1)) AS `betrag`
 , `b`.`datum` AS `datum` 
-from (`fi_buchungen` `b` join `fi_konto` `k` on((`b`.`habenkonto` = `k`.`kontonummer`))) 
+from (`fi_buchungen` `b` join `fi_konto` `k` 
+  on((`b`.`habenkonto` = `k`.`kontonummer`) and (b.mandant_id = k.mandant_id))) 
 order by `buchungsnummer`,`buchungsart`;
 
 -- --------------------------------------------------------
