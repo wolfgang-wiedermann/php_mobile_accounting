@@ -9,6 +9,7 @@
     <script src="./js/jquery.mobile-1.3.1.js"></script>
     <script src="./js/knockout-2.2.1.js"></script>
     <!-- App-spezifische Code-Dateien -->
+    <script src="./js/knockout-ext.js"></script>
     <script src="./js/helper.js"></script>
     <script src="./js/model.js"></script>
     <script src="./js/diagramm.js"></script>

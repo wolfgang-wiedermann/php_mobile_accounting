@@ -3,7 +3,7 @@
 ?>
 CACHE MANIFEST
 # Version im Kommentar ändern um einen Update des Apps zu erzwingen
-# App-Version: 0.0.59
+# App-Version: 0.0.60
 # -------------------
 
 CACHE:
@@ -20,6 +20,7 @@ js/jquery-2.0.2.min.js
 js/jquery-2.0.2.min.map
 js/jquery.mobile-1.3.1.js
 js/knockout-2.2.1.js
+js/knockout-ext.js
 js/model.js
 
 NETWORK:
