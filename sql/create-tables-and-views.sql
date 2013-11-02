@@ -189,8 +189,8 @@ select `mandant_id` AS `mandant_id`
 , `base`.`kontenart_id` AS `kontenart_id`
 , sum(`base`.`betrag`) AS `saldo` 
 from `fi_ergebnisrechnungen_base` `base` 
-group by `base`.`konto`,`base`.`kontenname`,`base`.`kontenart_id` 
-order by `base`.`konto`;
+group by `base`.`mandant_id`, `base`.`konto`,`base`.`kontenname`,`base`.`kontenart_id` 
+order by `base`.`mandant_id`, `base`.`konto`;
 
 -- --------------------------------------------------------
 
