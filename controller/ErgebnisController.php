@@ -17,6 +17,8 @@ function invoke($action, $request, $dispatcher) {
             return $this->getGuV();
         case "guv_month":
             return $this->getGuVMonth();
+        case "verlauf":
+            return $this->getVerlauf($request);
         default:
             $message = array();
             $message['message'] = "Unbekannte Action";
@@ -100,6 +102,38 @@ function getGuVMonth() {
     }
     $result['ergebnisse'] = $ergebnisse;
     mysqli_close($db);
+    return $result;
+}
+
+# Verlauf Aufwand, Ertrag, Aktiva und Passiva in Monatsraster
+function getVerlauf($request) {
+    $db = getDbConnection();
+    $result = array();
+
+    if(!array_key_exists('id', $request)) 
+        return $result;
+
+    $kontenart_id = $request['id'];
+    if(is_numeric($kontenart_id)) {
+
+        $db = getDbConnection();
+
+        if($kontenart_id == 4 || $kontenart_id == 1)
+            $sql =  "select (year(datum)*100)+month(datum) as grouping, sum(betrag)*-1 as saldo ";
+        else
+            $sql =  "select (year(datum)*100)+month(datum) as grouping, sum(betrag) as saldo ";
+        $sql .= "from fi_ergebnisrechnungen_base ";
+        $sql .= "where kontenart_id = $kontenart_id ";
+        $sql .= "group by kontenart_id, year(datum), month(datum) ";
+        $sql .= "order by grouping";
+
+        $rs = mysqli_query($db, $sql);
+        while($erg = mysqli_fetch_object($rs)) {
+            $result[] = $erg;
+        }
+
+        mysqli_close($db);
+    } 
     return $result;
 }
 
