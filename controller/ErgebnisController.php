@@ -125,7 +125,7 @@ function getVerlauf($request) {
         else
             $sql =  "select (year(datum)*100)+month(datum) as grouping, sum(betrag) as saldo ";
         $sql .= "from fi_ergebnisrechnungen_base ";
-        $sql .= "where kontenart_id = $kontenart_id ";
+        $sql .= "where kontenart_id = $kontenart_id and mandant_id = $this->mandant_id ";
         $sql .= "group by kontenart_id, year(datum), month(datum) ";
         $sql .= "order by grouping";
 
@@ -148,7 +148,7 @@ function getVerlaufGewinn() {
 
     $sql =  "select (year(datum)*100)+month(datum) as grouping, sum(betrag*-1) as saldo ";
     $sql .= "from fi_ergebnisrechnungen_base ";
-    $sql .= "where kontenart_id in (3, 4) ";
+    $sql .= "where kontenart_id in (3, 4) and mandant_id = $this->mandant_id ";
     $sql .= "group by year(datum), month(datum) ";
     $sql .= "order by grouping";
 
