@@ -2,11 +2,14 @@
 <!-- Funktionsauswahl - Buchungen -->
 <div id="ergebnis_form" class="content_form">
 <ul data-role="listview">
+    <li data-role="list-divider">Standard-Auswertungen</li>
     <li><a href="#" id="ergebnis_action_bilanz" class="ergebnis_form_item">Bilanz</a></li>
     <li><a href="#" id="ergebnis_action_guv" class="ergebnis_form_item">Gewinn und Verlust</a></li>
     <li><a href="#" id="ergebnis_action_guv_month" class="ergebnis_form_item">GuV aktueller Monat</a></li>
-    <li><a href="#" id="ergebnis_action_verlauf_aufwand" class="ergebnis_form_item">Aufwandsverlauf (Monate)</a></li>
-    <li><a href="#" id="ergebnis_action_verlauf_ertrag" class="ergebnis_form_item">Ertragsverlauf (Monate)</a></li>
+    <li data-role="list-divider">Verlaufs-Auswertungen</li>
+    <li><a href="#" id="ergebnis_action_verlauf_aufwand" class="ergebnis_form_item">Aufwand (Monate)</a></li>
+    <li><a href="#" id="ergebnis_action_verlauf_ertrag" class="ergebnis_form_item">Ertrag (Monate)</a></li>
+    <li><a href="#" id="ergebnis_action_verlauf_gewinn" class="ergebnis_form_item">Gewinn (Monate)</a></li>
 </ul>
 </div>
 <!-- Bilanz -->
@@ -29,6 +32,7 @@ registerErgebnisFormEvents : function() {
     $("#ergebnis_action_guv_month").click(ergebnisForm.showGuVMonth);
     $("#ergebnis_action_verlauf_aufwand").click(ergebnisForm.showVerlaufAufwand);
     $("#ergebnis_action_verlauf_ertrag").click(ergebnisForm.showVerlaufErtrag);
+    $("#ergebnis_action_verlauf_gewinn").click(ergebnisForm.showVerlaufGewinn);
 },    
 
 showBilanz : function() {
@@ -59,6 +63,12 @@ showVerlaufErtrag : function() {
     $(".content_form").hide();
     $("#ergebnis_form_verlauf").show();
     ergebnisForm.loadVerlauf(4);
+},
+
+showVerlaufGewinn : function() {
+    $(".content_form").hide();
+    $("#ergebnis_form_verlauf").show();
+    ergebnisForm.loadVerlauf(-1);
 },
 
 loadBilanz : function() {
@@ -146,10 +156,15 @@ loadVerlauf : function(kontenart_id) {
         $("#account_show_monatssalden").html("Monatssalden werden geladen");
 
         var kontenart_txt = '';
+        var action = 'verlauf';
         if(kontenart_id === 4) kontenart_txt = 'Ertrag';
         if(kontenart_id === 3) kontenart_txt = 'Aufwand';
+        if(kontenart_id === -1) {
+            kontenart_txt = 'Gewinn';
+            action = 'verlauf_gewinn';
+        }
 
-        doGET("ergebnis", "verlauf", {'id':kontenart_id},
+        doGET("ergebnis", action, {'id':kontenart_id},
             function(data) {
                 var table = "<table>";
                 var code = "<b>Verlauf in Monaten: Kontenart: "+kontenart_txt+"</b><br/>";

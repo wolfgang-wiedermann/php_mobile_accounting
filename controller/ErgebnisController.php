@@ -19,6 +19,8 @@ function invoke($action, $request, $dispatcher) {
             return $this->getGuVMonth();
         case "verlauf":
             return $this->getVerlauf($request);
+        case "verlauf_gewinn":
+            return $this->getVerlaufGewinn();
         default:
             $message = array();
             $message['message'] = "Unbekannte Action";
@@ -134,6 +136,29 @@ function getVerlauf($request) {
 
         mysqli_close($db);
     } 
+    return $result;
+}
+
+# Verlauf des Gewinns in Monatsraster
+function getVerlaufGewinn() {
+    $db = getDbConnection();
+    $result = array();
+
+    $db = getDbConnection();
+
+    $sql =  "select (year(datum)*100)+month(datum) as grouping, sum(betrag*-1) as saldo ";
+    $sql .= "from fi_ergebnisrechnungen_base ";
+    $sql .= "where kontenart_id in (3, 4) ";
+    $sql .= "group by year(datum), month(datum) ";
+    $sql .= "order by grouping";
+
+    $rs = mysqli_query($db, $sql);
+    while($erg = mysqli_fetch_object($rs)) {
+        $result[] = $erg;
+    }
+
+    mysqli_close($db);
+    
     return $result;
 }
 
