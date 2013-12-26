@@ -31,7 +31,7 @@ $disp = new Dispatcher();
 try {
     $user = $_SERVER['REMOTE_USER'];
     $disp->setRemoteUser($user);
-} catch(ErrorException $ex) { 
+} catch(ErrorException $ex) {
     throw new Exception("Unauthenticated");
     //$disp->setRemoteUser(null);
 }
