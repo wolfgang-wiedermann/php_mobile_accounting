@@ -30,9 +30,10 @@ function createBuchung($request) {
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
     if($this->isValidBuchung($input)) {
-        $sql = "insert into fi_buchungen (mandant_id, buchungstext, sollkonto, habenkonto, betrag, datum) values ($this->mandant_id, '"
-	      .$input['buchungstext']
-              ."', '".$input['sollkonto']."', '".$input['habenkonto']."', ".$input['betrag'].", '".$input['datum']."')";
+        $sql = "insert into fi_buchungen (mandant_id, buchungstext, sollkonto, habenkonto, betrag, datum)"
+              ." values ($this->mandant_id, '".$input['buchungstext']
+              ."', '".$input['sollkonto']."', '".$input['habenkonto']."', ".$input['betrag'].", '"
+              .$input['datum']."')";
         mysqli_query($db, $sql);
         mysqli_close($db);
         return $void = array();
@@ -45,7 +46,8 @@ function createBuchung($request) {
 function getTop25($request) {
     $db = getDbConnection();
     $top = array();
-    $rs = mysqli_query($db, "select * from fi_buchungen where mandant_id = $this->mandant_id order by buchungsnummer desc limit 25");
+    $rs = mysqli_query($db, "select * from fi_buchungen where mandant_id = $this->mandant_id "
+                           ."order by buchungsnummer desc limit 25");
     while($obj = mysqli_fetch_object($rs)) {
         $top[] = $obj;
     }
@@ -58,8 +60,10 @@ function getListByKonto($request) {
     $kontonummer = $request['konto'];
     # Nur verarbeiten, wenn konto eine Ziffernfolge ist, um SQL-Injections zu vermeiden
     if(is_numeric($kontonummer)) {
-        $rs = mysqli_query($db, "SELECT buchungsnummer, buchungstext, gegenkonto, betrag, datum FROM `fi_buchungen_view` "
-                               ."where mandant_id = $this->mandant_id and konto = '$kontonummer' order by buchungsnummer desc");
+        $rs = mysqli_query($db, "SELECT buchungsnummer, buchungstext, gegenkonto, betrag, datum "
+                               ."FROM `fi_buchungen_view` "
+                               ."where mandant_id = $this->mandant_id and konto = '$kontonummer' "
+                               ."order by buchungsnummer desc");
         $result = array();
         $result_list = array();
         // Buchungen laden
@@ -68,7 +72,8 @@ function getListByKonto($request) {
         }
         $result['list'] = $result_list;
         // Saldo laden
-        $rs = mysqli_query($db, "select sum(betrag) as saldo from fi_buchungen_view where mandant_id = $this->mandant_id and konto = '$kontonummer'");
+        $rs = mysqli_query($db, "select sum(betrag) as saldo from fi_buchungen_view "
+                               ."where mandant_id = $this->mandant_id and konto = '$kontonummer'");
         if($obj = mysqli_fetch_object($rs)) {
             $result['saldo'] = $obj->saldo;
         } else {
