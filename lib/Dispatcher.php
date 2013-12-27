@@ -4,7 +4,6 @@
 # zur Weiterleitung der Anfragen an die passenden
 # Controller-Klassen.
 class Dispatcher {
-
 # Attribute
 private $request, $user, $mandant;
 
@@ -15,7 +14,13 @@ function invoke($request) {
     if($this->isValidControllerName()) {
         $controller = $this->getControllerObject();
         $action = $this->getActionName();
-        return json_encode($controller->invoke($action, $this->request, $this));
+        if(array_key_exists ("outputtype" , $request) 
+           && $request["outputtype"] == 'csv'
+           && $request["controller"] == 'ergebnis') {
+	    return $this->csvEncode($controller->invoke($action, $this->request, $this));
+        } else {
+            return json_encode($controller->invoke($action, $this->request, $this));
+        }
     } else {
           return "{'message':'ControllerName enthält ungültige Zeichen'}";
     }    
@@ -23,6 +28,34 @@ function invoke($request) {
 
 function getMandantId() {
     return $this->mandant;
+}
+
+# Methode zum Encodieren von Arrays in *.csv-Strings
+function csvEncode($data) {
+
+    #error_log(print_r($data));
+
+    $csv = ""; $header = ""; $id = 0;
+    foreach($data['zeilen'] as $line) {
+        $count = 2; # count($line);
+        $i = 0;
+        foreach($line as $key => $value) {
+            if($id == 0) {
+                 $header .= $key;
+                 if($i < $count) {
+                     $header .= ";";
+                 }
+            }
+            $csv .= $value;
+            if($i < $count) {
+                $csv .= ";";
+            }
+            $i++;
+        }    
+        $csv .= "\n";
+        $id++;
+    }
+    return $header."\n".$csv; 
 }
 
 # Methode zum uebergeben des Benutzers an den Dispatcher
