@@ -61,8 +61,10 @@ function getMonatsSalden($kontonummer) {
                 $rs = mysqli_query($db, "select grouping, saldo from "
                       ."(select grouping, konto, sum(betrag) as saldo from "
                       ."(select (year(datum)*100)+month(datum) as grouping, konto, betrag "
-                      ."from fi_buchungen_view where mandant_id = $this->mandant_id) as x "
-                      ."group by grouping, konto) as y where y.konto = '$kontonummer'");
+                      ."from fi_buchungen_view "
+                      ."where mandant_id = $this->mandant_id) as x "
+                      ."group by grouping, konto) as y "
+                      ."where y.konto = '$kontonummer' and y.grouping > ((year(now())*100)+month(now()))-100 ");
             } else {
                 // Laufende Summen, fuer Bestandskonten
                 $rs = mysqli_query($db, "select x1.grouping, sum(x2.betrag) as saldo "
@@ -70,7 +72,9 @@ function getMonatsSalden($kontonummer) {
                       ."where mandant_id = '$this->mandant_id') x1 "
                       ."inner join (select (year(datum)*100+month(datum)) as grouping, konto, betrag "
                       ."from fi_buchungen_view where mandant_id = '$this->mandant_id') x2 "
-                      ."on x2.grouping <= x1.grouping where konto = '$kontonummer' group by grouping, konto");
+                      ."on x2.grouping <= x1.grouping "
+                      ."where konto = '$kontonummer' and x1.grouping > ((year(now())*100)+month(now()))-100 "
+                      ."group by grouping, konto");
             }
             $result = array();
             while($obj = mysqli_fetch_object($rs)) {
