@@ -1,7 +1,7 @@
 <?php defined("MAIN_PAGE") or die("Fehlende Berechtigung, Seite darf nur aus index.php geladen werden"); ?>
         <div id="navigation" class="content_form">
         <ul id="navigation_menu_listview" 
-            data-role="listview" data-filter="true" data-filter-placeholder="Search Item..." data-theme="d">
+            data-role="listview" data-filter="true" data-filter-placeholder="Search Item..." data-theme="a">
             <li data-role="list-divider">Basisfunktionen</li>
             <li><a href="#" id="menu_buchen">Buchen</a></li>
             <li><a href="#" id="menu_konten">Konten</a></li>
