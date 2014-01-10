@@ -207,24 +207,30 @@ select b.mandant_id as mandant_id
 , `b`.`buchungsnummer` AS `buchungsnummer`
 , `b`.`buchungstext` AS `buchungstext`
 , `b`.`sollkonto` AS `konto`
-, `k`.`bezeichnung` AS `kontenname`
-, `k`.`kontenart_id` AS `kontenart_id`
+, `k1`.`bezeichnung` AS `kontenname`
+, `k1`.`kontenart_id` AS `kontenart_id`
+, k2.kontenart_id AS gegenkontenart_id
 , `b`.`betrag` AS `betrag`
 , `b`.`datum` AS `datum` 
-from (`fi_buchungen` `b` join `fi_konto` `k` 
-  on((`b`.`sollkonto` = `k`.`kontonummer`) and (b.mandant_id = k.mandant_id))) 
+from (`fi_buchungen` `b` inner join `fi_konto` `k1`
+  on((`b`.`sollkonto` = `k1`.`kontonummer`) and (b.mandant_id = k1.mandant_id)))
+  inner join fi_konto k2
+  on b.habenkonto = k2.kontonummer and b.mandant_id = k2.mandant_id
 union 
 select b.mandant_id as mandant_id
 , 'H' AS `buchungsart`
 , `b`.`buchungsnummer` AS `buchungsnummer`
 , `b`.`buchungstext` AS `buchungstext`
 , `b`.`habenkonto` AS `konto`
-, `k`.`bezeichnung` AS `kontenname`
-, `k`.`kontenart_id` AS `kontenart_id`
+, `k1`.`bezeichnung` AS `kontenname`
+, `k1`.`kontenart_id` AS `kontenart_id`
+, k2.kontenart_id AS gegenkontenart_id
 , (`b`.`betrag` * -(1)) AS `betrag`
-, `b`.`datum` AS `datum` 
-from (`fi_buchungen` `b` join `fi_konto` `k` 
-  on((`b`.`habenkonto` = `k`.`kontonummer`) and (b.mandant_id = k.mandant_id))) 
+, `b`.`datum` AS `datum` i
+from (`fi_buchungen` `b` join `fi_konto` `k1`
+  on((`b`.`habenkonto` = `k1`.`kontonummer`) and (b.mandant_id = k1.mandant_id)))
+  inner join fi_konto k2
+  on b.sollkonto = k2.kontonummer and b.mandant_id = k2.mandant_id
 order by `buchungsnummer`,`buchungsart`;
 
 -- --------------------------------------------------------
