@@ -19,6 +19,13 @@ function install() {
    // TODO: Danach noch einen Mandanten und 
 }
 
+/*
+* Eingabemaske anzeigen
+*/
+function show_frontend() {
+   print file_get_contents("./schritt1.html");
+}
+
 // und danach gemeinsam ausführen
 if($REQUEST['db_name'] != null) {
    // Wenn die Parameter ausgefüllt sind, dann Installation starten

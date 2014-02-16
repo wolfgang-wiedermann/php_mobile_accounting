@@ -22,6 +22,7 @@ js/jquery.mobile-1.4.0.js
 js/knockout-2.2.1.js
 js/knockout-ext.js
 js/model.js
+js/update_app.js
 
 NETWORK:
 ping.php

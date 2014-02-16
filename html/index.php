@@ -13,6 +13,7 @@
     <script src="./js/helper.js"></script>
     <script src="./js/model.js"></script>
     <script src="./js/diagramm.js"></script>
+    <script src="./js/update_app.js"></script>
 </head>
 <body>
 <div data-role="page" id="main_menu" class="page">
@@ -28,9 +29,13 @@
         <?php include("./parts/ergebnis_form.php"); ?>
         <?php include("./parts/admin_form.php"); ?>
     </div>
-    <div data-role="footer" data-position="fixed" data-theme="b"><center>&copy; 2013 by Wolfgang Wiedermann</center></div>
+    <div data-role="footer" data-position="fixed" data-theme="b"><center>&copy; 2014 by Wolfgang Wiedermann</center></div>
 </div>
 <script type="text/javascript">
+// Updates sichtbar machen und sofort anwenden
+de.ww.updater.handlers.onUpdateReady(function() { alert('Die Buchhaltung wurde auf eine neue Version aktualisiert'); });
+
+// Model initialisieren
 var model = new AppViewModel();
 
 /*
@@ -38,7 +43,6 @@ var model = new AppViewModel();
 * die Ansicht und registriert die Event-Handler der Haupt-View
 */
 $(document).ready(function() {
-//    updateHtml5AppCache();
     ko.applyBindings(model);
     gotoMainPage();
     $("#header_home_button").click(gotoMainPage);
@@ -48,20 +52,6 @@ $(document).ready(function() {
     $("#menu_admin_quick").click(gotoQuickAdmin);
     $("#menu_schnellbuchungen_divider").click(menu.loadQuickMenuItems);
 });
-
-/*
-* Cache neu laden ...
-* vgl. http://www.html5rocks.com/de/tutorials/appcache/beginner/
-*/
-function updateHtml5AppCache() {
-    var appCache = window.applicationCache;
-    if(!!appCache) {
-    appCache.update();
-        if(appCache.status == window.applicationCache.UPDATEREADY) {
-            appCache.swapCache();
-        }
-    }
-}
 
 /*
 * Handler fuer das Klick-Event des Home-Buttons
