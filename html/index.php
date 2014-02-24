@@ -3,10 +3,10 @@
 <html lang="de" manifest="manifest.php">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./css/jquery.mobile-1.4.0.css" />
+    <link rel="stylesheet" href="./css/jquery.mobile-1.3.1.css" />
     <!-- Standard-Bibliotheken -->
     <script src="./js/jquery-2.0.2.min.js"></script>
-    <script src="./js/jquery.mobile-1.4.0.js"></script>
+    <script src="./js/jquery.mobile-1.3.1.js"></script>
     <script src="./js/knockout-2.2.1.js"></script>
     <!-- App-spezifische Code-Dateien -->
     <script src="./js/knockout-ext.js"></script>
@@ -20,7 +20,7 @@
     <div data-role="header" data-position="fixed" data-theme="b" class="clickable_header">
         <a href="#" id="header_home_button" data-icon="home">Men&uuml;</a>
 	<h1 id="header_text">Buchhaltung</h1>
-        <a href="#" id="header_new_button" data-icon="plus">Neu</a>
+        <a href="#" id="header_new_button" data-icon="new">Neu</a>
     </div>
     <div data-role="content">
         <?php include("./parts/navigation.php"); ?>
