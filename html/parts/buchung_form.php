@@ -40,6 +40,8 @@ registerBuchungFormEvents : function() {
 
 showErfassen : function() {
     $(".content_form").hide();
+    // Aktuelles Datum setzen
+    model.buchung().datum(JSON.stringify(new Date()).substring(1,11));
     $("#buchung_form_erfassung").show();
 },
 
