@@ -85,6 +85,55 @@ function doGETwithCache(controller, action, parameters, successHandler, errorHan
     }
 }
 
+/*
+* Funktion zum Absetzen eines POST-Requests über eine Queue
+* @param controller = Bezeichnung des Controllers als String (wie in URL)
+* @param action = Bezeichnung der Action als String
+* @param parameterObject = Parameter als JSON-Objekt (String)
+* @param successHandler = Funktions-Handle für Erfolgsfall
+* @param errorHandler = Funktions-Handle für Fehlerfall
+*/
+function doPOSTwithQueue(controller, action, parameterObject, successHandler, errorHandler) {
+    var self = {};
+    self.controller = controller;
+    self.action = action;
+    self.parameterObject = parameterObject;
+
+    if(broker.isConnected) {
+        doPOST(controller, action, parameterObject, 
+            function(successData) {
+                successHandler(successData);
+            },
+            function(error) {
+                if(error.status === 404) {
+                    // Diesen Part in Funktion auslagern (da 2x siehe #4)
+                    broker.queue.enqueue(self.controller, self.action, self.parameterObject);
+                    broker.reconnectHandler.add(function() {
+                        var item = broker.queue.dequeue(self.controller, self.action);
+                        if(!(item === undefined)) {
+                            doPOST(item.controller, item.action, item.parameterObject
+                                   , successHandler, errorHandler);
+                        }
+                    });
+                } else {
+                    errorHandler(error);
+                }
+            }
+        );
+    } else {
+        // Part siehe oben #4
+        broker.queue.enqueue(self.controller, self.action, self.parameterObject);
+        broker.reconnectHandler.add(function() {
+            var item = broker.queue.dequeue(self.controller, self.action);
+            if(!(item === undefined)) {
+	        doPOST(item.controller, item.action, item.parameterObject
+                   , successHandler, errorHandler);
+                }
+            });
+        successHandler('Die Buchung wurde in die Warteschlange eingetragen');
+    }
+}
+
 
 var broker = {
     /*
@@ -112,6 +161,7 @@ var broker = {
                 var handler = broker.reconnectHandler.handlers[key];
                 handler(eventSource);
             }
+            broker.reconnectHandler.removeAll();
         },
     },
 
@@ -150,6 +200,35 @@ var broker = {
             function(error) {
                 window.setTimeout(broker.checkConnection, 30000);
             });
+    },
+    queue: {
+         /**
+         * Eintragen eines Eintrags in die Queue
+         */
+         enqueue: function(controller, action, parameterObject) {
+
+             if(localStorage.getItem('#QUEUE:'+controller+':'+action) === null) {
+                 localStorage.setItem('#QUEUE:'+controller+':'+action, '[]');
+             }
+
+             var queue = JSON.parse(localStorage.getItem('#QUEUE:'+controller+':'+action));
+             queue.push({
+                 'controller':controller,
+                 'action':action,
+                 'parameterObject':parameterObject,
+             });
+             localStorage.setItem('#QUEUE:'+controller+':'+action, JSON.stringify(queue));
+         },
+
+         /**
+          * Auslesen und entfernen eines Eintrags aus der Queue
+          */
+         dequeue: function(controller, action) {
+             var queue = JSON.parse(localStorage.getItem('#QUEUE:'+controller+':'+action));
+             var item = queue.pop();
+             localStorage.setItem('#QUEUE:'+controller+':'+action, JSON.stringify(queue));
+             return item;
+         },
     },
     cache: {
         /**

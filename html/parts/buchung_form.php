@@ -48,7 +48,7 @@ showErfassen : function() {
 showAktuellste : function() {
     $(".content_form").hide();
     $("#buchung_form_current").show();
-    doGET("buchung", "aktuellste", {}, 
+    doGETwithCache("buchung", "aktuellste", {}, 
         function(data) {
             var htmlAkt = "<b>Aktuellste Buchungen</b><br/><br/><table>";
             for(var key in data) {
@@ -70,10 +70,11 @@ showAktuellste : function() {
 },
 
 create : function(jsonString) {
-    doPOST("buchung", "create", jsonString,
+    doPOSTwithQueue("buchung", "create", jsonString,
         function(data) {
 	    // Buchung erfolgreich angelegt.
             alert("Buchung erfolgreich angelegt");
+            console.log(JSON.stringify(data));
         },
         function(error) {
             alert("Fehler beim Anlegen der Buchung aufgetreten: "+JSON.stringify(error));
