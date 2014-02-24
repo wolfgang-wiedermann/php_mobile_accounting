@@ -99,6 +99,19 @@ function doPOSTwithQueue(controller, action, parameterObject, successHandler, er
     self.action = action;
     self.parameterObject = parameterObject;
 
+    // Funktion zur Behandlung des Falls: Verbindung besteht wieder
+    self.reconnectHandler = function(ref) {
+        broker.queue.enqueue(ref.controller, ref.action, ref.parameterObject);
+        broker.reconnectHandler.add(function() {
+            var item = broker.queue.dequeue(ref.controller, ref.action);
+            if(!(item === undefined)) {
+                doPOST(item.controller, item.action, item.parameterObject
+                       , successHandler, errorHandler);
+            }
+        });
+    };
+
+    // Behandlung der unterschiedlichen Verbindungszustände
     if(broker.isConnected) {
         doPOST(controller, action, parameterObject, 
             function(successData) {
@@ -106,30 +119,14 @@ function doPOSTwithQueue(controller, action, parameterObject, successHandler, er
             },
             function(error) {
                 if(error.status === 404) {
-                    // Diesen Part in Funktion auslagern (da 2x siehe #4)
-                    broker.queue.enqueue(self.controller, self.action, self.parameterObject);
-                    broker.reconnectHandler.add(function() {
-                        var item = broker.queue.dequeue(self.controller, self.action);
-                        if(!(item === undefined)) {
-                            doPOST(item.controller, item.action, item.parameterObject
-                                   , successHandler, errorHandler);
-                        }
-                    });
+                    self.reconnectHandler(self);
                 } else {
                     errorHandler(error);
                 }
             }
         );
     } else {
-        // Part siehe oben #4
-        broker.queue.enqueue(self.controller, self.action, self.parameterObject);
-        broker.reconnectHandler.add(function() {
-            var item = broker.queue.dequeue(self.controller, self.action);
-            if(!(item === undefined)) {
-	        doPOST(item.controller, item.action, item.parameterObject
-                   , successHandler, errorHandler);
-                }
-            });
+        self.reconnectHandler(self);
         successHandler('Die Buchung wurde in die Warteschlange eingetragen');
     }
 }
