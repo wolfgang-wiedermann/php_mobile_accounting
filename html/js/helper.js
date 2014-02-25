@@ -198,6 +198,10 @@ var broker = {
                 window.setTimeout(broker.checkConnection, 30000);
             });
     },
+    /*
+    * Warteschlange, die die Payloads der POST-Requests im Offline-Fall zwischenspeichert, 
+    * (bei doPOSTwithQueue: bis diese wieder an den Server uebertragen werden koennen).
+    */
     queue: {
          /**
          * Eintragen eines Eintrags in die Queue
@@ -218,11 +222,13 @@ var broker = {
          },
 
          /**
-          * Auslesen und entfernen eines Eintrags aus der Queue
+          * Auslesen und entfernen des aeltesten Eintrags aus der Queue
           */
          dequeue: function(controller, action) {
              var queue = JSON.parse(localStorage.getItem('#QUEUE:'+controller+':'+action));
+             queue = queue.reverse();
              var item = queue.pop();
+             queue = queue.reverse();
              localStorage.setItem('#QUEUE:'+controller+':'+action, JSON.stringify(queue));
              return item;
          },
