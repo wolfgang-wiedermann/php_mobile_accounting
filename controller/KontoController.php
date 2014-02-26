@@ -61,13 +61,16 @@ function getMonatsSalden($kontonummer) {
                 $sql = "select grouping, saldo from "
                       ."(select grouping, konto, sum(betrag) as saldo from "
                       ."(select (year(v.datum)*100)+month(v.datum) as grouping, v.konto, v.betrag "
-                      ."from fi_buchungen_view v inner join fi_konto kt "
+                      ."from fi_ergebnisrechnungen_base v inner join fi_konto kt "
                       ."on v.konto = kt.kontonummer and v.mandant_id = kt.mandant_id "
                       ."where v.mandant_id = $this->mandant_id "
-                      ."and kt.kontenart_id <> 5 ) as x "
+                      ."and v.gegenkontenart_id <> 5) as x "
                       ."group by grouping, konto) as y "
                       ."where y.konto = '$kontonummer' "
                       ."and y.grouping > ((year(now())*100)+month(now()))-100 ";
+
+error_log($sql);
+ 
                 $rs = mysqli_query($db, $sql);
             } else {
                 // Laufende Summen, fuer Bestandskonten

@@ -226,9 +226,9 @@ select b.mandant_id as mandant_id
 , `k1`.`kontenart_id` AS `kontenart_id`
 , k2.kontenart_id AS gegenkontenart_id
 , (`b`.`betrag` * -(1)) AS `betrag`
-, `b`.`datum` AS `datum` i
-from (`fi_buchungen` `b` join `fi_konto` `k1`
-  on((`b`.`habenkonto` = `k1`.`kontonummer`) and (b.mandant_id = k1.mandant_id)))
+, `b`.`datum` AS `datum`
+from `fi_buchungen` `b` join `fi_konto` `k1`
+  on `b`.`habenkonto` = `k1`.`kontonummer` and b.mandant_id = k1.mandant_id
   inner join fi_konto k2
   on b.sollkonto = k2.kontonummer and b.mandant_id = k2.mandant_id
 order by `buchungsnummer`,`buchungsart`;
