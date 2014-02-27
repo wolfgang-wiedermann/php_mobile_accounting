@@ -30,10 +30,11 @@ function createBuchung($request) {
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
     if($this->isValidBuchung($input)) {
-        $sql = "insert into fi_buchungen (mandant_id, buchungstext, sollkonto, habenkonto, betrag, datum)"
+        $sql = "insert into fi_buchungen (mandant_id, buchungstext, sollkonto, habenkonto, "
+              ."betrag, datum, bearbeiter_user_id)"
               ." values ($this->mandant_id, '".$input['buchungstext']
               ."', '".$input['sollkonto']."', '".$input['habenkonto']."', ".$input['betrag'].", '"
-              .$input['datum']."')";
+              .$input['datum']."', ".$this->dispatcher->getUserId().")";
         mysqli_query($db, $sql);
         mysqli_close($db);
         return $void = array();

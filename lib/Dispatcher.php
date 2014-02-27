@@ -5,7 +5,7 @@
 # Controller-Klassen.
 class Dispatcher {
 # Attribute
-private $request, $user, $mandant;
+private $request, $user, $user_id, $mandant;
 
 # Einstiegspunkt in den Dispatcher
 # (wird automatisch aus ../index.php aufgerufen)
@@ -26,8 +26,22 @@ function invoke($request) {
     }    
 }
 
+# Ermitteln der Mandant-Nummer des aktuell angemeldeten Benutzers
+# (Zur Nutzung im jeweiligen Controller)
 function getMandantId() {
     return $this->mandant;
+}
+
+# Ermittlung des Benutzernamens des aktuell angemeldeten Benutzers
+# (Zur Nutzung im jeweiligen Controller)
+function getUser() {
+    return $this->user;
+}
+
+# Ermittlung der Benutzer-ID des aktuell angemeldeten Benutzers
+# (Zur Nutzung im jeweiligen Controller)
+function getUserId() {
+    return $this-> user_id;
 }
 
 # Methode zum Encodieren von Arrays in *.csv-Strings
@@ -63,9 +77,10 @@ function csvEncode($data) {
 function setRemoteUser($user) {
     $db = getDbConnection();
     $this->user = $user;
-    $rs = mysqli_query($db, "select mandant_id from fi_user where user_name = '$user'");
+    $rs = mysqli_query($db, "select mandant_id, user_id from fi_user where user_name = '$user'");
     if($rs && $obj = mysqli_fetch_object($rs)) {
         $this->mandant = $obj->mandant_id;
+        $this->user_id = $obj->user_id;
     } else {
         throw new Exception("Kein Mandant für den Benutzer $user konfiguriert");
     }
