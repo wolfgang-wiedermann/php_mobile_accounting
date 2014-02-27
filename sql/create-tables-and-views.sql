@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS `fi_buchungen` (
   `habenkonto` varchar(20) NOT NULL,
   `betrag` decimal(10,2) NOT NULL,
   `datum` date NOT NULL,
+  `bearbeiter_user_id` integer DEFAULT NULL,
   PRIMARY KEY (`buchungsnummer`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
