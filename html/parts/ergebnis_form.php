@@ -10,6 +10,7 @@
     <li><a href="#" id="ergebnis_action_verlauf_aufwand" class="ergebnis_form_item">Aufwand (Monate)</a></li>
     <li><a href="#" id="ergebnis_action_verlauf_ertrag" class="ergebnis_form_item">Ertrag (Monate)</a></li>
     <li><a href="#" id="ergebnis_action_verlauf_gewinn" class="ergebnis_form_item">Gewinn (Monate)</a></li>
+    <li><a href="#" id="ergebnis_action_verlauf_frei" class="ergebnis_form_item">Frei kombiniert (Monate)</a></li>
 </ul>
 </div>
 <!-- Bilanz -->
@@ -20,6 +21,19 @@
 </div>
 <!-- Verlauf -->
 <div id="ergebnis_form_verlauf" class="content_form">
+</div>
+<!-- Verlaufsauswertung frei, Vorauswahl -->
+<div id="ergebnis_form_verlauf_vorauswahl" class="content_form">
+    <h2>Ausw&auml;hlbare Konten</h2>
+    <ul data-role="listview" data-filter="true" data-filter-placeholder="Search account" data-bind="foreach: selectablekonten, jqmRefreshList: selectablekonten">
+        <li><a href="#" data-bind="text: tostring, attr: {'data-key': kontonummer}, click: $root.selectKonto"></a></li>
+    </ul><br/>
+    <h2>Ausgew&auml;hlte Konten</h2>
+    <ul data-role="listview" data-bind="foreach: selectedkonten, jqmRefreshList: selectedkonten">
+        <li><a href="#" data-bind="text: tostring, attr: {'data-key': kontonummer}, click: $root.unselectKonto"></a></li>
+    </ul>
+    <br/>
+    <button id="ergebnis_form_verlauf_anzeigen">Anzeigen</button>
 </div>
 <!-- JavaScript-Code -->
 <script type="text/javascript">
@@ -33,6 +47,7 @@ registerErgebnisFormEvents : function() {
     $("#ergebnis_action_verlauf_aufwand").click(ergebnisForm.showVerlaufAufwand);
     $("#ergebnis_action_verlauf_ertrag").click(ergebnisForm.showVerlaufErtrag);
     $("#ergebnis_action_verlauf_gewinn").click(ergebnisForm.showVerlaufGewinn);
+    $("#ergebnis_action_verlauf_frei").click(ergebnisForm.showVerlaufFreiVorauswahl);
 },    
 
 showBilanz : function() {
@@ -69,6 +84,19 @@ showVerlaufGewinn : function() {
     $(".content_form").hide();
     $("#ergebnis_form_verlauf").show();
     ergebnisForm.loadVerlauf(-1);
+},
+
+showVerlaufFreiVorauswahl : function() {
+    $(".content_form").hide();
+    $("#ergebnis_form_verlauf_vorauswahl").show();
+    ergebnisForm.loadVerlaufFreiVorauswahl();
+},
+
+showVerlaufFrei : function() {
+    $(".content_form").hide();
+    $("#ergebnis_form_verlauf").show();
+    alert('Auswertung laden');
+    //ergebnisForm.loadVerlaufFrei();
 },
 
 loadBilanz : function() {
@@ -187,6 +215,12 @@ loadVerlauf : function(kontenart_id) {
         );
     },
 
+loadVerlaufFreiVorauswahl : function() {
+    model.selectedkonten.removeAll();
+    $("#ergebnis_form_verlauf_anzeigen").unbind("click");
+    $("#ergebnis_form_verlauf_anzeigen").click(ergebnisForm.showVerlaufFrei);
+
+},
 
 };
 </script>
