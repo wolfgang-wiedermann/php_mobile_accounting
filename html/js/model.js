@@ -123,13 +123,15 @@ m.privat.initKontenarten = function(self) {
 m.privat.initKonten = function(self) {
     // Konten
     self.konten = ko.observableArray([]);
-    self.selectablekonten = ko.observableArray([]);
-    self.selectedkonten = ko.observableArray([]);
+    // Model fuer Konten-Mehrfachauswahl
+    self.konten_selectable = ko.observableArray([]);
+    self.konten_selected = ko.observableArray([]);
+
     self.refreshKonten = function () {    
         doGETwithCache("konto", "list", [], 
             function(data) {
                 self.konten($.map(data, function(item) {return new Konto(item) }));
-                self.selectablekonten($.map(data, function(item) {return new Konto(item); }));
+                self.konten_selectable($.map(data, function(item) {return new Konto(item); }));
 
                 $(".konto_auswahl_button").unbind("click");
                 $(".konto_auswahl_button").click(kontenForm.kontoAuswahlHandler);
@@ -144,16 +146,16 @@ m.privat.initKonten = function(self) {
 
     self.selectKonto = function(konto) {
         // entfernen
-        self.selectablekonten.remove(konto);
+        self.konten_selectable.remove(konto);
         // einfügen
-        self.selectedkonten.push(konto);
+        self.konten_selected.push(konto);
     }
 
     self.unselectKonto = function(konto) {
         // entfernen
-        self.selectedkonten.remove(konto);
+        self.konten_selected.remove(konto);
         // einfügen
-        self.selectablekonten.push(konto);
+        self.konten_selectable.push(konto);
     }
 
     self.loadKonto = function(kontoNummer) {

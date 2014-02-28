@@ -25,11 +25,11 @@
 <!-- Verlaufsauswertung frei, Vorauswahl -->
 <div id="ergebnis_form_verlauf_vorauswahl" class="content_form">
     <h2>Ausw&auml;hlbare Konten</h2>
-    <ul data-role="listview" data-filter="true" data-filter-placeholder="Search account" data-bind="foreach: selectablekonten, jqmRefreshList: selectablekonten">
+    <ul data-role="listview" data-filter="true" data-filter-placeholder="Search account" data-bind="foreach: konten_selectable, jqmRefreshList: konten_selectable">
         <li><a href="#" data-bind="text: tostring, attr: {'data-key': kontonummer}, click: $root.selectKonto"></a></li>
     </ul><br/>
     <h2>Ausgew&auml;hlte Konten</h2>
-    <ul data-role="listview" data-bind="foreach: selectedkonten, jqmRefreshList: selectedkonten">
+    <ul data-role="listview" data-bind="foreach: konten_selected, jqmRefreshList: konten_selected">
         <li><a href="#" data-bind="text: tostring, attr: {'data-key': kontonummer}, click: $root.unselectKonto"></a></li>
     </ul>
     <br/>
@@ -216,7 +216,7 @@ loadVerlauf : function(kontenart_id) {
     },
 
 loadVerlaufFreiVorauswahl : function() {
-    model.selectedkonten.removeAll();
+    model.konten_selected.removeAll();
     $("#ergebnis_form_verlauf_anzeigen").unbind("click");
     $("#ergebnis_form_verlauf_anzeigen").click(ergebnisForm.showVerlaufFrei);
 
