@@ -122,7 +122,7 @@ var kontenForm = {
         $("#account_show_monatssalden").show();
         $("#account_show_monatssalden").html("Monatssalden werden geladen");
 
-        doGET("konto", "monatssalden", {'id':kontenForm.selectedKontonummer},
+        doGET("verlauf", "monatssalden", {'id':kontenForm.selectedKontonummer},
             function(data) {
                 var table = "<table>";
                 var code = "<b>Monatssalden: "+kontenForm.selectedKontonummer+"</b><br/>";

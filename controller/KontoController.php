@@ -19,8 +19,8 @@ function invoke($action, $request, $dispatcher) {
             return $this->createKonto($request);
         case "saldo":
             return $this->getSaldo($request['id']);
-        case "monatssalden":
-            return $this->getMonatsSalden($request['id']);
+#        case "monatssalden":
+#            return $this->getMonatsSalden($request['id']);
         default:
             throw new ErrorException("Unbekannte Action");
     }
