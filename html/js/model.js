@@ -132,6 +132,7 @@ m.privat.initKonten = function(self) {
             function(data) {
                 self.konten($.map(data, function(item) {return new Konto(item) }));
                 self.konten_selectable($.map(data, function(item) {return new Konto(item); }));
+                self.konten_selected.removeAll();
 
                 $(".konto_auswahl_button").unbind("click");
                 $(".konto_auswahl_button").click(kontenForm.kontoAuswahlHandler);
@@ -144,24 +145,21 @@ m.privat.initKonten = function(self) {
     handlers.refreshKonten = self.refreshKonten;
     self.refreshKonten();
 
+    // Konto zu self.konten_selected hinzufügen
     self.selectKonto = function(konto) {
-        // entfernen
         self.konten_selectable.remove(konto);
-        // einfügen
         self.konten_selected.push(konto);
     }
 
+    // Konto aus self.konten_selected wieder entfernen
     self.unselectKonto = function(konto) {
-        // entfernen
         self.konten_selected.remove(konto);
-        // einfügen
         self.konten_selectable.push(konto);
     }
 
     self.loadKonto = function(kontoNummer) {
         doGETwithCache("konto", "get", {'id':kontoNummer},
             function(data) {
-                 //self.konto(new Konto(data));
                  self.konto().kontonummer(data.kontonummer);
                  self.konto().bezeichnung(data.bezeichnung);
                  self.konto().kontenart_id(data.kontenart_id);

@@ -33,11 +33,16 @@
         <li><a href="#" data-bind="text: tostring, attr: {'data-key': kontonummer}, click: $root.unselectKonto"></a></li>
     </ul>
     <br/>
-    <button id="ergebnis_form_verlauf_anzeigen">Anzeigen</button>
+    <button id="ergebnis_action_verlauf_frei_anzeigen" class="ergebnis_form_item">Anzeigen</button>
 </div>
 <!-- JavaScript-Code -->
 <script type="text/javascript">
 var ergebnisForm = {
+
+constants : {
+    KONTENART : 1, 
+    FREIE_KONTEN : 2
+},
 
 registerErgebnisFormEvents : function() {
     $(".ergebnis_form_item").unbind("click");
@@ -48,6 +53,7 @@ registerErgebnisFormEvents : function() {
     $("#ergebnis_action_verlauf_ertrag").click(ergebnisForm.showVerlaufErtrag);
     $("#ergebnis_action_verlauf_gewinn").click(ergebnisForm.showVerlaufGewinn);
     $("#ergebnis_action_verlauf_frei").click(ergebnisForm.showVerlaufFreiVorauswahl);
+    $("#ergebnis_action_verlauf_frei_anzeigen").click(ergebnisForm.showVerlaufFrei);
 },    
 
 showBilanz : function() {
@@ -71,32 +77,30 @@ showGuVMonth : function() {
 showVerlaufAufwand : function() {
     $(".content_form").hide();
     $("#ergebnis_form_verlauf").show();
-    ergebnisForm.loadVerlauf(3);
+    ergebnisForm.loadVerlaufKontenart(3);
 },
 
 showVerlaufErtrag : function() {
     $(".content_form").hide();
     $("#ergebnis_form_verlauf").show();
-    ergebnisForm.loadVerlauf(4);
+    ergebnisForm.loadVerlaufKontenart(4);
 },
 
 showVerlaufGewinn : function() {
     $(".content_form").hide();
     $("#ergebnis_form_verlauf").show();
-    ergebnisForm.loadVerlauf(-1);
+    ergebnisForm.loadVerlaufKontenart(-1);
 },
 
 showVerlaufFreiVorauswahl : function() {
     $(".content_form").hide();
     $("#ergebnis_form_verlauf_vorauswahl").show();
-    ergebnisForm.loadVerlaufFreiVorauswahl();
 },
 
 showVerlaufFrei : function() {
     $(".content_form").hide();
     $("#ergebnis_form_verlauf").show();
-    alert('Auswertung laden');
-    //ergebnisForm.loadVerlaufFrei();
+    ergebnisForm.loadVerlaufFrei();
 },
 
 loadBilanz : function() {
@@ -180,46 +184,57 @@ loadGuVMonth : function() {
     );
 },
 
-loadVerlauf : function(kontenart_id) {
-        $("#account_show_monatssalden").html("Monatssalden werden geladen");
-
-        var kontenart_txt = '';
-        var action = 'verlauf';
-        if(kontenart_id === 4) kontenart_txt = 'Ertrag';
-        if(kontenart_id === 3) kontenart_txt = 'Aufwand';
-        if(kontenart_id === -1) {
-            kontenart_txt = 'Gewinn';
-            action = 'verlauf_gewinn';
-        }
-
-        doGET("ergebnis", action, {'id':kontenart_id},
-            function(data) {
-                var table = "<table>";
-                var code = "<b>Verlauf in Monaten: Kontenart: "+kontenart_txt+"</b><br/>";
-                code += '<div id="ergebnis_show_monatssalden_table"></div>';
-                code += '<canvas id="ergebnis_show_monatssalden_canvas" width="300px" height="300px"></canvas>';
-                $("#ergebnis_form_verlauf").html(code);
-                d.init("ergebnis_show_monatssalden_canvas");
-                d.setToWindowWidth();
-                var diagrammData = [];
-                for(var key in data) {
-                    diagrammData.push(data[key].saldo);
-                    table += "<tr><td>"+data[key].grouping+"</td><td>"+data[key].saldo+"</td></tr>";
-                }
-                table += "</table>";
-                $("#ergebnis_show_monatssalden_table").html(table);
-                d.drawLineDiagramFor(diagrammData);
-            }, 
-            function(error) {
+loadVerlauf : function(controller, action, parameter, kontenart_txt) {
+    $("#account_show_monatssalden").html("Monatssalden werden geladen");
+    
+    doGET(controller, action, parameter,
+        function(data) {
+            var table = "<table>";
+            var code = "<b>Verlauf in Monaten: Kontenart: "+kontenart_txt+"</b><br/>";
+            code += '<div id="ergebnis_show_monatssalden_table"></div>';
+            code += '<canvas id="ergebnis_show_monatssalden_canvas" width="300px" height="300px"></canvas>';
+            $("#ergebnis_form_verlauf").html(code);
+            d.init("ergebnis_show_monatssalden_canvas");
+            d.setToWindowWidth();
+            var diagrammData = [];
+            for(var key in data) {
+                diagrammData.push(data[key].saldo);
+                table += "<tr><td>"+data[key].grouping+"</td><td>"+data[key].saldo+"</td></tr>";
             }
-        );
-    },
+            table += "</table>";
+            $("#ergebnis_show_monatssalden_table").html(table);
+            d.drawLineDiagramFor(diagrammData);
+        }, 
+        function(error) {
+            $("#account_show_monatssalden").html("Es ist ein Fehler aufgetreten, die Daten konnten nicht geladen werden");
+            console.log(error);
+        }
+    );
+},
 
-loadVerlaufFreiVorauswahl : function() {
-    model.konten_selected.removeAll();
-    $("#ergebnis_form_verlauf_anzeigen").unbind("click");
-    $("#ergebnis_form_verlauf_anzeigen").click(ergebnisForm.showVerlaufFrei);
+loadVerlaufKontenart : function(kontenart_id) {
+    var kontenart_txt = '';
+    var action = 'verlauf';
+    if(kontenart_id === 4) kontenart_txt = 'Ertrag';
+    if(kontenart_id === 3) kontenart_txt = 'Aufwand';
+    if(kontenart_id === -1) {
+        kontenart_txt = 'Gewinn';
+        action = 'verlauf_gewinn';
+    }
+    ergebnisForm.loadVerlauf('ergebnis', action, {'id':kontenart_id}, kontenart_txt);
+},
 
+loadVerlaufFrei : function() {
+    var kontoNumbers = "";
+    var length = model.konten_selected().length;
+    for(var i = 0; i < length; i++) {
+        kontoNumbers += model.konten_selected()[i].kontonummer();
+        if(i < length-1) {
+            kontoNumbers += ",";
+        }
+    }
+    alert(kontoNumbers);
+    ergebnisForm.loadVerlauf('ergebnis', 'verlauf', {'id':3}, 'Beispiel zum Testen'); 
 },
 
 };
