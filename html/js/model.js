@@ -147,7 +147,7 @@ m.privat.initKonten = function(self) {
 
     // Konto zu self.konten_selected hinzufügen
     self.selectKonto = function(konto) {
-        // TODO: Prüfen, ob das Konto zu den anderen selektierten kompatibel ist...
+        // Prüfen, ob das Konto zu den anderen selektierten kompatibel ist...
         var art = util.intDivision((konto.kontenart_id()*1)+1, 2);
         var selected = self.konten_selected();
         var ok = true;
