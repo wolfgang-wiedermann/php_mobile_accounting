@@ -18,12 +18,10 @@ function invoke($action, $request, $dispatcher) {
 
 # Ermittelt die Monats-Salden des Kontos
 function getMonatsSalden($kontonummer) {
-error_log("Kontonummer : ".$kontonummer."---");
     if(is_numeric($kontonummer) || $this->is_numeric_list($kontonummer)) {
         $kto_prepared = $this->prepareKontoNummern($kontonummer);
-error_log("Kontonummern vorverarbeitet : ".$kto_prepared."---");
         $db = getDbConnection();
-        $rechnungsart = $this->getRechnungsart($kto_prepared, $db);
+        $rechnungsart = $this->getRechnungsart($kto_prepared);
         if($rechnungsart != 0) {
            if($rechnungsart == 2) {
                 // Monatssummen, fuer Aufwands- und Ertragskonten
@@ -39,19 +37,19 @@ error_log("Kontonummern vorverarbeitet : ".$kto_prepared."---");
                       ."and y.grouping > ((year(now())*100)+month(now()))-100 "
                       ."group by grouping ";
 
-error_log($sql);
- 
                 $rs = mysqli_query($db, $sql);
             } else if($rechnungsart == 1) {
                 // Laufende Summen, fuer Bestandskonten
-                $rs = mysqli_query($db, "select x1.grouping, sum(x2.betrag) as saldo "
+                $sql = "select x1.grouping, sum(x2.betrag) as saldo "
                       ."from (select distinct (year(datum)*100)+month(datum) as grouping from fi_buchungen_view "
                       ."where mandant_id = '$this->mandant_id') x1 "
                       ."inner join (select (year(datum)*100+month(datum)) as grouping, konto, betrag "
                       ."from fi_buchungen_view where mandant_id = '$this->mandant_id') x2 "
                       ."on x2.grouping <= x1.grouping "
-                      ."where konto = '$kontonummer' and x1.grouping > ((year(now())*100)+month(now()))-100 "
-                      ."group by grouping, konto");
+                      ."where konto in ($kto_prepared) and x1.grouping > ((year(now())*100)+month(now()))-100 "
+                      ."group by grouping";
+
+                $rs = mysqli_query($db, $sql);
             }
             $result = array();
             while($obj = mysqli_fetch_object($rs)) {
@@ -62,9 +60,9 @@ error_log($sql);
             return $result;
         } else {
             mysqli_close($db);
-            throw new Exception("Kontonummer unbekannt");
+            throw new Exception("Mindestens eine Kontonummer ist unbekannt");
         }
-    } else throw new Exception("Kontonummer nicht numerisch");
+    } else throw new Exception("Mindestens eine Kontonummer ist nicht numerisch");
 }
 
 # Macht aus einer oder mehreren durch Komma getrennten Kontonummern
@@ -100,8 +98,9 @@ function prepareKontoNummern($value) {
 
 # Prüft mittels RegEx ob $value ausschließlich aus Ziffern und Kommas besteht
 function is_numeric_list($value) {
-   // TODO: Da ist noch was zu tun ;-)
-   return true;
+    $pattern = '/[^0-9,]/';
+    preg_match($pattern, $value, $results);
+    return count($results) == 0;
 }
 
 # Ermittelt, ob es sich bei den ausgewählten Konten um 

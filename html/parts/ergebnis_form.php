@@ -234,7 +234,7 @@ loadVerlaufFrei : function() {
         }
     }
     alert(kontoNumbers);
-    ergebnisForm.loadVerlauf('verlauf', 'monatssalden', {'id':kontoNumbers}, 'Beispiel zum Testen:'+kontoNumbers); 
+    ergebnisForm.loadVerlauf('verlauf', 'monatssalden', {'id':kontoNumbers}, 'Konten:'+kontoNumbers); 
 },
 
 };
