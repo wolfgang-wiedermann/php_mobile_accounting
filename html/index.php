@@ -14,6 +14,7 @@
     <script src="./js/model.js"></script>
     <script src="./js/diagramm.js"></script>
     <script src="./js/update_app.js"></script>
+    <script src="./js/util.js"></script>
 </head>
 <body>
 <div data-role="page" id="main_menu" class="page">

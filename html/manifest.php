@@ -3,7 +3,7 @@
 ?>
 CACHE MANIFEST
 # Version im Kommentar ändern um einen Update des Apps zu erzwingen
-# App-Version: 0.1.03#34
+# App-Version: 0.1.03#41
 # -------------------
 
 CACHE:
@@ -23,6 +23,7 @@ js/knockout-2.2.1.js
 js/knockout-ext.js
 js/model.js
 js/update_app.js
+js/util.js
 
 NETWORK:
 ping.php

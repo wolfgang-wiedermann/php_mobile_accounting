@@ -147,8 +147,21 @@ m.privat.initKonten = function(self) {
 
     // Konto zu self.konten_selected hinzufügen
     self.selectKonto = function(konto) {
-        self.konten_selectable.remove(konto);
-        self.konten_selected.push(konto);
+        // TODO: Prüfen, ob das Konto zu den anderen selektierten kompatibel ist...
+        var art = util.intDivision((konto.kontenart_id()*1)+1, 2);
+        var selected = self.konten_selected();
+        var ok = true;
+        for(var i = 0; i < selected.length; i++) {
+            if(art != util.intDivision((selected[i].kontenart_id()*1)+1, 2)) {
+                ok = false;
+            }
+        }
+        if(ok) {
+            self.konten_selectable.remove(konto);
+            self.konten_selected.push(konto);
+        } else {
+            alert("Das Konto "+konto.tostring()+" ist nicht mit ihrer restlichen Auswahl kompatibel");
+        }
     }
 
     // Konto aus self.konten_selected wieder entfernen
