@@ -233,7 +233,7 @@ loadVerlaufFrei : function() {
             kontoNumbers += ",";
         }
     }
-    alert(kontoNumbers);
+    //alert(kontoNumbers);
     ergebnisForm.loadVerlauf('verlauf', 'monatssalden', {'id':kontoNumbers}, 'Konten:'+kontoNumbers); 
 },
 
