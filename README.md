@@ -1,5 +1,5 @@
-php_mobile_accounting
-=====================
+HTML5-Haushaltsbuch
+===================
 
 A simple Accounting Application for mobile devices and classical computers.
 Based on minimalistic coding in PHP and Javascript to enable simple hosting
@@ -29,7 +29,7 @@ Installation Information
 
 The installation can be handled within tree steps.
 
-First download this repository from GitHub (you will find it at https://github.com/wolfgang-wiedermann/php_mobile_accounting). I assume, you have loaded it as an ZIP-File. Unzip this file to your local computer and go to the directory you have unzipped it to.   
+First download this repository from GitHub (you will find it at http://download.html5-haushaltsbuch.de). I assume, you have loaded it as an ZIP-File. Unzip this file to your local computer and go to the directory you have unzipped it to.   
 
 At next please go to the ./sql-Folder, it contains a file named create-tables-and-views.sql. Execute this file on a Mysql-Server within a database you want to use for "php mobile accounting". In case of this manual I will assume that you have called it "fibu" but it can have every possible other name.
 
@@ -41,3 +41,7 @@ installed if you have a running apache2 server on a Linux machine. Go to the tar
 At next please copy the whole content of the expanded ZIP-File to your target webspace and go to its ./html/index.php file with your browser. If everything is done right "php mobile accounting" should open.
 
 
+Additional Information
+----------------------
+
+For additional information please go to the projects homepage under http://www.html5-haushaltsbuch.de.
