@@ -187,7 +187,7 @@ loadGuVMonth : function() {
 loadVerlauf : function(controller, action, parameter, kontenart_txt) {
     $("#account_show_monatssalden").html("Monatssalden werden geladen");
     
-    doGET(controller, action, parameter,
+    doGETwithCache(controller, action, parameter,
         function(data) {
             var table = "<table>";
             var code = "<b>Verlauf in Monaten: Kontenart: "+kontenart_txt+"</b><br/>";

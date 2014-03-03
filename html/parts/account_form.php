@@ -122,7 +122,7 @@ var kontenForm = {
         $("#account_show_monatssalden").show();
         $("#account_show_monatssalden").html("Monatssalden werden geladen");
 
-        doGET("verlauf", "monatssalden", {'id':kontenForm.selectedKontonummer},
+        doGETwithCache("verlauf", "monatssalden", {'id':kontenForm.selectedKontonummer},
             function(data) {
                 var table = "<table>";
                 var code = "<b>Monatssalden: "+kontenForm.selectedKontonummer+"</b><br/>";
@@ -150,7 +150,7 @@ var kontenForm = {
         $("#account_show_bookings").show();
         $("#account_show_bookings").html("wird geladen...");
         params = {'konto': kontenForm.selectedKontonummer};
-        doGET("buchung", "listbykonto", params,
+        doGETwithCache("buchung", "listbykonto", params,
             function(data) {
                 var tabelle = "<p>Saldo: "+data.saldo+"</p>";
                 tabelle += "<table><tr><td>BNr</td><td>BTxt</td><td>GKto</td>";
