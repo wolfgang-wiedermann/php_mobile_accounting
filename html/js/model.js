@@ -70,6 +70,9 @@ function AppViewModel() {
     m.privat.initKonten(self);  
     // Schnellbuchungen
     m.privat.initQuick(self);
+    // Buchungsmonate
+    m.privat.initMonate(self);
+
     // Buchungen
     self.saveBuchung = function(tmpModel) {
         buchungenForm.create(ko.toJSON(tmpModel.buchung()));
@@ -243,4 +246,36 @@ m.privat.initQuick = function(self) {
     self.deleteSelectedQuick = function() {
         adminForm.deleteAdminQuickTemplate(self.selectedquick);
     }
+};
+
+/*
+* Auswählbare Monate für Berichtsauswertung nach Monat laden und bereitstellen
+*/
+m.privat.initMonate = function(self) {
+    self.buchungsmonate = ko.observableArray([]);
+    self.selectedMonat = ko.observable('201403'); 
+
+    self.updateMonate = function(successHandler) {
+        doGETwithCache("ergebnis", "months", [], 
+            function(data) {
+                self.buchungsmonate.removeAll();
+                for(var i = 0; i < data.length; i++) { 
+                    if(i+1 === data.length) {
+                        self.buchungsmonate.push({'monat':data[i], 'selected':true});
+                        self.selectedMonat(data[i]);
+                    } else {
+                        self.buchungsmonate.push({'monat':data[i], 'selected':false});
+                    }
+                }
+                //$("#ergebnis_form_guv_months").selectmenu('refresh');
+
+                if(!!successHandler) {
+                    successHandler();
+                }
+            }, 
+            function(error) {
+                alert(error);
+            });
+    };
+    self.updateMonate();
 };

@@ -18,6 +18,12 @@
 </div>
 <!-- GuV -->
 <div id="ergebnis_form_guv" class="content_form">
+<div id="ergebnis_form_guv_controls">
+    <select id="ergebnis_form_guv_months" data-bind="value: $root.selectedMonat, options: buchungsmonate, optionsText: 'monat', optionsValue: 'monat'">
+    </select>
+</div>
+<div id="ergebnis_form_guv_inner">
+</div>
 </div>
 <!-- Verlauf -->
 <div id="ergebnis_form_verlauf" class="content_form">
@@ -54,6 +60,9 @@ registerErgebnisFormEvents : function() {
     $("#ergebnis_action_verlauf_gewinn").click(ergebnisForm.showVerlaufGewinn);
     $("#ergebnis_action_verlauf_frei").click(ergebnisForm.showVerlaufFreiVorauswahl);
     $("#ergebnis_action_verlauf_frei_anzeigen").click(ergebnisForm.showVerlaufFrei);
+
+    $("#ergebnis_form_guv_months").unbind("change");
+    $("#ergebnis_form_guv_months").change(ergebnisForm.loadGuVMonth);
 },    
 
 showBilanz : function() {
@@ -106,7 +115,8 @@ showVerlaufFrei : function() {
 loadBilanz : function() {
     doGETwithCache("ergebnis", "bilanz", [], 
         function(data) {
-            var html = "Bilanzdarstellung:<br/><table>";
+            var html = "Bilanzdarstellung:<br/>";
+            html += "<table>";
             for(var key in data.zeilen) {
                 var line = data.zeilen[key];
                 html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td><td>"+line.saldo+"</td></tr>";
@@ -131,6 +141,8 @@ loadBilanz : function() {
 },
 
 loadGuV : function() {
+    $("#ergebnis_form_guv_controls").hide();
+
     doGETwithCache("ergebnis", "guv", [], 
         function(data) {
             var html = "Gewinn und Verlust:<br/><table>";
@@ -149,7 +161,7 @@ loadGuV : function() {
                 html += "<tr><td>"+bezeichnung+"</td><td> "+erg.saldo+"</td></tr>";
             }
             html += "</table>";
-            $("#ergebnis_form_guv").html(html);
+            $("#ergebnis_form_guv_inner").html(html);
         }, 
         function(error) {
             alert(error);
@@ -158,9 +170,12 @@ loadGuV : function() {
 },
 
 loadGuVMonth : function() {
-    doGETwithCache("ergebnis", "guv_month", [], 
+    // Combobox anzeigen
+    $("#ergebnis_form_guv_controls").show();
+    var selectedMonth = $("#ergebnis_form_guv_months").val();
+    doGETwithCache("ergebnis", "guv_month", {'id':selectedMonth}, 
         function(data) {
-            var html = "<b>Gewinn und Verlust</b><br/> aktueller Monat:<br/><table>";
+            var html = "<b>Gewinn und Verlust</b><br/> einzelner Monat:<br/><table>";
             for(var key in data.zeilen) {
                 var line = data.zeilen[key];
                 html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td><td>"+line.saldo+"</td></tr>";
@@ -176,7 +191,8 @@ loadGuVMonth : function() {
                 html += "<tr><td>"+bezeichnung+"</td><td> "+erg.saldo+"</td></tr>";
             }
             html += "</table>";
-            $("#ergebnis_form_guv").html(html);
+            $("#ergebnis_form_guv_inner").html(html);
+            $("#ergebnis_form_guv_months").selectmenu('refresh');
         }, 
         function(error) {
             alert(error);

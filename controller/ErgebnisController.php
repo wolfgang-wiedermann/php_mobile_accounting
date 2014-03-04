@@ -16,11 +16,13 @@ function invoke($action, $request, $dispatcher) {
         case "guv":
             return $this->getGuV();
         case "guv_month":
-            return $this->getGuVMonth();
+            return $this->getGuVMonth($request);
         case "verlauf":
             return $this->getVerlauf($request);
         case "verlauf_gewinn":
             return $this->getVerlaufGewinn();
+        case "months":
+            return $this->getMonths();
         default:
             $message = array();
             $message['message'] = "Unbekannte Action";
@@ -54,7 +56,7 @@ function getBilanz() {
     return $result;
 }
 
-# Berechnet eine aktuelle Bilanz und liefert
+# Berechnet eine aktuelle GuV-Rechnung und liefert
 # sie als Array zurück
 function getGuV() {
     $db = getDbConnection();
@@ -81,11 +83,16 @@ function getGuV() {
     return $result;
 }
 
-# sie als Array zurück
-function getGuVMonth() {
+# Berechnet eine GuV-Rechnung fuer das angegebene oder aktuelle Monat
+# und liefert sie als Array zurück
+function getGuVMonth($request) {
+
+    // TODO: Monat aus dem Request auslesen und dann ggf. verwenden (ansonsten das jetzt verwenden)
+
     $db = getDbConnection();
     $rs = mysqli_query($db, "select konto, kontenname, sum(betrag) as saldo from fi_ergebnisrechnungen_base ".
-          " where mandant_id = $this->mandant_id and month(datum) = month(now()) and kontenart_id in (3, 4) group by konto, kontenname");
+          " where mandant_id = $this->mandant_id and month(datum) = month(now()) and kontenart_id in (3, 4) ".
+          "group by konto, kontenname");
     $zeilen = array();
     $result = array();
     while($erg = mysqli_fetch_object($rs)) {
@@ -107,6 +114,24 @@ function getGuVMonth() {
     $result['ergebnisse'] = $ergebnisse;
     mysqli_close($db);
     return $result;
+}
+
+function getMonths() {
+    $db = getDbConnection();
+    $months = array();
+
+    $sql =  "select distinct (year(datum)*100)+month(datum) as yearmonth ";
+    $sql .= " from fi_buchungen where mandant_id = ".$this->mandant_id;
+    $sql .= " order by yearmonth";
+
+    $rs = mysqli_query($db, $sql);
+    while($obj = mysqli_fetch_object($rs)) {
+        $months[] = $obj->yearmonth;
+    }
+
+    mysqli_free_result($rs);
+    mysqli_close($db);
+    return $months;
 }
 
 # Verlauf Aufwand, Ertrag, Aktiva und Passiva in Monatsraster
