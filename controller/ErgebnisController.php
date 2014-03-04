@@ -87,11 +87,19 @@ function getGuV() {
 # und liefert sie als Array zurück
 function getGuVMonth($request) {
 
-    // TODO: Monat aus dem Request auslesen und dann ggf. verwenden (ansonsten das jetzt verwenden)
+    // Monat aus dem Request auslesen und dann ggf. verwenden (ansonsten das jetzt verwenden)
+    $month_id = 'Undef';
+    if(array_key_exists('id', $request)) {
+        $month_id = $request['id'];
+    }
+    if(!is_numeric($month_id)) {
+        $month_id = date('Ym');
+    }
+    //error_log($month_id);
 
     $db = getDbConnection();
     $rs = mysqli_query($db, "select konto, kontenname, sum(betrag) as saldo from fi_ergebnisrechnungen_base ".
-          " where mandant_id = $this->mandant_id and month(datum) = month(now()) and kontenart_id in (3, 4) ".
+          " where mandant_id = $this->mandant_id and (year(datum)*100)+month(datum) = ".$month_id." and kontenart_id in (3, 4) ".
           "group by konto, kontenname");
     $zeilen = array();
     $result = array();
@@ -101,12 +109,12 @@ function getGuVMonth($request) {
     $result['zeilen'] = $zeilen;
     $rs = mysqli_query($db, "select kontenart_id, sum(betrag) saldo from fi_ergebnisrechnungen_base
         where mandant_id = $this->mandant_id and kontenart_id in (3, 4) and gegenkontenart_id not in (5) 
-          and month(datum) = month(now())
+          and (year(datum)*100)+month(datum) = ".$month_id."
         group by kontenart_id
         union 
         select '5', sum(betrag) saldo from fi_ergebnisrechnungen_base 
         where mandant_id = $this->mandant_id and kontenart_id in (3, 4) and gegenkontenart_id not in (5) 
-          and month(datum) = month(now())");
+          and (year(datum)*100)+month(datum) = ".$month_id);
     $ergebnisse = array();
     while($erg = mysqli_fetch_object($rs)) {
         $ergebnisse[] = $erg;
