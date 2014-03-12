@@ -41,7 +41,7 @@ function getUser() {
 # Ermittlung der Benutzer-ID des aktuell angemeldeten Benutzers
 # (Zur Nutzung im jeweiligen Controller)
 function getUserId() {
-    return $this-> user_id;
+    return $this->user_id;
 }
 
 # Methode zum Encodieren von Arrays in *.csv-Strings
@@ -75,17 +75,21 @@ function csvEncode($data) {
 # Methode zum uebergeben des Benutzers an den Dispatcher
 # ermittelt den zugeordneten Mandanten und setzt dessen id in das Feld $this->mandant_id
 function setRemoteUser($user) {
-    $db = getDbConnection();
-    $this->user = $user;
-    $rs = mysqli_query($db, "select mandant_id, user_id from fi_user where user_name = '$user'");
-    if($rs && $obj = mysqli_fetch_object($rs)) {
-        $this->mandant = $obj->mandant_id;
-        $this->user_id = $obj->user_id;
+    if($this->isValidUserName($user)) {
+        $db = getDbConnection();
+        $this->user = $user;
+        $rs = mysqli_query($db, "select mandant_id, user_id from fi_user where user_name = '$user'");
+        if($rs && $obj = mysqli_fetch_object($rs)) {
+            $this->mandant = $obj->mandant_id;
+            $this->user_id = $obj->user_id;
+        } else {
+            throw new Exception("Kein Mandant für den Benutzer $user konfiguriert");
+        }
+        mysqli_close($db);
+        //logX("Remote use ".$this->user." registered");
     } else {
-        throw new Exception("Kein Mandant für den Benutzer $user konfiguriert");
+        throw new Exception("Der Benutzername enthält ungültige Zeichen");
     }
-    mysqli_close($db);
-    logX("Remote use ".$this->user." registered");
 }
 
 # Ein Objekt der angefragten Controller-Klasse laden
@@ -113,6 +117,13 @@ function isValidControllerName() {
     # Regex: [^a-zA-Z0-9]
     $pattern = '/[^a-zA-Z0-9]/';
     preg_match($pattern, $this->getControllerString(), $results);
+    return count($results) == 0;
+}
+
+# Prüft, ob der Benutzername keine ungültigen Zeichen enthält
+function isValidUserName($username) {
+    $pattern = "/[']/";
+    preg_match($pattern, $username, $results);
     return count($results) == 0;
 }
 
