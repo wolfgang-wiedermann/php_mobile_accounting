@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `fi_buchungen` (
   `datum` date NOT NULL,
   `bearbeiter_user_id` integer DEFAULT NULL,
   PRIMARY KEY (`buchungsnummer`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Stellvertreter-Struktur des Views `fi_buchungen_view`
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `fi_kontenart` (
   `kontenart_id` int(11) NOT NULL AUTO_INCREMENT,
   `bezeichnung` varchar(256) DEFAULT NULL,
   PRIMARY KEY (`kontenart_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Daten für Tabelle `fi_kontenart`
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `fi_konto` (
   `bezeichnung` varchar(256) NOT NULL,
   `kontenart_id` int(11) NOT NULL,
   PRIMARY KEY (`mandant_id`, `kontonummer`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Tabellenstruktur für Tabelle `fi_user`
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `fi_user` (
   `create_date` date NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY (`user_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Tabellenstruktur für Tabelle `fi_mandant`
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `fi_mandant` (
   `primary_user_id` int(11) NOT NULL,
   `create_date` date NOT NULL,
   PRIMARY KEY (`mandant_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -140,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `fi_quick_config` (
   `buchungstext` varchar(256) DEFAULT NULL,
   `betrag` decimal(12,2) DEFAULT NULL,
   PRIMARY KEY (`config_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
