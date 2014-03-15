@@ -7,7 +7,7 @@
 require_once("../lib/Database.php");
 $db = getDbConnection();
 
-$mandantenzahl = 100;
+$mandantenzahl = 500;
 
 $aktivkonten = array();
 $passivkonten = array();
@@ -30,7 +30,7 @@ while($obj = mysqli_fetch_object($rs)) {
 
 mysqli_free_result($rs);
 
-for($i = 0; $i < 10000; $i++) {
+for($i = 0; $i < 100000; $i++) {
     $mandant_id = rand(1, $mandantenzahl);
     $datum = "2015-".rand(1, 12)."-01";
     if($i % 4 == 0) {
