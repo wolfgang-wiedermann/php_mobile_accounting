@@ -211,7 +211,7 @@ loadGuVMonth : function() {
 },
 
 loadCacheFlow : function() {
-    $("#account_show_monatssalden").html("Cacheflow-Darstellung wird geladen");    
+    $("#account_show_monatssalden").html("Cacheflow-Darstellung wird geladen");
     // TODO: Noch mit flexibel wählbaren Aktiv-Konten gestalten!
     doGETwithCache('verlauf', 'cashflow', {id:'2800', side:'H'},
         function(data) {
