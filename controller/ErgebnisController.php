@@ -126,7 +126,7 @@ function getMonthFromRequest($request) {
     if(!is_numeric($month_id)) {
         $month_id = date('Ym');
     }
-	return $month_id;
+    return $month_id;
 }
 
 # Liefert eine Liste der gültigen Monate aus den Buchungen des Mandanten
