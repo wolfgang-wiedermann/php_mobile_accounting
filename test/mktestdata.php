@@ -52,7 +52,6 @@ for($i = 0; $i < 100000; $i++) {
 
     mysqli_query($db, $sql);
 }
-mysqli_query($db, $sql);
 
 mysqli_close($db);
 ?>
