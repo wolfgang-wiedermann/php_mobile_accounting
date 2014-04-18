@@ -1,0 +1,7 @@
+AuthType Basic 
+AuthUserFile .htpasswd 
+AuthName "Buchhaltung" 
+
+order deny,allow
+allow from all
+require valid-user
