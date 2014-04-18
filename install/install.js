@@ -17,6 +17,28 @@
  * USA
  */
 
+/**
+* Funktion zum Absetzen eines POST-Requests
+* @param controller = Bezeichnung des Controllers als String (wie in URL)
+* @param action = Bezeichnung der Action als String
+* @param parameterObject = Parameter als JSON-Objekt (String)
+* @param successHandler = Funktions-Handle für Erfolgsfall
+* @param errorHandler = Funktions-Handle für Fehlerfall
+*/
+function doPOST(controller, action, parameterObject, successHandler, errorHandler) {
+    $.ajax({
+        type: 'POST',
+        url: "./install/rpc.php?controller="+controller+"&action="+action,
+        dataType:"json",
+        contentType:"application/json",
+        data: parameterObject,
+    }).done(function(data) {
+        successHandler(data);
+    }).fail(function(error) {
+        errorHandler(error);
+    });
+}
+
 // Knockout-Model für den Installer
 function InstallerModel() {
   var self = this;
@@ -35,9 +57,37 @@ function DatabaseModel() {
   self.username = ko.observable("");
   self.password = ko.observable("");
 
-  // TODO: Methode für onTestConnection
+  // Methode für onTestConnection
+  self.onTestConnection = function(obj) {
+      var param = ko.toJSON(self);
+      doPOST("installation", "checkdbsettings", param,
+          // Erfolgsfall: Datenbankverbindung ist brauchbar
+          function(data) {
+              alert('Die angegebenen Verbindungsdaten sind brauchbar: '+data);
+          }, 
+          // Fehlerfall: Verbindungsdaten sind unbrauchbar
+          function(error) {
+              alert('Mit den angegebenen Daten kann keine Verbindung aufgebaut werden: '+error.statusText);
+          }
+      );
+  };
 
   // TODO: Methode für storeConnectionSettings
+  self.onStoreConnection = function(obj) {
+      var param = ko.toJSON(self);
+      doPOST("installation", "storedbsettings", param,
+          // Erfolgsfall: Datenbankverbindung ist brauchbar
+          function(data) {
+              alert('Die angegebenen Verbindungsdaten wurden gespeichert: '+data);
+              $.mobile.navigate("#database_create_schema");
+          },
+          // Fehlerfall: Verbindungsdaten sind unbrauchbar
+          function(error) {
+              alert('Die Datei konnte nicht gespeichert werden: '+error.statusText);
+          }
+      );
+ 
+  }
 }
 
 // Model für die erfassten Haushaltsbuch-Benutzer

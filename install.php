@@ -45,9 +45,9 @@ Bitte beginnen Sie die Installation durch einen Klick auf den Button "Weiter"<br
 <label for="database_password_tf">Datenbankpasswort</label>
 <input id="database_password_tf" type="password" data-bind="value:database.password"/>
 <br/>
-<button id="test_btn_database_config">Verbindung testen</button>
+<button id="test_btn_database_config" data-bind="click:database.onTestConnection">Verbindung testen</button>
 <a href="#database_create_schema" id="weiter_btn_database_config" data-role="button" 
-   data-icon="arrow-r" data-iconpos="right">Weiter</a>
+   data-icon="arrow-r" data-iconpos="right" data-bind="click:database.onStoreConnection">Weiter</a>
 </div>
 </div>
 
