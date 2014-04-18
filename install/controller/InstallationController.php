@@ -30,6 +30,8 @@ function invoke($action, $request, $dispatcher) {
             return $this->checkDatabaseSettings($request);
         case "storedbsettings":
             return $this->storeDatabaseSettings($request);
+        case "createdbschema":
+            return $this->createDatabaseSchema();
         default:
             throw new ErrorException("Unbekannte Action");
     }
@@ -77,7 +79,7 @@ function storeDatabaseSettings($request) {
     $this->checkDatabaseSettings($request);
    
     // Konfigurationsdatei laden 
-    $path = "../lib/Database.php";
+    $path = substr(getcwd(), 0, strlen(getcwd())-7)."lib/Database.php";
     $content = file_get_contents($path.".template");
 
     // Felder ersetzen
@@ -87,9 +89,57 @@ function storeDatabaseSettings($request) {
     $content = str_replace('databasename', $input['database'], $content);
 
     // Konfigurationsdatei speichern
-    file_put_contents($path, $content);
+    $response = array();
+    try {
+        file_put_contents($path, $content);
+        $response['isError'] = FALSE;
+        $response['message'] = "Erfolgreich als $path gespeichert.\nAktuelles Verzeichnis:".getcwd();
+        return $response;
 
-    return "Erfolgreich als $path gespeichert";
+    } catch(Exception $ex) {
+        if(file_exists($path)) {
+          $response['isError'] = FALSE;
+          $response['message'] = "Die Datei $path existiert bereits und wurde nicht überschrieben";
+        } else {
+          $response['isError'] = TRUE;
+          $response['message'] = "Die Datei $path konnte nicht geschrieben werden, keine Schreibrechte vorhanden!";
+          $response['content'] = $content;
+        }
+        return $response;
+    } 
+}
+
+# Anlegen des Datenbankschemas
+# unter Verwendung von sql/create-tables-and-views.sql
+function createDatabaseSchema() {
+    $sql = file_get_contents("../sql/create-tables-and-views.sql");
+    require_once("../lib/Database.php");
+
+    $sql_statements = explode(";", $sql);
+
+    $db = getDbConnection();
+    foreach($sql_statements as $sql) {
+      #error_log($sql);
+      mysqli_query($db, $sql);
+
+      $error = mysqli_error($db);
+      if($error != null && $error != "Query was empty") {
+        mysqli_close($db);
+        $result = array();
+        $result['isError'] = TRUE;
+        $result['message'] = "Datenbankfehler aufgetreten: $error";
+        $result['sql'] = $sql;
+        return $result;
+      }
+ 
+   }
+
+   mysqli_close($db);
+   $result = array();
+   $result['isError'] = FALSE;
+   $result['message'] = "Schema erfolgreich angelegt.";
+   return $result;
+    
 }
 
 }

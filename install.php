@@ -70,7 +70,7 @@ Ist Ihre Datenbank leer oder enth&auml;lt sie keine Tabellen, die mit fi_ beginn
 Sie durck einen Klick auf den Button "Weiter" das Datenbankschema generieren und 
 mit der Installation fortfahren.<br/>
 <a href="#user_config" id="weiter_btn_database_create_schema" data-role="button" 
-   data-icon="arrow-r" data-iconpos="right">Weiter</a>
+   data-icon="arrow-r" data-iconpos="right" data-bind="click:onCreateDbSchema">Weiter</a>
 </div>
 </div>
 

@@ -45,7 +45,22 @@ function InstallerModel() {
   self.database = new DatabaseModel();
   self.user = new UserModel();
 
-  // TODO: hier noch die Aktionen Auflisten, die ich auf data-bind:click registriere!
+  // hier noch die Aktionen Auflisten, die ich auf data-bind:click registriere!
+  self.onCreateDbSchema = function() {
+    doPOST("installation", "createdbschema", "",
+      function (data) {
+        if(data.isError) {
+          alert("Fehler aufgetreten: "+data.message);
+        } else {
+          alert("Erfolg: "+data.message);
+          $.mobile.navigate("#user_config");
+        }
+      },
+      function (error) {
+        alert("Fehler aufgetreten: "+error.statusText);
+      }
+    );
+  };
 }
 
 // Model für die Datenbank-Verbindungsdaten
@@ -72,14 +87,21 @@ function DatabaseModel() {
       );
   };
 
-  // TODO: Methode für storeConnectionSettings
+  // Methode für storeConnectionSettings
   self.onStoreConnection = function(obj) {
       var param = ko.toJSON(self);
       doPOST("installation", "storedbsettings", param,
           // Erfolgsfall: Datenbankverbindung ist brauchbar
           function(data) {
-              alert('Die angegebenen Verbindungsdaten wurden gespeichert: '+data);
+            if(data.isError) {
+              $("#fehler_ausgeben_meldung").html("<h2>"+data.message
+                +"</h2><p>Bitte diesen Text in die angegebene Datei kopieren.</p><textarea cols=\"60\" rows=\"8\">"+data.content+"</textarea>");
+              $('textarea').textinput();
+              $.mobile.navigate("#fehler_ausgeben");
+            } else {
+              alert('Die angegebenen Verbindungsdaten wurden gespeichert: '+data.message);
               $.mobile.navigate("#database_create_schema");
+            }
           },
           // Fehlerfall: Verbindungsdaten sind unbrauchbar
           function(error) {
