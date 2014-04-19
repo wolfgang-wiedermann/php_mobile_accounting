@@ -34,6 +34,8 @@ function invoke($action, $request, $dispatcher) {
             return $this->createDatabaseSchema();
         case "adduser":
             return $this->addUser($request);
+        case "sethtaccess":
+            return $this->setHtAccess();
         default:
             throw new ErrorException("Unbekannte Action");
     }
@@ -81,7 +83,7 @@ function storeDatabaseSettings($request) {
     $this->checkDatabaseSettings($request);
    
     // Konfigurationsdatei laden 
-    $path = substr(getcwd(), 0, strlen(getcwd())-7)."lib/Database.php";
+    $path = $this->getAppRootDir()."lib/Database.php";
     $content = file_get_contents($path.".template");
 
     // Felder ersetzen
@@ -150,15 +152,11 @@ function addUser($request) {
     $inputJSON = file_get_contents("php://input");
     $input = json_decode($inputJSON, TRUE);
 
-    error_log(print_r($input, TRUE));
-    error_log($this->createHtpasswdEntry('test', 'test'));
-    error_log($this->htpasswd('test'));
-
     if(!$this->isValidBenutzerObject($input)) {
        throw new Exception("Fehler: Das übergebene Benutzerobjekt ist fehlerhaft");
     }
 
-    $appRootDir = substr(getcwd(), 0, strlen(getcwd())-7);
+    $appRootDir = $this->getAppRootDir();
 
     // evtl. bestehende .htpasswd auslesen (um ggf. neuen Benutzer anzufügen)
     $htpasswd = $this->getExistingHtpasswd($appRootDir);
@@ -192,10 +190,38 @@ function addUser($request) {
     }
 }
 
+# .htaccess-Datei erstellen und auf .htpasswd verweisen
+function setHtAccess() {
+   $appRootDir = $this->getAppRootDir();
+   $htaccess = file_get_contents($appRootDir."htaccess.template");
+   $htaccess = str_replace("%PATH_TO_HTPASSWD%", $appRootDir.".htpasswd", $htaccess);
+
+   if(is_writable($appRootDir) 
+      || (file_exists($appRootDir.".htaccess") && is_writable($appRootDir.".htaccess"))) {
+
+      file_put_contents($appRootDir.".htaccess", $htaccess);
+
+      $message = array();
+      $message['isError'] = FALSE;
+      $message['message'] = "Der Passwortschutz Ihrer Anwendung wurde aktiviert";
+      return $message;
+   } else {
+      $message = array();
+      $message['isError'] = TRUE;
+      $message['message'] = "Die .htaccess-Datei konnte nicht nach $appRootDir geschrieben werden.";
+      $message['htaccess'] = $htaccess;
+      return $message;
+   }
+}
+
 # Installation abschließen
-# htaccess.template nach .htaccess kopieren und darin den Pfad zur .htpasswd ersetzen
 function finishInstallation() {
 
+}
+
+# Ermittelt das Stammverzeichnis der Installation des HTML5-Haushaltsbuchs
+private function getAppRootDir() {
+    return substr(getcwd(), 0, strlen(getcwd())-7);
 }
 
 # Prüft, ob ein übergebenes Benutzerobjekt das korrekte Format hat.

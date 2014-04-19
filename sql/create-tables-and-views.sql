@@ -236,4 +236,5 @@ order by `buchungsnummer`,`buchungsart`;
 
 -- --------------------------------------------------------
 
-
+-- Mandant 1 Anlegen
+insert into fi_mandant values(0, 'Standardmandant', 1, now()); 

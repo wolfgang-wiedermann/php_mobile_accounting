@@ -61,6 +61,28 @@ function InstallerModel() {
       }
     );
   };
+
+  // .htaccess-Datei scharf schalten
+  self.onActivateHtaccess = function() {
+    doPOST("installation", "sethtaccess", "",
+      function (data) {
+        if(data.isError) {
+           // Fehler im Dialog anzeigen
+           $("#fehler_ausgeben_meldung").html("<h2>"+data.message
+                +"</h2><p>Bitte diesen Text in die angegebene Datei kopieren.</p>"
+                +"<textarea cols=\"60\" rows=\"8\">"+data.htaccess+"</textarea>");
+              $('textarea').textinput();
+              $.mobile.navigate("#fehler_ausgeben");
+        } else {
+           alert(data.message);
+           $.mobile.navigate("#installation_abschliessen");
+        }
+      },
+      function (error) {
+        alert("Fehler aufgetreten: "+error.statusText);
+      }
+    );
+  };
 }
 
 // Model für die Datenbank-Verbindungsdaten

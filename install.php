@@ -89,8 +89,8 @@ Sie sich sp&auml;ter am Haushaltsbuch anmelden k&ouml;nnen.
 <button id="user_create_btn" data-bind="click:user.onCreateUser">Benutzer anlegen</button>
 <ul id="user_created_users_list">
 </ul>
-<a href="#installation_abschliessen" id="finish_installation_btn" data-role="button"
-   data-icon="arrow-r" data-iconpos="right">Installation abschlie&szlig;en</a>
+<a id="finish_installation_btn" data-role="button"
+   data-icon="arrow-r" data-iconpos="right" data-bind="click:onActivateHtaccess">Installation abschlie&szlig;en</a>
 </div>
 </div>
 
