@@ -198,8 +198,15 @@ function setHtAccess() {
 
    if(is_writable($appRootDir) 
       || (file_exists($appRootDir.".htaccess") && is_writable($appRootDir.".htaccess"))) {
-
-      file_put_contents($appRootDir.".htaccess", $htaccess);
+      try {
+         file_put_contents($appRootDir.".htaccess", $htaccess);
+      } catch(ErrorException $ex) {
+         $message = array();
+         $message['isError'] = TRUE;
+         $message['message'] = "Die .htaccess-Datei konnte nicht nach $appRootDir geschrieben werden.";
+         $message['htaccess'] = $htaccess;
+         return $message;
+      }
 
       $message = array();
       $message['isError'] = FALSE;
