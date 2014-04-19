@@ -1,4 +1,22 @@
 <?php
+/*
+ * Copyright (c) 2013 by Wolfgang Wiedermann
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 3 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+ * USA
+ */
 
 class VerlaufController {
 
@@ -11,6 +29,8 @@ function invoke($action, $request, $dispatcher) {
     switch($action) {
         case "monatssalden":
             return $this->getMonatsSalden($request['id']);
+        case "cashflow":
+            return $this->getCashFlow($request['id'], $request['side']);
         default:
             throw new ErrorException("Unbekannte Action");
     }
@@ -63,6 +83,62 @@ function getMonatsSalden($kontonummer) {
             throw new Exception("Mindestens eine Kontonummer ist unbekannt");
         }
     } else throw new Exception("Mindestens eine Kontonummer ist nicht numerisch");
+}
+
+# Ermittelt die monatlichen Werte des Zu- oder Abfluss 
+# ($side = S => Sollbuchungen)
+# ($side = H => Habenbuchungen)
+# von Aktivkonten. Bei anderen Kontenarten wird eine
+# Exception zurückgeliefert
+function getCashFlow($kontonummer, $side) {
+    $values = array();
+    if($this->isAktivKonto($kontonummer)) {
+        $db = getDbConnection();
+        
+        if($side == 'S') {
+            $sql = "select (year(datum)*100)+month(datum) as grouping, sum(betrag) as saldo ";
+            $sql .= "from fi_buchungen where mandant_id = ".$this->mandant_id;
+            $sql .= " and sollkonto = '".$kontonummer."' ";
+            $sql .= " and year(datum) >= year(now())-1 ";
+            $sql .= " and year(datum) <= year(now()) ";
+            $sql .= "group by (year(datum)*100)+month(datum);";
+        } else if($side == 'H') {
+            $sql = "select (year(datum)*100)+month(datum) as grouping, sum(betrag) as saldo ";
+            $sql .= "from fi_buchungen where mandant_id = ".$this->mandant_id;
+            $sql .= " and habenkonto = '".$kontonummer."' ";
+            $sql .= " and year(datum) >= year(now())-1 ";
+            $sql .= " and year(datum) <= year(now()) ";
+            $sql .= "group by (year(datum)*100)+month(datum);";
+        } else {
+            mysqli_close($db);
+            throw new Exception("Gültige Werte für side sind S und H");
+        }
+
+        $rs = mysqli_query($db, $sql);
+        while($obj = mysqli_fetch_object($rs)) {
+            $values[] = $obj;
+        }
+        mysqli_free_result($rs);
+        mysqli_close($db);
+    } else {
+        throw new Exception("getCashFlow ist nur für Aktiv-Konten verfügbar");
+    }
+    return $values;
+}
+
+# Prüft, ob das angegebene Konto ein Aktiv-Konto ist.
+function isAktivKonto($kontonummer) {
+    if(!is_numeric($kontonummer)) return false;
+    $db = getDbConnection();
+    $rs = mysqli_query($db, "select kontenart_id from fi_konto "
+                            ."where mandant_id = ".$this->mandant_id
+                            ." and kontonummer = '".$kontonummer."'");
+    $isActive = false;
+    if($obj = mysqli_fetch_object($rs)) {
+        $isActive = $obj->kontenart_id == 1; // Ist Aktiv-Konto
+    }
+    mysqli_close($db);
+    return $isActive;
 }
 
 # Macht aus einer oder mehreren durch Komma getrennten Kontonummern

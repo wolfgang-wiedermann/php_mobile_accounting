@@ -1,3 +1,23 @@
+<?php 
+/*
+ * Copyright (c) 2013 by Wolfgang Wiedermann
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 3 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+ * USA
+ */
+?>
 <?php defined("MAIN_PAGE") or die("Fehlende Berechtigung, Seite darf nur aus index.php geladen werden"); ?>
 <!-- Funktionsauswahl - Buchungen -->
 <div id="ergebnis_form" class="content_form">
@@ -10,6 +30,7 @@
     <li><a href="#" id="ergebnis_action_verlauf_aufwand" class="ergebnis_form_item">Aufwand (Monate)</a></li>
     <li><a href="#" id="ergebnis_action_verlauf_ertrag" class="ergebnis_form_item">Ertrag (Monate)</a></li>
     <li><a href="#" id="ergebnis_action_verlauf_gewinn" class="ergebnis_form_item">Gewinn (Monate)</a></li>
+    <li><a href="#" id="ergebnis_action_cacheflow" class="ergebnis_form_item">Zu- und Abfluss (Monate)</a></li>
     <li><a href="#" id="ergebnis_action_verlauf_frei" class="ergebnis_form_item">Frei kombiniert (Monate)</a></li>
 </ul>
 </div>
@@ -59,6 +80,7 @@ registerErgebnisFormEvents : function() {
     $("#ergebnis_action_verlauf_ertrag").click(ergebnisForm.showVerlaufErtrag);
     $("#ergebnis_action_verlauf_gewinn").click(ergebnisForm.showVerlaufGewinn);
     $("#ergebnis_action_verlauf_frei").click(ergebnisForm.showVerlaufFreiVorauswahl);
+    $("#ergebnis_action_cacheflow").click(ergebnisForm.showVerlaufCacheFlow);
     $("#ergebnis_action_verlauf_frei_anzeigen").click(ergebnisForm.showVerlaufFrei);
 
     $("#ergebnis_form_guv_months").unbind("change");
@@ -110,6 +132,14 @@ showVerlaufFrei : function() {
     $(".content_form").hide();
     $("#ergebnis_form_verlauf").show();
     ergebnisForm.loadVerlaufFrei();
+},
+
+showVerlaufCacheFlow : function() {
+    alert("TODO: Diese Funktion muss noch implementiert werden");
+    // http://localhost/fibu/index.php?controller=verlauf&action=cashflow&id=2800&side=S
+    $(".content_form").hide();
+    $("#ergebnis_form_verlauf").show();
+    ergebnisForm.loadCacheFlow();
 },
 
 loadBilanz : function() {
@@ -196,6 +226,34 @@ loadGuVMonth : function() {
         }, 
         function(error) {
             alert(error);
+        }
+    );
+},
+
+loadCacheFlow : function() {
+    $("#account_show_monatssalden").html("Cacheflow-Darstellung wird geladen");
+    // TODO: Noch mit flexibel wählbaren Aktiv-Konten gestalten!
+    doGETwithCache('verlauf', 'cashflow', {id:'2800', side:'H'},
+        function(data) {
+            var table = "<table>";
+            var code = "<b>Mittelablfuss: Konto: 2800</b><br/>";
+            code += '<div id="ergebnis_show_monatssalden_table"></div>';
+            code += '<canvas id="ergebnis_show_monatssalden_canvas" width="300px" height="300px"></canvas>';
+            $("#ergebnis_form_verlauf").html(code);
+            d.init("ergebnis_show_monatssalden_canvas");
+            d.setToWindowWidth();
+            var diagrammData = [];
+            for(var key in data) {
+                diagrammData.push(data[key].saldo);
+                table += "<tr><td>"+data[key].grouping+"</td><td>"+data[key].saldo+"</td></tr>";
+            }
+            table += "</table>";
+            $("#ergebnis_show_monatssalden_table").html(table);
+            d.drawLineDiagramFor(diagrammData);
+        }, 
+        function(error) {
+            $("#account_show_monatssalden").html("Es ist ein Fehler aufgetreten, die Daten konnten nicht geladen werden");
+            console.log(error);
         }
     );
 },
