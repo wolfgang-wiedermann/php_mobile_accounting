@@ -86,7 +86,7 @@ Sie sich sp&auml;ter am Haushaltsbuch anmelden k&ouml;nnen.
 <input id="user_name_tf" type="text" data-bind="value:user.username"/>
 <label for="user_password_tf">Passwort</label>
 <input id="user_password_tf" type="password" data-bind="value:user.password"/>
-<button id="user_create_btn">Benutzer anlegen</button>
+<button id="user_create_btn" data-bind="click:user.onCreateUser">Benutzer anlegen</button>
 <ul id="user_created_users_list">
 </ul>
 <a href="#installation_abschliessen" id="finish_installation_btn" data-role="button"

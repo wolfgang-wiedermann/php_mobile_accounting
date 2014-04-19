@@ -32,6 +32,8 @@ function invoke($action, $request, $dispatcher) {
             return $this->storeDatabaseSettings($request);
         case "createdbschema":
             return $this->createDatabaseSchema();
+        case "adduser":
+            return $this->addUser($request);
         default:
             throw new ErrorException("Unbekannte Action");
     }
@@ -140,6 +142,114 @@ function createDatabaseSchema() {
    $result['message'] = "Schema erfolgreich angelegt.";
    return $result;
     
+}
+
+# Fügt einen Benutzer für das Haushaltsbuch hinzu
+# (Alle Benutzer werden dem automatisch angelegten Mandanten 1 zugeordnet!)
+function addUser($request) {
+    $inputJSON = file_get_contents("php://input");
+    $input = json_decode($inputJSON, TRUE);
+
+    error_log(print_r($input, TRUE));
+    error_log($this->createHtpasswdEntry('test', 'test'));
+    error_log($this->htpasswd('test'));
+
+    if(!$this->isValidBenutzerObject($input)) {
+       throw new Exception("Fehler: Das übergebene Benutzerobjekt ist fehlerhaft");
+    }
+
+    $appRootDir = substr(getcwd(), 0, strlen(getcwd())-7);
+
+    // evtl. bestehende .htpasswd auslesen (um ggf. neuen Benutzer anzufügen)
+    $htpasswd = $this->getExistingHtpasswd($appRootDir);
+    $htpasswd .= $this->createHtpasswdEntry($input['username'], $input['password']);
+
+    error_log("HTPASSWD: ".$htpasswd);
+
+    // Benutzer in fi_users eintragen
+    $this->addUserToDb($input['username']);
+
+    // Prüfen, ob schreibrechte im ROOT-Verzeichnis des Haushaltsbuchs vorliegen
+    if(is_writeable($appRootDir) || is_writeable($appRootDir.".htpasswd")) {
+       file_put_contents($appRootDir.".htpasswd", $htpasswd);
+       
+       $message = array();
+       $message['isError'] = FALSE;
+       $message['message'] = "Der Benutzer wurde erfolgreich in die Datei .htpasswd im Ordner $appRootDir geschrieben "
+                            ."und in der Datenbank dem Mandanten 1 zugeordnet";
+      
+       return $message; 
+    } else {
+       // 2. Wenn nein, inhalt der .htpasswd bei Weiter anzeigen 
+       //    (mit Hinweis wohin die Datei soll)
+       $message = array();
+       $message['isError'] = TRUE;
+       $message['message'] = "Der Benutzer konnte der Datei .htpasswd nicht hinzugefügt werden. Bitte legen Sie diese "
+                            ."manuell im Ordner $appRootDir an. Die Zuordnung des Benutzers zu Mandant 1 in der "
+                            ."Datenbank wurde ausgeführt.";
+       $message['htpasswd'] = $htpasswd;
+       return $message;
+    }
+}
+
+# Installation abschließen
+# htaccess.template nach .htaccess kopieren und darin den Pfad zur .htpasswd ersetzen
+function finishInstallation() {
+
+}
+
+# Prüft, ob ein übergebenes Benutzerobjekt das korrekte Format hat.
+private function isValidBenutzerObject($input) {
+   if(!(array_key_exists('username', $input) 
+        && array_key_exists('password', $input))) {
+      return false;
+   }
+   $pattern = '/[\']/';
+
+   preg_match($pattern, $input['username'], $results);
+   $username_ok = count($results) == 0;
+
+   preg_match($pattern, $input['password'], $results);
+   $password_ok = count($results) == 0;
+
+   return $username_ok && $password_ok;
+}
+
+# Speichern eines Nutzers in der Datenbank
+# Mit automatischer Zuordnung zu Mandant 1
+private function addUserToDb($username) {
+    require_once("../lib/Database.php");
+    $db = getDbConnection();
+
+    $sql = "insert into fi_user values(0, '$username', 'Benutzer: $username', 1, now())";
+    mysqli_query($db, $sql);
+
+    mysqli_close($db);
+}
+
+# Auslesen einer mglw. bestehenden .htpasswd-Datei
+private function getExistingHtpasswd($appRootDir) {
+    if(file_exists($appRootDir.".htpasswd")) {
+       $htpasswd = file_get_contents($appRootDir.".htpasswd");
+       return $htpasswd;
+    } else {
+       return "";
+    }
+}
+
+# Baut den String für einen htpasswd-Benutzereintrag zusammen
+# und gibt diesen als Rückgabewert zurück
+private function createHtpasswdEntry($username, $passwd) {
+    return "".$username.":".$this->htpasswd($passwd)."\n";
+}
+
+# Interne Hilfsfunktion
+# Verschlüsselt ein gegebenes Passwort passend für eine
+# .htpasswd-Datei
+private function htpasswd($passwd) {
+  // Alter Ansatz mit Unix-Crypt -> unsafe  
+  //return crypt($passwd, base64_encode($passwd));
+  return "{SHA}".base64_encode(sha1($passwd, true));
 }
 
 }

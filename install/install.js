@@ -118,7 +118,26 @@ function UserModel() {
   self.username = ko.observable("");
   self.password = ko.observable("");
 
-  // TODO: Methode für createUser
+  // Methode für createUser
+  self.onCreateUser = function() {
+    var param = ko.toJSON(self);
+    doPOST("installation", "adduser", param,
+      function(data) {
+        if(data.isError) {
+          $("#fehler_ausgeben_meldung").html("<h2>"+data.message+"</h2>"
+               +"<p>Bitte diesen Text in die angegebene Datei kipieren.</p>"
+               +"<textarea>"+data.htpasswd+"</textarea>");
+          $("textarea").textinput();
+          $.mobile.navigate("#fehler_ausgeben");
+        } else {
+          alert("Der angegebene Benutzer wurde gespeichert");
+        }
+      }, 
+      function(error) {
+         alert('Fehler aufgetreten: '+error.statusText);
+      }
+    );
+  };
 }
 
 // Model initialisieren und in Knockout.js laden
