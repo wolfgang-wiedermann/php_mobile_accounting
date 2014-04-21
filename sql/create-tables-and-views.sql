@@ -236,4 +236,8 @@ order by `buchungsnummer`,`buchungsart`;
 
 -- --------------------------------------------------------
 
+-- Mandant 1 Anlegen
+insert into fi_mandant values(0, 'Standardmandant', 1, now());
 
+-- Template für Schnellbuchungen anlegen
+insert into fi_quick_config values(1, 1, 'Template', '0000', '0000', 'Template', 0); 

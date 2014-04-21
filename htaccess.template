@@ -1,6 +1,6 @@
 AuthType Basic 
-AuthUserFile .htpasswd 
-AuthName "Buchhaltung" 
+AuthUserFile %PATH_TO_HTPASSWD% 
+AuthName "html5-haushaltsbuch" 
 
 order deny,allow
 allow from all
