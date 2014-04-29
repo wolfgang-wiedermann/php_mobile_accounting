@@ -35,9 +35,9 @@ function invoke($action, $request, $dispatcher) {
 function getBilanz() {
     $result = array();
     $db = getDbConnection();
-	$sql =  "select konto, kontenname, saldo from fi_ergebnisrechnungen ";
-	$sql .= "where mandant_id = $this->mandant_id and kontenart_id in (1, 2) ";
-	$sql .= "order by konto";
+    $sql =  "select konto, kontenname, saldo from fi_ergebnisrechnungen ";
+    $sql .= "where mandant_id = $this->mandant_id and kontenart_id in (1, 2) ";
+    $sql .= "order by konto";
     $rs = mysqli_query($db, $sql);
     $zeilen = array();
     while($erg = mysqli_fetch_object($rs)) {
