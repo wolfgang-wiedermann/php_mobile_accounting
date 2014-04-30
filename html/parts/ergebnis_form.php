@@ -119,7 +119,8 @@ loadBilanz : function() {
             html += "<table>";
             for(var key in data.zeilen) {
                 var line = data.zeilen[key];
-                html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td><td>"+line.saldo+"</td></tr>";
+                html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td>";
+                html += "<td class=\"td_betrag\">"+line.saldo+"</td></tr>";
             }
             html += "</table>";
             html += "<br/><b>Ergebnis:</b><br/><table>";
@@ -148,7 +149,8 @@ loadGuV : function() {
             var html = "Gewinn und Verlust:<br/><table>";
             for(var key in data.zeilen) {
                 var line = data.zeilen[key];
-                html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td><td>"+line.saldo+"</td></tr>";
+                html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td>";
+                html += "<td class=\"td_betrag\">"+line.saldo+"</td></tr>";
             }
             html += "</table>";
             html += "<br/><b>Ergebnis:</b><br/><table>";
@@ -178,7 +180,8 @@ loadGuVMonth : function() {
             var html = "<b>Gewinn und Verlust</b><br/> einzelner Monat:<br/><table>";
             for(var key in data.zeilen) {
                 var line = data.zeilen[key];
-                html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td><td>"+line.saldo+"</td></tr>";
+                html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td>";
+                html += "<td class=\"td_betrag\">"+line.saldo+"</td></tr>";
             }
             html += "</table>";
             html += "<br/><b>Ergebnis:</b><br/><table>";
