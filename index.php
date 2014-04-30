@@ -27,14 +27,14 @@ require_once("./lib/Database.php");
 include_once("./lib/ErrorsToExceptions.php");
 # Einstiegspunkt in das Framework
 require_once("./lib/Dispatcher.php");
-$disp = new Dispatcher();
-try {
+
+if(isset($_SERVER['REMOTE_USER'])) {
+    $disp = new Dispatcher();
     $user = $_SERVER['REMOTE_USER'];
     $disp->setRemoteUser($user);
-} catch(ErrorException $ex) {
-    throw new Exception("Unauthenticated");
-    //$disp->setRemoteUser(null);
+    echo $disp->invoke($_REQUEST);
+} else {
+    throw new Exception("Fehler: Benutzer nicht über \$_SERVER['REMOTE_USER'] ermittelbar"); 
 }
-echo $disp->invoke($_REQUEST);
 
 ?>
