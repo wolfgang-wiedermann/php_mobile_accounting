@@ -98,7 +98,7 @@ m.privat.initKontenarten = function(self) {
                 self.kontenarten($.map(data, function(item) {return new Kontenart(item); }));
             }, 
             function(error) {
-                alert("Fehler aufgetreten: "+error);
+                alert("Fehler aufgetreten: "+JSON.stringfy(error));
             }
         );
     };
@@ -112,7 +112,7 @@ m.privat.initKontenarten = function(self) {
                 self.kontenart().bezeichnung(data.bezeichnung);
             },
             function(error) {
-                alert("Fehler aufgetreten: "+error);
+                alert("Fehler aufgetreten: "+JSON.stringify(error));
             }
         );
     };
@@ -141,7 +141,7 @@ m.privat.initKonten = function(self) {
                 $(".konto_auswahl_button").click(kontenForm.kontoAuswahlHandler);
             }, 
             function(error) {
-                alert("Fehler aufgetreten: "+error);
+                alert("Fehler aufgetreten: "+JSON.stringify(error));
             }
         );
     };
@@ -182,7 +182,7 @@ m.privat.initKonten = function(self) {
                  $("#account_from_edit_kontenart").selectmenu("refresh", true);
             },
             function(error) {
-                alert("Fehler aufgetreten: "+error);
+                alert("Fehler aufgetreten: "+JSON.stringify(error));
             }
         );
     };
@@ -208,7 +208,7 @@ m.privat.initQuick = function(self) {
                 self.quickentries($.map(data, function(item) {return new Quick(item) }));
             },
             function(error) {
-                alert("Fehler aufgetreten: "+error);
+                alert("Fehler aufgetreten: "+JSON.stringify(error));
             }
         );
     };
@@ -274,7 +274,7 @@ m.privat.initMonate = function(self) {
                 }
             }, 
             function(error) {
-                alert(error);
+                alert("Fehler aufgetreten: "+JSON.stringify(error));
             });
     };
     self.updateMonate();

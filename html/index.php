@@ -24,6 +24,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="./css/jquery.mobile-1.3.1.css" />
+    <link rel="stylesheet" href="./css/hhb.css" />
     <!-- Standard-Bibliotheken -->
     <script src="./js/jquery-2.0.2.min.js"></script>
     <script src="./js/jquery.mobile-1.3.1.js"></script>

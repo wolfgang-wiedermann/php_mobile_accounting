@@ -8,6 +8,7 @@ CACHE MANIFEST
 
 CACHE:
 index.php
+css/hhb.css
 css/jquery.mobile-1.3.1.css
 css/images/ajax-loader.gif
 css/images/icons-18-black.png
