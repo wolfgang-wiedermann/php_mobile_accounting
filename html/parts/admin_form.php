@@ -36,6 +36,8 @@
 <select id="admin_quick_form_sollkonto" data-bind="value: $root.selectedquick.sollkonto, options:konten, optionsText:'tostring', optionsValue:'kontonummer'"></select>
 <label for="admin_quick_form_habenkonto">Haben-Konto</label>
 <select id="admin_quick_form_habenkonto" data-bind="value: $root.selectedquick.habenkonto, options:konten, optionsText:'tostring', optionsValue:'kontonummer'"></select>
+<label for="admin_quick_form_betrag">Betrag</label>
+<input id="admin_quick_form_betrag"  type="number" step="0.01" data-bind="value: $root.selectedquick.betrag"></input>
 <button data-bind="click: $root.saveSelectedQuick">Speichern</button>
 <button data-bind="click: $root.deleteSelectedQuick">L&ouml;schen</button>
 </div>

@@ -38,7 +38,7 @@
     <label for="buchung_form_erfassung_habenkonto">Haben-Konto</label>
     <select id="buchung_form_erfassung_habenkonto" data-bind="value: $root.buchung().habenkonto, options: konten, optionsText: 'tostring', optionsValue: 'kontonummer'"></select>
     <label for="buchung_form_erfassung_betrag">Betrag</label>
-    <input id="buchung_form_erfassung_betrag" data-bind="value: $root.buchung().betrag" type="number"></input>
+    <input id="buchung_form_erfassung_betrag" data-bind="value: $root.buchung().betrag"  type="number" step="0.01"></input>
     <label for="buchung_form_erfassung_datum">Buchungsdatum</label>
     <input id="buchung_form_erfassung_datum" data-bind="value: $root.buchung().datum" type="date"></input>
     <br/>

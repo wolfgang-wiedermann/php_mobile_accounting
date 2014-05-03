@@ -75,12 +75,17 @@ function addQuickMenu($request) {
     $input = json_decode( $inputJSON, TRUE );
     if($this->isValidQuickMenu($input)) { 
         $sql = "insert into fi_quick_config(config_knz, sollkonto, habenkonto, buchungstext,";
-        $sql .= " mandant_id) values ('".$input['config_knz']."', '".$input['sollkonto']."', ";
-        $sql .= "'".$input['habenkonto']."', '".$input['buchungstext']."', ".$this->mandant_id.")";
+        $sql .= " betrag, mandant_id) values ('".$input['config_knz']."', '".$input['sollkonto']."', ";
+        $sql .= "'".$input['habenkonto']."', '".$input['buchungstext']."', ".$input['betrag'].", ".$this->mandant_id.")";
 
         mysqli_query($db, $sql);
+        $error = mysqli_error($db);
+        if($error) {
+           error_log($error);
+           error_log($sql);
+        }
         mysqli_close($db);
-        return "";
+        return "Fehler: $error";
     } else {
         mysqli_close($db);
         throw new ErrorException("Die uebergebene Schnellbuchungsvorlage ist nicht valide: ".$inputJSON);
