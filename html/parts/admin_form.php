@@ -33,9 +33,9 @@
 <label for="admin_quick_form_buchungstext">Buchungstext</label>
 <input id="admin_quick_form_buchungstext" data-bind="value: $root.selectedquick.buchungstext"></input>
 <label for="admin_quick_form_sollkonto">Soll-Konto</label>
-<input id="admin_quick_form_sollkonto" data-bind="value: $root.selectedquick.sollkonto"></input>
+<select id="admin_quick_form_sollkonto" data-bind="value: $root.selectedquick.sollkonto, options:konten, optionsText:'tostring', optionsValue:'kontonummer'"></select>
 <label for="admin_quick_form_habenkonto">Haben-Konto</label>
-<input id="admin_quick_form_habenkonto" data-bind="value: $root.selectedquick.habenkonto"></input>
+<select id="admin_quick_form_habenkonto" data-bind="value: $root.selectedquick.habenkonto, options:konten, optionsText:'tostring', optionsValue:'kontonummer'"></select>
 <button data-bind="click: $root.saveSelectedQuick">Speichern</button>
 <button data-bind="click: $root.deleteSelectedQuick">L&ouml;schen</button>
 </div>
@@ -47,6 +47,8 @@ var adminForm = {
     loadAdminQuickFormView : function(quick) {
         $(".content_form").hide();
         $("#admin_quick_form_view").show();
+        $("#admin_quick_form_sollkonto").selectmenu("refresh", true);
+        $("#admin_quick_form_habenkonto").selectmenu("refresh", true);
     },
 
     /*
