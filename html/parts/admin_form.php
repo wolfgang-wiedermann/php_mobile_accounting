@@ -1,3 +1,23 @@
+<?php 
+/*
+ * Copyright (c) 2013 by Wolfgang Wiedermann
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 3 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+ * USA
+ */
+?>
 <?php defined("MAIN_PAGE") or die("Fehlende Berechtigung, Seite darf nur aus index.php geladen werden"); ?>
 <!-- Auswahl der Quick-Eintraege zur Administration -->
 <div id="admin_quick_select_view" class="content_form">
@@ -13,9 +33,11 @@
 <label for="admin_quick_form_buchungstext">Buchungstext</label>
 <input id="admin_quick_form_buchungstext" data-bind="value: $root.selectedquick.buchungstext"></input>
 <label for="admin_quick_form_sollkonto">Soll-Konto</label>
-<input id="admin_quick_form_sollkonto" data-bind="value: $root.selectedquick.sollkonto"></input>
+<select id="admin_quick_form_sollkonto" data-bind="value: $root.selectedquick.sollkonto, options:konten, optionsText:'tostring', optionsValue:'kontonummer'"></select>
 <label for="admin_quick_form_habenkonto">Haben-Konto</label>
-<input id="admin_quick_form_habenkonto" data-bind="value: $root.selectedquick.habenkonto"></input>
+<select id="admin_quick_form_habenkonto" data-bind="value: $root.selectedquick.habenkonto, options:konten, optionsText:'tostring', optionsValue:'kontonummer'"></select>
+<label for="admin_quick_form_betrag">Betrag</label>
+<input id="admin_quick_form_betrag"  type="number" step="0.01" data-bind="value: $root.selectedquick.betrag"></input>
 <button data-bind="click: $root.saveSelectedQuick">Speichern</button>
 <button data-bind="click: $root.deleteSelectedQuick">L&ouml;schen</button>
 </div>
@@ -27,6 +49,8 @@ var adminForm = {
     loadAdminQuickFormView : function(quick) {
         $(".content_form").hide();
         $("#admin_quick_form_view").show();
+        $("#admin_quick_form_sollkonto").selectmenu("refresh", true);
+        $("#admin_quick_form_habenkonto").selectmenu("refresh", true);
     },
 
     /*

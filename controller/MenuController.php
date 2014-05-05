@@ -1,4 +1,22 @@
 <?php
+/*
+ * Copyright (c) 2013 by Wolfgang Wiedermann
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 3 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+ * USA
+ */
 
 # Controller für die Schnellbuchungs-Menüeinträge
 class MenuController {
@@ -57,12 +75,17 @@ function addQuickMenu($request) {
     $input = json_decode( $inputJSON, TRUE );
     if($this->isValidQuickMenu($input)) { 
         $sql = "insert into fi_quick_config(config_knz, sollkonto, habenkonto, buchungstext,";
-        $sql .= " mandant_id) values ('".$input['config_knz']."', '".$input['sollkonto']."', ";
-        $sql .= "'".$input['habenkonto']."', '".$input['buchungstext']."', ".$this->mandant_id.")";
+        $sql .= " betrag, mandant_id) values ('".$input['config_knz']."', '".$input['sollkonto']."', ";
+        $sql .= "'".$input['habenkonto']."', '".$input['buchungstext']."', ".$input['betrag'].", ".$this->mandant_id.")";
 
         mysqli_query($db, $sql);
+        $error = mysqli_error($db);
+        if($error) {
+           error_log($error);
+           error_log($sql);
+        }
         mysqli_close($db);
-        return "";
+        return "Fehler: $error";
     } else {
         mysqli_close($db);
         throw new ErrorException("Die uebergebene Schnellbuchungsvorlage ist nicht valide: ".$inputJSON);

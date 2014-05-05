@@ -1,3 +1,23 @@
+<?php 
+/*
+ * Copyright (c) 2013 by Wolfgang Wiedermann
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 3 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+ * USA
+ */
+?>
 <?php defined("MAIN_PAGE") or die("Fehlende Berechtigung, Seite darf nur aus index.php geladen werden"); ?>
 <!-- Funktionsauswahl - Buchungen -->
 <div id="ergebnis_form" class="content_form">
@@ -129,7 +149,8 @@ loadBilanz : function() {
             html += "<table>";
             for(var key in data.zeilen) {
                 var line = data.zeilen[key];
-                html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td><td>"+line.saldo+"</td></tr>";
+                html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td>";
+                html += "<td class=\"td_betrag\">"+line.saldo+"</td></tr>";
             }
             html += "</table>";
             html += "<br/><b>Ergebnis:</b><br/><table>";
@@ -158,7 +179,8 @@ loadGuV : function() {
             var html = "Gewinn und Verlust:<br/><table>";
             for(var key in data.zeilen) {
                 var line = data.zeilen[key];
-                html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td><td>"+line.saldo+"</td></tr>";
+                html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td>";
+                html += "<td class=\"td_betrag\">"+line.saldo+"</td></tr>";
             }
             html += "</table>";
             html += "<br/><b>Ergebnis:</b><br/><table>";
@@ -188,7 +210,8 @@ loadGuVMonth : function() {
             var html = "<b>Gewinn und Verlust</b><br/> einzelner Monat:<br/><table>";
             for(var key in data.zeilen) {
                 var line = data.zeilen[key];
-                html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td><td>"+line.saldo+"</td></tr>";
+                html += "<tr><td>"+line.konto+"</td><td>"+line.kontenname+"</td>";
+                html += "<td class=\"td_betrag\">"+line.saldo+"</td></tr>";
             }
             html += "</table>";
             html += "<br/><b>Ergebnis:</b><br/><table>";

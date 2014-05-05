@@ -3,11 +3,12 @@
 ?>
 CACHE MANIFEST
 # Version im Kommentar ändern um einen Update des Apps zu erzwingen
-# App-Version: 0.1.03#71
-# -------------------
+# App-Version: 0.1.03#74
+# ----------------------
 
 CACHE:
 index.php
+css/hhb.css
 css/jquery.mobile-1.3.1.css
 css/images/ajax-loader.gif
 css/images/icons-18-black.png

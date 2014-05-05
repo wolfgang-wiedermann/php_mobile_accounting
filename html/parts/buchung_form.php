@@ -1,3 +1,23 @@
+<?php 
+/*
+ * Copyright (c) 2013 by Wolfgang Wiedermann
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 3 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+ * USA
+ */
+?>
 <?php defined("MAIN_PAGE") or die("Fehlende Berechtigung, Seite darf nur aus index.php geladen werden"); ?>
 <!-- Funktionsauswahl - Buchungen -->
 <div id="buchung_form" class="content_form">
@@ -18,7 +38,7 @@
     <label for="buchung_form_erfassung_habenkonto">Haben-Konto</label>
     <select id="buchung_form_erfassung_habenkonto" data-bind="value: $root.buchung().habenkonto, options: konten, optionsText: 'tostring', optionsValue: 'kontonummer'"></select>
     <label for="buchung_form_erfassung_betrag">Betrag</label>
-    <input id="buchung_form_erfassung_betrag" data-bind="value: $root.buchung().betrag" type="number"></input>
+    <input id="buchung_form_erfassung_betrag" data-bind="value: $root.buchung().betrag"  type="number" step="0.01"></input>
     <label for="buchung_form_erfassung_datum">Buchungsdatum</label>
     <input id="buchung_form_erfassung_datum" data-bind="value: $root.buchung().datum" type="date"></input>
     <br/>

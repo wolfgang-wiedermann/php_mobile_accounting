@@ -1,4 +1,22 @@
 <?php
+/*
+ * Copyright (c) 2013 by Wolfgang Wiedermann
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; version 3 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
+ * USA
+ */
 
 class ErgebnisController {
 
@@ -35,12 +53,18 @@ function invoke($action, $request, $dispatcher) {
 function getBilanz() {
     $result = array();
     $db = getDbConnection();
-    $rs = mysqli_query($db, "select konto, kontenname, saldo from fi_ergebnisrechnungen where mandant_id = $this->mandant_id and kontenart_id in (1, 2)");
+
+    $sql =  "select konto, kontenname, saldo from fi_ergebnisrechnungen ";
+    $sql .= "where mandant_id = $this->mandant_id and kontenart_id in (1, 2) ";
+    $sql .= "order by konto";
+    $rs = mysqli_query($db, $sql);
+
     $zeilen = array();
     while($erg = mysqli_fetch_object($rs)) {
         $zeilen[] = $erg;
     }
     $result['zeilen'] = $zeilen;
+
     $rs = mysqli_query($db, "select kontenart_id, sum(saldo) saldo from fi_ergebnisrechnungen
         where kontenart_id in (1, 2) and mandant_id = $this->mandant_id
         group by kontenart_id
@@ -60,8 +84,12 @@ function getBilanz() {
 # sie als Array zurück
 function getGuV() {
     $db = getDbConnection();
-    $rs = mysqli_query($db, "select konto, kontenname, saldo from fi_ergebnisrechnungen "
-          ." where mandant_id = $this->mandant_id and kontenart_id in (3, 4)");
+
+    $sql =  "select konto, kontenname, saldo from fi_ergebnisrechnungen ";
+    $sql .= "where mandant_id = $this->mandant_id and kontenart_id in (3, 4) ";
+    $sql .= "order by konto";
+   
+    $rs = mysqli_query($db, $sql);
     $zeilen = array();
     $result = array();
     while($erg = mysqli_fetch_object($rs)) {
