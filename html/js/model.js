@@ -60,6 +60,7 @@ function Quick(data) {
 function AppViewModel() {
     var self = this;
     // Einfache Attribute
+    self.sollhaben = ko.observable("S");
     self.konto = ko.observable(new Konto({'kontonummer':1234, 'bezeichnung':'Leer', 'kontenart_id':1}));
     self.buchung = ko.observable(new Buchung({'buchungsnummer':0, 'buchungstext':'', 'sollkonto':'0000', 'habenkonto':'0000'
         , 'betrag':'0.0', 'datum':'2013-01-01', 'benutzer':''}));

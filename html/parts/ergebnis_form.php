@@ -65,6 +65,10 @@
 </div>
 <!-- Verlaufsauswertung Cashflow, Vorauswahl Aktivkonten -->
 <div id="ergebnis_form_verlauf_cashflow_vorauswahl" class="content_form">
+    <select data-bind="value: $root.sollhaben">
+        <option value="S">Soll-Buchungen</option>
+        <option value="H">Haben-Buchungen</option>
+    </select>
     <h2>Aktivkonten</h2>
     <ul data-role="listview" data-folter="true" data-filter-placeholder="Suchen..."
         data-bind="foreach: konten_aktiv, jqmRefreshList: konten_aktiv">
@@ -245,10 +249,14 @@ loadCacheFlow : function(konto) {
     $("#account_show_monatssalden").html("Cacheflow-Darstellung wird geladen");
 
     // Side muss auch noch dynamisch werden
-    doGETwithCache('verlauf', 'cashflow', {'id':konto.kontonummer(), 'side':'H'},
+    doGETwithCache('verlauf', 'cashflow', {'id':konto.kontonummer(), 'side': model.sollhaben()},
         function(data) {
             var table = "<table>";
-            var code = "<b>Mittelablfuss: Konto: "+konto.kontonummer()+" "+konto.bezeichnung()+"</b><br/>";
+            var type = "Mittelzufluss";
+            if(model.sollhaben() === 'H') {
+               type = "Mittelabfluss";
+            }
+            var code = "<b>"+type+": Konto: "+konto.kontonummer()+" "+konto.bezeichnung()+"</b><br/>";
             code += '<div id="ergebnis_show_monatssalden_table"></div>';
             code += '<canvas id="ergebnis_show_monatssalden_canvas" width="300px" height="300px"></canvas>';
             $("#ergebnis_form_verlauf").html(code);
