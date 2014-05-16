@@ -96,14 +96,14 @@ function getCashFlow($kontonummer, $side) {
         $db = getDbConnection();
         
         if($side == 'S') {
-            $sql = "select (year(datum)*100)+month(datum) as grouping, sum(betrag) as saldo ";
+            $sql  = "select (year(datum)*100)+month(datum) as grouping, sum(betrag) as saldo ";
             $sql .= "from fi_buchungen where mandant_id = ".$this->mandant_id;
             $sql .= " and sollkonto = '".$kontonummer."' ";
             $sql .= " and year(datum) >= year(now())-1 ";
             $sql .= " and year(datum) <= year(now()) ";
             $sql .= "group by (year(datum)*100)+month(datum);";
         } else if($side == 'H') {
-            $sql = "select (year(datum)*100)+month(datum) as grouping, sum(betrag) as saldo ";
+            $sql  = "select (year(datum)*100)+month(datum) as grouping, sum(betrag) as saldo ";
             $sql .= "from fi_buchungen where mandant_id = ".$this->mandant_id;
             $sql .= " and habenkonto = '".$kontonummer."' ";
             $sql .= " and year(datum) >= year(now())-1 ";
