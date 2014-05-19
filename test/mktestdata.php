@@ -26,7 +26,7 @@
 require_once("../lib/Database.php");
 $db = getDbConnection();
 
-$mandantenzahl = 500;
+$mandantenzahl = 100;
 
 $aktivkonten = array();
 $passivkonten = array();
@@ -51,7 +51,7 @@ mysqli_free_result($rs);
 
 for($i = 0; $i < 100000; $i++) {
     $mandant_id = rand(1, $mandantenzahl);
-    $datum = "2015-".rand(1, 12)."-01";
+    $datum = "2013-".rand(1, 12)."-01";
     if($i % 4 == 0) {
         $sollkonto = $aktivkonten[rand(0, sizeof($aktivkonten)-1)]->kontonummer;
         $habenkonto = $ertragskonten[rand(0, sizeof($ertragskonten)-1)]->kontonummer;

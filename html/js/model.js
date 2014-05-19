@@ -60,6 +60,7 @@ function Quick(data) {
 function AppViewModel() {
     var self = this;
     // Einfache Attribute
+    self.sollhaben = ko.observable("S");
     self.konto = ko.observable(new Konto({'kontonummer':1234, 'bezeichnung':'Leer', 'kontenart_id':1}));
     self.buchung = ko.observable(new Buchung({'buchungsnummer':0, 'buchungstext':'', 'sollkonto':'0000', 'habenkonto':'0000'
         , 'betrag':'0.0', 'datum':'2013-01-01', 'benutzer':''}));
@@ -126,6 +127,8 @@ m.privat.initKontenarten = function(self) {
 m.privat.initKonten = function(self) {
     // Konten
     self.konten = ko.observableArray([]);
+    self.konten_aktiv = ko.observableArray([]);
+
     // Model fuer Konten-Mehrfachauswahl
     self.konten_selectable = ko.observableArray([]);
     self.konten_selected = ko.observableArray([]);
@@ -134,6 +137,7 @@ m.privat.initKonten = function(self) {
         doGETwithCache("konto", "list", [], 
             function(data) {
                 self.konten($.map(data, function(item) {return new Konto(item) }));
+                self.konten_aktiv($.map(data, function(item) { if(item.kontenart_id == '1') { return new Konto(item); }}));
                 self.konten_selectable($.map(data, function(item) {return new Konto(item); }));
                 self.konten_selected.removeAll();
 
@@ -171,6 +175,11 @@ m.privat.initKonten = function(self) {
     self.unselectKonto = function(konto) {
         self.konten_selected.remove(konto);
         self.konten_selectable.push(konto);
+    }
+
+    // Konto auswählen und monatliche Cashflow-Darstellung laden
+    self.selectKontoForCashFlow = function(konto) {
+        ergebnisForm.loadCacheFlow(konto);
     }
 
     self.loadKonto = function(kontoNummer) {

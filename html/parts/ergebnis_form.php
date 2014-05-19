@@ -52,7 +52,8 @@
 <!-- Verlaufsauswertung frei, Vorauswahl -->
 <div id="ergebnis_form_verlauf_vorauswahl" class="content_form">
     <h2>Ausw&auml;hlbare Konten</h2>
-    <ul data-role="listview" data-filter="true" data-filter-placeholder="Search account" data-bind="foreach: konten_selectable, jqmRefreshList: konten_selectable">
+    <ul data-role="listview" data-filter="true" data-filter-placeholder="Suchen..." 
+        data-bind="foreach: konten_selectable, jqmRefreshList: konten_selectable">
         <li><a href="#" data-bind="text: tostring, attr: {'data-key': kontonummer}, click: $root.selectKonto"></a></li>
     </ul><br/>
     <h2>Ausgew&auml;hlte Konten</h2>
@@ -61,6 +62,18 @@
     </ul>
     <br/>
     <button id="ergebnis_action_verlauf_frei_anzeigen" class="ergebnis_form_item">Anzeigen</button>
+</div>
+<!-- Verlaufsauswertung Cashflow, Vorauswahl Aktivkonten -->
+<div id="ergebnis_form_verlauf_cashflow_vorauswahl" class="content_form">
+    <select data-bind="value: $root.sollhaben">
+        <option value="S">Soll-Buchungen</option>
+        <option value="H">Haben-Buchungen</option>
+    </select>
+    <h2>Aktivkonten</h2>
+    <ul data-role="listview" data-folter="true" data-filter-placeholder="Suchen..."
+        data-bind="foreach: konten_aktiv, jqmRefreshList: konten_aktiv">
+        <li><a href="#" data-bind="text: tostring, attr: {'data-key': kontonummer}, click: $root.selectKontoForCashFlow"></a></li>
+    </ul>
 </div>
 <!-- JavaScript-Code -->
 <script type="text/javascript">
@@ -135,11 +148,8 @@ showVerlaufFrei : function() {
 },
 
 showVerlaufCacheFlow : function() {
-    alert("TODO: Diese Funktion muss noch implementiert werden");
-    // http://localhost/fibu/index.php?controller=verlauf&action=cashflow&id=2800&side=S
     $(".content_form").hide();
-    $("#ergebnis_form_verlauf").show();
-    ergebnisForm.loadCacheFlow();
+    $("#ergebnis_form_verlauf_cashflow_vorauswahl").show();
 },
 
 loadBilanz : function() {
@@ -233,13 +243,20 @@ loadGuVMonth : function() {
     );
 },
 
-loadCacheFlow : function() {
+loadCacheFlow : function(konto) {
+    $(".content_form").hide();
+    $("#ergebnis_form_verlauf").show();
     $("#account_show_monatssalden").html("Cacheflow-Darstellung wird geladen");
-    // TODO: Noch mit flexibel wählbaren Aktiv-Konten gestalten!
-    doGETwithCache('verlauf', 'cashflow', {id:'2800', side:'H'},
+
+    // Side muss auch noch dynamisch werden
+    doGETwithCache('verlauf', 'cashflow', {'id':konto.kontonummer(), 'side': model.sollhaben()},
         function(data) {
             var table = "<table>";
-            var code = "<b>Mittelablfuss: Konto: 2800</b><br/>";
+            var type = "Mittelzufluss";
+            if(model.sollhaben() === 'H') {
+               type = "Mittelabfluss";
+            }
+            var code = "<b>"+type+": Konto: "+konto.kontonummer()+" "+konto.bezeichnung()+"</b><br/>";
             code += '<div id="ergebnis_show_monatssalden_table"></div>';
             code += '<canvas id="ergebnis_show_monatssalden_canvas" width="300px" height="300px"></canvas>';
             $("#ergebnis_form_verlauf").html(code);
