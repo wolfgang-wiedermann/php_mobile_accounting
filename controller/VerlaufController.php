@@ -106,8 +106,6 @@ function getCashFlow($kontonummer, $side) {
             $sql .= " and year(b.datum) <= year(now()) ";
             $sql .= " and k.kontenart_id <> 5 ";
             $sql .= "group by (year(b.datum)*100)+month(b.datum);";
-
-            error_log($sql);
         } else if($side == 'H') {
             $sql  = "select (year(b.datum)*100)+month(b.datum) as grouping, sum(b.betrag) as saldo ";
             $sql .= "from fi_buchungen as b ";
