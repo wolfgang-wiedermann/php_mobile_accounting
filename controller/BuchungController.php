@@ -79,20 +79,34 @@ function getListByKonto($request) {
     $kontonummer = $request['konto'];
     # Nur verarbeiten, wenn konto eine Ziffernfolge ist, um SQL-Injections zu vermeiden
     if(is_numeric($kontonummer)) {
-        $rs = mysqli_query($db, "SELECT buchungsnummer, buchungstext, gegenkonto, betrag, datum "
-                               ."FROM `fi_buchungen_view` "
-                               ."where mandant_id = $this->mandant_id and konto = '$kontonummer' "
-                               ."order by buchungsnummer desc");
+
         $result = array();
-        $result_list = array();
+        $result_list = array(); 
+
         // Buchungen laden
+        $sql =  "SELECT buchungsnummer, buchungstext, habenkonto as gegenkonto, betrag, datum ";
+        $sql .= "FROM fi_buchungen "; 
+        $sql .= "WHERE mandant_id = $this->mandant_id and sollkonto = '$kontonummer' ";
+        $sql .= "union ";
+        $sql .= "select buchungsnummer, buchungstext, sollkonto as gegenkonto, betrag*-1 as betrag, datum ";
+        $sql .= "from fi_buchungen ";
+        $sql .= "where mandant_id = $this->mandant_id and habenkonto = '$kontonummer' ";
+        $sql .= "order by buchungsnummer desc";
+
+        $rs = mysqli_query($db, $sql);
+        
         while($obj = mysqli_fetch_object($rs)) {
             $result_list[] = $obj;
         }
         $result['list'] = $result_list;
-        // Saldo laden
-        $rs = mysqli_query($db, "select sum(betrag) as saldo from fi_buchungen_view "
-                               ."where mandant_id = $this->mandant_id and konto = '$kontonummer'");
+
+        // Saldo laden: 
+        $sql =  "select sum(betrag) as saldo from (SELECT sum(betrag) as betrag from fi_buchungen ";
+        $sql .= "where mandant_id = $this->mandant_id and sollkonto = '$kontonummer' ";
+        $sql .= "union SELECT sum(betrag)*-1 as betrag from fi_buchungen ";
+        $sql .= "where mandant_id = $this->mandant_id and habenkonto = '$kontonummer' ) as a ";
+
+        $rs = mysqli_query($db, $sql);
         if($obj = mysqli_fetch_object($rs)) {
             $result['saldo'] = $obj->saldo;
         } else {
