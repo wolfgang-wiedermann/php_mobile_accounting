@@ -77,8 +77,9 @@ showAktuellste : function() {
                 htmlAkt += "<td colspan=\"3\">"+buchung.buchungstext.substring(0, 30);
 		if(buchung.buchungstext.length > 30) htmlAkt += "...";
                 htmlAkt += "</td></tr>";
-                htmlAkt += "<tr><td>"+buchung.sollkonto+"</td><td>"+buchung.habenkonto+"</td><td>";
-                htmlAkt += buchung.betrag+"</td><td>"+buchung.datum+"</td></tr>\n";
+                htmlAkt += "<tr><td>"+buchung.sollkonto+"</td><td>"+buchung.habenkonto+"</td>";
+                htmlAkt += "<td class=\"td_betrag\">"+buchung.betrag+"</td>";
+                htmlAkt += "<td>"+util.formatDateAtG(buchung.datum)+"</td></tr>\n";
             }
             htmlAkt += "<table>";
             $("#buchung_form_current").html(htmlAkt);

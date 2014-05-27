@@ -181,7 +181,7 @@ var kontenForm = {
                     tabelle += "<td>"+line.buchungstext+"</td>";
                     tabelle += "<td>"+line.gegenkonto+"</td>";
                     tabelle += "<td style=\"text-align:right;\">"+line.betrag+"</td>";
-                    tabelle += "<td>"+line.datum+"</td></tr>";
+                    tabelle += "<td>"+util.formatDateAtG(line.datum)+"</td></tr>";
                 }
                 tabelle += "</table>";
 	            $("#account_show_bookings").html(tabelle);

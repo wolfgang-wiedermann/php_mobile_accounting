@@ -293,7 +293,7 @@ loadVerlauf : function(controller, action, parameter, kontenart_txt) {
             var diagrammData = [];
             for(var key in data) {
                 diagrammData.push(data[key].saldo);
-                table += "<tr><td>"+data[key].grouping+"</td><td>"+data[key].saldo+"</td></tr>";
+                table += "<tr><td>"+data[key].grouping+"</td><td class=\"td_betrag\">"+data[key].saldo+"</td></tr>";
             }
             table += "</table>";
             $("#ergebnis_show_monatssalden_table").html(table);
