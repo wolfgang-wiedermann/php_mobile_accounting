@@ -40,8 +40,13 @@
 <!-- GuV -->
 <div id="ergebnis_form_guv" class="content_form">
 <div id="ergebnis_form_guv_controls">
-    <select id="ergebnis_form_guv_months" data-bind="value: $root.selectedMonat, options: buchungsmonate, optionsText: 'monat', optionsValue: 'monat'">
-    </select>
+    <table><tr><td style="width:100%">
+    <select id="ergebnis_form_guv_months" 
+            data-bind="value: $root.selectedMonat, options: buchungsmonate, optionsText: 'monat', optionsValue: 'monat'">
+    </select></td><td>
+    <a id="ergebnis_form_guv_months_refresh" data-role="button" data-bind="click:$root.updateMonateSimple"
+               data-icon="refresh" data-inline="true" data-iconpos="notext"></a>
+    </td></tr></table>
 </div>
 <div id="ergebnis_form_guv_inner">
 </div>
