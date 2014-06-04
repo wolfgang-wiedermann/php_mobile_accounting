@@ -178,7 +178,7 @@ var kontenForm = {
                 for(var key in data.list) {
                     var line = data.list[key];
                     tabelle += "<tr><td>"+line.buchungsnummer+"</td>";
-                    tabelle += "<td>"+line.buchungstext+"</td>";
+                    tabelle += "<td>"+util.escapeGtLt(line.buchungstext)+"</td>";
                     tabelle += "<td>"+line.gegenkonto+"</td>";
                     tabelle += "<td style=\"text-align:right;\">"+line.betrag+"</td>";
                     tabelle += "<td>"+util.formatDateAtG(line.datum)+"</td></tr>";

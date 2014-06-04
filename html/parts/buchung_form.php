@@ -74,7 +74,7 @@ showAktuellste : function() {
             for(var key in data) {
                 var buchung = data[key];
                 htmlAkt += "<tr><td>"+buchung.buchungsnummer+"</td>";
-                htmlAkt += "<td colspan=\"3\">"+buchung.buchungstext.substring(0, 30);
+                htmlAkt += "<td colspan=\"3\">"+util.escapeGtLt(buchung.buchungstext.substring(0, 30));
 		if(buchung.buchungstext.length > 30) htmlAkt += "...";
                 htmlAkt += "</td></tr>";
                 htmlAkt += "<tr><td>"+buchung.sollkonto+"</td><td>"+buchung.habenkonto+"</td>";

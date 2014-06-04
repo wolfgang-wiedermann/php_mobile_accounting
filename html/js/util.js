@@ -15,3 +15,10 @@ util.formatDateAtG = function(dateStringIn) {
 
     return dateStringOut;
 }
+
+// Ersetzt < mit &lt; und > mit &gt;
+util.escapeGtLt = function(string) {
+    var result = string.replace("<", "&lt;");
+    result = result.replace(">", "&gt;");
+    return result;
+}
