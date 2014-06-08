@@ -220,6 +220,9 @@ loadGuVMonth : function() {
     // Combobox anzeigen
     $("#ergebnis_form_guv_controls").show();
     var selectedMonth = $("#ergebnis_form_guv_months").val();
+    // Alte Anzeige (alte GuV-Inhalte) löschen
+    var bitteWarten = "Bitte warten, die Ergebnisse werden geladen";
+    $("#ergebnis_form_guv_inner").html(bitteWarten);
     doGETwithCache("ergebnis", "guv_month", {'id':selectedMonth}, 
         function(data) {
             var html = "<b>Gewinn und Verlust</b><br/> einzelner Monat:<br/><table>";
