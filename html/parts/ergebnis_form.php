@@ -40,8 +40,13 @@
 <!-- GuV -->
 <div id="ergebnis_form_guv" class="content_form">
 <div id="ergebnis_form_guv_controls">
-    <select id="ergebnis_form_guv_months" data-bind="value: $root.selectedMonat, options: buchungsmonate, optionsText: 'monat', optionsValue: 'monat'">
-    </select>
+    <table><tr><td style="width:100%">
+    <select id="ergebnis_form_guv_months" 
+            data-bind="value: $root.selectedMonat, options: buchungsmonate, optionsText: 'monat', optionsValue: 'monat'">
+    </select></td><td>
+    <a id="ergebnis_form_guv_months_refresh" data-role="button" data-bind="click:$root.updateMonateSimple"
+               data-icon="refresh" data-inline="true" data-iconpos="notext"></a>
+    </td></tr></table>
 </div>
 <div id="ergebnis_form_guv_inner">
 </div>
@@ -215,6 +220,9 @@ loadGuVMonth : function() {
     // Combobox anzeigen
     $("#ergebnis_form_guv_controls").show();
     var selectedMonth = $("#ergebnis_form_guv_months").val();
+    // Alte Anzeige (alte GuV-Inhalte) löschen
+    var bitteWarten = "Bitte warten, die Ergebnisse werden geladen";
+    $("#ergebnis_form_guv_inner").html(bitteWarten);
     doGETwithCache("ergebnis", "guv_month", {'id':selectedMonth}, 
         function(data) {
             var html = "<b>Gewinn und Verlust</b><br/> einzelner Monat:<br/><table>";
@@ -293,7 +301,7 @@ loadVerlauf : function(controller, action, parameter, kontenart_txt) {
             var diagrammData = [];
             for(var key in data) {
                 diagrammData.push(data[key].saldo);
-                table += "<tr><td>"+data[key].grouping+"</td><td>"+data[key].saldo+"</td></tr>";
+                table += "<tr><td>"+data[key].grouping+"</td><td class=\"td_betrag\">"+data[key].saldo+"</td></tr>";
             }
             table += "</table>";
             $("#ergebnis_show_monatssalden_table").html(table);

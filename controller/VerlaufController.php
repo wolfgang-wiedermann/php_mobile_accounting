@@ -96,19 +96,27 @@ function getCashFlow($kontonummer, $side) {
         $db = getDbConnection();
         
         if($side == 'S') {
-            $sql  = "select (year(datum)*100)+month(datum) as grouping, sum(betrag) as saldo ";
-            $sql .= "from fi_buchungen where mandant_id = ".$this->mandant_id;
-            $sql .= " and sollkonto = '".$kontonummer."' ";
-            $sql .= " and year(datum) >= year(now())-1 ";
-            $sql .= " and year(datum) <= year(now()) ";
-            $sql .= "group by (year(datum)*100)+month(datum);";
+            $sql  = "select (year(datum)*100)+month(datum) as grouping, sum(b.betrag) as saldo ";
+            $sql .= "from fi_buchungen as b ";
+            $sql .= " inner join fi_konto as k ";
+            $sql .= " on k.mandant_id = b.mandant_id and k.kontonummer = b.habenkonto ";
+            $sql .= " where b.mandant_id = ".$this->mandant_id;
+            $sql .= " and b.sollkonto = '".$kontonummer."' ";
+            $sql .= " and year(b.datum) >= year(now())-1 ";
+            $sql .= " and year(b.datum) <= year(now()) ";
+            $sql .= " and k.kontenart_id <> 5 ";
+            $sql .= "group by (year(b.datum)*100)+month(b.datum);";
         } else if($side == 'H') {
-            $sql  = "select (year(datum)*100)+month(datum) as grouping, sum(betrag) as saldo ";
-            $sql .= "from fi_buchungen where mandant_id = ".$this->mandant_id;
-            $sql .= " and habenkonto = '".$kontonummer."' ";
-            $sql .= " and year(datum) >= year(now())-1 ";
-            $sql .= " and year(datum) <= year(now()) ";
-            $sql .= "group by (year(datum)*100)+month(datum);";
+            $sql  = "select (year(b.datum)*100)+month(b.datum) as grouping, sum(b.betrag) as saldo ";
+            $sql .= "from fi_buchungen as b ";
+            $sql .= " inner join fi_konto as k ";
+            $sql .= " on k.mandant_id = b.mandant_id and k.kontonummer = b.sollkonto ";
+            $sql .= " where b.mandant_id = ".$this->mandant_id;
+            $sql .= " and b.habenkonto = '".$kontonummer."' ";
+            $sql .= " and year(b.datum) >= year(now())-1 ";
+            $sql .= " and year(b.datum) <= year(now()) ";
+            $sql .= " and k.kontenart_id <> 5 ";
+            $sql .= "group by (year(b.datum)*100)+month(b.datum);";
         } else {
             mysqli_close($db);
             throw new Exception("Gültige Werte für side sind S und H");

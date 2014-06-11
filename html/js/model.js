@@ -287,4 +287,10 @@ m.privat.initMonate = function(self) {
             });
     };
     self.updateMonate();
+
+    self.updateMonateSimple = function() {
+        self.updateMonate(function() {
+            $("#ergebnis_form_guv_months").selectmenu('refresh');
+        });
+    }
 };

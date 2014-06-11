@@ -18,23 +18,31 @@
  * USA
  */
 
-# HTTP-Header standardmäßig auf application/json stellen
-header("Content-type: application/json");
-# Logger und Datenbank-Helper laden
-require_once("./lib/Logger.php");
-require_once("./lib/Database.php");
-# So umstellen das Errors als Exceptions geliefert werden
-include_once("./lib/ErrorsToExceptions.php");
-# Einstiegspunkt in das Framework
-require_once("./lib/Dispatcher.php");
-
-if(isset($_SERVER['REMOTE_USER'])) {
-    $disp = new Dispatcher();
-    $user = $_SERVER['REMOTE_USER'];
-    $disp->setRemoteUser($user);
-    echo $disp->invoke($_REQUEST);
+if(!isset($_REQUEST['controller'])) {
+   # Nicht-Ajax-Zugriffe nach ./html/index.php weiterleiten
+   $hostname = $_SERVER['HTTP_HOST'];
+   $path = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+   $url = "http://".$hostname.$path."/html/index.php";
+   header("Location: $url");
+   exit;
 } else {
-    throw new Exception("Fehler: Benutzer nicht über \$_SERVER['REMOTE_USER'] ermittelbar"); 
+   # HTTP-Header standardmäßig auf application/json stellen
+   header("Content-type: application/json");
+   # Logger und Datenbank-Helper laden
+   require_once("./lib/Logger.php");
+   require_once("./lib/Database.php");
+   # So umstellen das Errors als Exceptions geliefert werden
+   include_once("./lib/ErrorsToExceptions.php");
+   # Einstiegspunkt in das Framework
+   require_once("./lib/Dispatcher.php");
+   
+   if(isset($_SERVER['REMOTE_USER'])) {
+       $disp = new Dispatcher();
+       $user = $_SERVER['REMOTE_USER'];
+       $disp->setRemoteUser($user);
+       echo $disp->invoke($_REQUEST);
+   } else {
+       throw new Exception("Fehler: Benutzer nicht über \$_SERVER['REMOTE_USER'] ermittelbar"); 
+   }
 }
-
 ?>

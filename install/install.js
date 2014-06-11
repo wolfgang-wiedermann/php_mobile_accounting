@@ -147,7 +147,7 @@ function UserModel() {
       function(data) {
         if(data.isError) {
           $("#fehler_ausgeben_meldung").html("<h2>"+data.message+"</h2>"
-               +"<p>Bitte diesen Text in die angegebene Datei kipieren.</p>"
+               +"<p>Bitte diesen Text in die angegebene Datei kopieren.</p>"
                +"<textarea>"+data.htpasswd+"</textarea>");
           $("textarea").textinput();
           $.mobile.navigate("#fehler_ausgeben");

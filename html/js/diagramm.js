@@ -35,7 +35,42 @@ var d = {
         } else throw Exception("Init noch nicht aufgerufen!");
     },
 
-    // Diagramm zeichnen
+    // Diagramm für mehrere gleichlange Zahlenreihen zeichnen
+    drawMultiLineDiagramFor: function(values) {
+        var first = values[0][0];
+        var max = d.util.getMax2(values) - first;
+        var min = d.util.getMin2(values) - first;
+        var absMax = d.util.getAbs(min)>d.util.getAbs(max)?d.util.getAbs(min):d.util.getAbs(max);
+        var stepSize = (d.getWidth()-10) / (values[0].length - 1);
+        var scaleFactor = ((d.getHeight()-20) / 2) / absMax;
+        var currentStep = 0;
+        // Farben
+        var colors = ['darkblue', 'red', 'orange', 'green', 'yellow', 'white', 'black', 'gray'];
+        // Fläche neuzeichnen
+        d.drawRect(0, 0, d.getWidth(), d.getHeight());
+        d.drawLine(0, d.getHeight()/2, d.getWidth(), d.getHeight()/2);
+        // Schrittweise zeichnen
+        for(var lineIdx in values) {
+            var ctx = d.context;
+            ctx.fillStyle = colors[lineIdx];   //"hsla(30,80%,60%,4.9)";
+            ctx.strokeStyle = colors[lineIdx]; //"hsla(30,80%,60%,4.9)";
+            ctx.lineWidth = 0;
+            ctx.beginPath();
+            ctx.lineTo(0, d.getHeight()/2);
+            ctx.lineWidth = 1;
+            for(var idx in values[lineIdx]) {
+                var val = (values[lineIdx][idx] - first) * scaleFactor;
+                ctx.lineTo(currentStep, (d.getHeight()/2) - val);
+                ctx.fillRect (currentStep - 5, (d.getHeight()/2) - val - 5, 10, 10);
+                ctx.stroke();
+                currentStep += stepSize;
+            }
+            ctx.stroke();
+            currentStep = 0;
+        }
+    },
+
+    // Diagramm für eine einfache Zahlenreihe zeichnen
     drawLineDiagramFor: function(values) {
         var first = values[0];
         var max = d.util.getMax(values) - first;
@@ -66,7 +101,7 @@ var d = {
 
     // Begin-Utilities
     util : {    
-    // Maximum ermitteln
+    // Maximum ermitteln (Vektor)
     getMax: function(values) {
         var max = 'null';
         for(var idx in values) {
@@ -81,7 +116,22 @@ var d = {
         return max;
     },
 
-    // Minimum ermitteln
+    // Maximum aus einem zweidimensionalen Array ermitteln
+    getMax2: function(values) {
+        var max = 'null';
+        for(var idx in values) {
+            if(max === 'null') {
+                max = d.util.getMax(values[idx]);
+            }
+            var val = d.util.getMax(values[idx]);
+            if(max < val) {
+                max = val;
+            }
+        }
+        return max;
+    },
+
+    // Minimum ermitteln (Vektor)
     getMin: function(values) {
         var min = 'null';
         for(var idx in values) {
@@ -90,6 +140,21 @@ var d = {
                 min = val;
             }
             if((min*1) > (val*1)) {
+                min = val;
+            }
+        }
+        return min;
+    },
+
+    // Minimum aus einem zweidimensionalen Array ermitteln
+    getMin2: function(values) {
+        var min = 'null';
+        for(var idx in values) {
+            if(min === 'null') {
+                min = d.util.getMin(values[idx]);
+            }
+            var val = d.util.getMin(values[idx]);
+            if(min > val) {
                 min = val;
             }
         }
