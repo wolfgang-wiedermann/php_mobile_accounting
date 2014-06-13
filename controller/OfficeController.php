@@ -53,16 +53,20 @@ function getTimeSlices($request) {
     $timetype = $request['timetype'];
 	if($this->isValidTimeType($timetype)) {
 	    $sql = "";
+		$orderby = "";
 	    if($timetype === 'Kalenderwoche') { 
-	        $sql = "select yearweek(datum) as zeiteinheit_id, concat(year(datum), ' KW ', WEEKOFYEAR(datum)) as zeiteinheit_ktxt ";
+	        $sql = "select (year(datum)*100)+weekofyear(datum) as zeitscheibe_id, concat(year(datum), ' KW ', WEEKOFYEAR(datum)) as zeitscheibe_ktxt ";
+			$orderby = "group by (year(datum)*100)+weekofyear(datum) order by (year(datum)*100)+weekofyear(datum)";
 		} else if($timetype === 'Monat') {
-		    $sql = "select (year(datum)*100)+month(datum) as zeiteinheit_id, concat(monthname(datum), ' ', year(datum)) as zeiteinheit_ktxt ";
+		    $sql = "select (year(datum)*100)+month(datum) as zeitscheibe_id, concat(monthname(datum), ' ', year(datum)) as zeitscheibe_ktxt ";
+			$orderby = "group by (year(datum)*100)+month(datum) order by (year(datum)*100)+month(datum)";
 		} else if($timetype === 'Jahr') {
-		    $sql = "select year(datum) as zeiteinheit_id, year(datum) as zeiteinheit_ktxt ";
+		    $sql = "select year(datum) as zeitscheibe_id, year(datum) as zeitscheibe_ktxt ";
+			$orderby = "group by year(datum) order by year(datum)";
 		} else {
 		    throw new ErrorException("Ungültiger Zustand, nach isValidTimeType darf kein falscher timetype möglich sein");
 		}
-		$sql .= "from fi_buchungen where mandant_id = ".$this->mandant_id;
+		$sql .= "from fi_buchungen where mandant_id = ".$this->mandant_id." ".$orderby;
 		
 		$result = array();
 		$db = getDbConnection();
@@ -81,8 +85,13 @@ function getTimeSlices($request) {
 }
 
 private function isValidTimeType($timetype) {
-    // TODO: Programmieren
-	return true;
+    $validTypes = $this->getTimeTypes();
+	foreach($validTypes as $item) {
+	    if($item === $timetype) {
+		    return true;
+		}
+	}
+	return false;
 }
 
 }
