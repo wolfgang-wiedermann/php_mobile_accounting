@@ -49,20 +49,26 @@ function getTimeTypes() {
 
 # Erstellt eine Liste aller Kontenarten
 function getTimeSlices($request) {
-    // TODO: IsSet-Prüfung fehlt noch
+    
+	if(!isset($request['timetype'])) {
+	    throw new ErrorException("Der Parameter 'timetype' ist nicht gesetzt");
+    }
+	
     $timetype = $request['timetype'];
 	if($this->isValidTimeType($timetype)) {
 	    $sql = "";
 		$orderby = "";
 	    if($timetype === 'Kalenderwoche') { 
-	        $sql = "select (year(datum)*100)+weekofyear(datum) as zeitscheibe_id, concat(year(datum), ' KW ', WEEKOFYEAR(datum)) as zeitscheibe_ktxt ";
-			$orderby = "group by (year(datum)*100)+weekofyear(datum) order by (year(datum)*100)+weekofyear(datum)";
+	        $sql =  "select (year(datum)*100)+weekofyear(datum) as zeitscheibe_id, ";
+			$sql .= "concat(year(datum), ' KW ', WEEKOFYEAR(datum)) as zeitscheibe_ktxt ";
+		    $orderby = "group by (year(datum)*100)+weekofyear(datum) order by (year(datum)*100)+weekofyear(datum)";
 		} else if($timetype === 'Monat') {
-		    $sql = "select (year(datum)*100)+month(datum) as zeitscheibe_id, concat(monthname(datum), ' ', year(datum)) as zeitscheibe_ktxt ";
-			$orderby = "group by (year(datum)*100)+month(datum) order by (year(datum)*100)+month(datum)";
+		    $sql =  "select (year(datum)*100)+month(datum) as zeitscheibe_id, ";
+			$sql .= "concat(monthname(datum), ' ', year(datum)) as zeitscheibe_ktxt ";
+		    $orderby = "group by (year(datum)*100)+month(datum) order by (year(datum)*100)+month(datum)";
 		} else if($timetype === 'Jahr') {
 		    $sql = "select year(datum) as zeitscheibe_id, year(datum) as zeitscheibe_ktxt ";
-			$orderby = "group by year(datum) order by year(datum)";
+		    $orderby = "group by year(datum) order by year(datum)";
 		} else {
 		    throw new ErrorException("Ungültiger Zustand, nach isValidTimeType darf kein falscher timetype möglich sein");
 		}
