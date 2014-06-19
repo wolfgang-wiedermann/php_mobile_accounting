@@ -26,6 +26,7 @@
     <li><a href="#" id="ergebnis_action_bilanz" class="ergebnis_form_item">Bilanz</a></li>
     <li><a href="#" id="ergebnis_action_guv" class="ergebnis_form_item">Gewinn und Verlust</a></li>
     <li><a href="#" id="ergebnis_action_guv_month" class="ergebnis_form_item">GuV aktueller Monat</a></li>
+    <li><a href="#" id="ergebnis_action_guv_prognose" class="ergebnis_form_item">GuV Prognose</a></li>
     <li data-role="list-divider">Verlaufs-Auswertungen</li>
     <li><a href="#" id="ergebnis_action_verlauf_aufwand" class="ergebnis_form_item">Aufwand (Monate)</a></li>
     <li><a href="#" id="ergebnis_action_verlauf_ertrag" class="ergebnis_form_item">Ertrag (Monate)</a></li>
@@ -36,6 +37,9 @@
 </div>
 <!-- Bilanz -->
 <div id="ergebnis_form_bilanz" class="content_form">
+</div>
+<!-- GuV-Prognose -->
+<div id="ergebnis_form_guv_prognose" class="content_form">
 </div>
 <!-- GuV -->
 <div id="ergebnis_form_guv" class="content_form">
@@ -91,9 +95,12 @@ constants : {
 
 registerErgebnisFormEvents : function() {
     $(".ergebnis_form_item").unbind("click");
+    // Basisauswertungen
     $("#ergebnis_action_bilanz").click(ergebnisForm.showBilanz);
     $("#ergebnis_action_guv").click(ergebnisForm.showGuV);
     $("#ergebnis_action_guv_month").click(ergebnisForm.showGuVMonth);
+    $("#ergebnis_action_guv_prognose").click(ergebnisForm.showGuVPrognose);
+    // Verlaufsauswertungen
     $("#ergebnis_action_verlauf_aufwand").click(ergebnisForm.showVerlaufAufwand);
     $("#ergebnis_action_verlauf_ertrag").click(ergebnisForm.showVerlaufErtrag);
     $("#ergebnis_action_verlauf_gewinn").click(ergebnisForm.showVerlaufGewinn);
@@ -121,6 +128,12 @@ showGuVMonth : function() {
     $(".content_form").hide();
     $("#ergebnis_form_guv").show();
     ergebnisForm.loadGuVMonth();
+},
+
+showGuVPrognose : function() {
+    $(".content_form").hide();
+    $("#ergebnis_form_guv_prognose").show();
+    ergebnisForm.loadGuVPrognose();
 },
 
 showVerlaufAufwand : function() {
@@ -210,6 +223,33 @@ loadGuV : function() {
             html += "</table>";
             $("#ergebnis_form_guv_inner").html(html);
         }, 
+        function(error) {
+            alert(error);
+        }
+    );
+},
+
+loadGuVPrognose : function() {
+    doGETwithCache("ergebnis", "guv_prognose", [],
+        function(data) {
+            html = "<b>GuV-Monatsvergleich</b><br/>";
+            html += "<table>";
+
+            html += "<tr><td>Konto</td><td></td>";
+            html += "<td>Vormonat</td><td>Aktuell</td>";
+            html += "<td>Differenz</td></tr>";
+
+            for(var key in data) {
+                html += "<tr><td>"+data[key].kontonummer+"</td>";
+                html += "<td>"+data[key].bezeichnung+"</td>";
+                html += "<td class=\"td_betrag\">"+data[key].betrag_vormonat+"</td>";
+                html += "<td class=\"td_betrag\">"+data[key].betrag_aktuell+"</td>";
+                html += "<td class=\"td_betrag\">"+data[key].differenz+"</td></tr>";
+            }
+
+            html += "</table>";
+            $("#ergebnis_form_guv_prognose").html(html);
+        },
         function(error) {
             alert(error);
         }
