@@ -78,7 +78,8 @@ function AppViewModel() {
     self.saveBuchung = function(tmpModel) {
         buchungenForm.create(ko.toJSON(tmpModel.buchung()));
     }
-  
+    // Buchungs-Queue (Offline-Buchungen)
+    m.privat.initQueuedBuchungen(self);
 }
 
 if(!m) {
@@ -276,7 +277,6 @@ m.privat.initMonate = function(self) {
                         self.buchungsmonate.push({'monat':data[i], 'selected':false});
                     }
                 }
-                //$("#ergebnis_form_guv_months").selectmenu('refresh');
 
                 if(!!successHandler) {
                     successHandler();
@@ -293,4 +293,24 @@ m.privat.initMonate = function(self) {
             $("#ergebnis_form_guv_months").selectmenu('refresh');
         });
     }
+};
+
+/*
+* Computed-Observable für die Buchungsqueue im Model registrieren
+*/
+m.privat.initQueuedBuchungen = function(self) {
+    self.buchungsqueue = ko.observableArray([]);
+
+    self.refreshBuchungsqueue = function() {
+        var queue = broker.queue.list("buchung", "create");
+        self.buchungsqueue.destroyAll();
+
+        return queue.forEach(function(item) {
+            self.buchungsqueue.push(JSON.parse(item.parameterObject));
+        });
+    };
+
+    broker.queue.addNewItemAddedListener(self.refreshBuchungsqueue);
+    broker.queue.addItemRemovedListener(self.refreshBuchungsqueue);
+
 };

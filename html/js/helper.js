@@ -203,6 +203,36 @@ var broker = {
     * (bei doPOSTwithQueue: bis diese wieder an den Server uebertragen werden koennen).
     */
     queue: {
+         itemAddedListeners : [],
+         itemRemovedListeners: [],
+         /**
+         * Listener für das Ereignis "Neues Item hinzugefügt" registrieren
+         */
+         addNewItemAddedListener: function(listener) {
+             if($.isFunction(listener)) {
+                 broker.queue.itemAddedListeners.push(listener);
+             }
+         },
+         /**
+         * Listener für das Ereignis "Item entfernt" registrieren
+         */
+         addItemRemovedListener: function(listener) {
+             if($.isFunction(listener)) {
+                 broker.queue.itemRemovedListeners.push(listener);
+             }
+         },
+
+         /**
+         * Erstellen einer Liste mit den eingereihten Buchungseinträgen
+         */
+         list: function(controller, action) {
+             if(localStorage.getItem('#QUEUE:'+controller+':'+action) === null) {
+                 return [];
+             } else {
+                 var list = JSON.parse(localStorage.getItem('#QUEUE:'+controller+':'+action));
+                 return list;
+             }
+         },
          /**
          * Eintragen eines Eintrags in die Queue
          */
@@ -219,6 +249,10 @@ var broker = {
                  'parameterObject':parameterObject,
              });
              localStorage.setItem('#QUEUE:'+controller+':'+action, JSON.stringify(queue));
+             // Und am Ende noch die registrierten Listener aufrufen
+             for(var key in broker.queue.itemAddedListeners) {
+                 broker.queue.itemAddedListeners[key]();
+             }
          },
 
          /**
@@ -230,6 +264,12 @@ var broker = {
              var item = queue.pop();
              queue = queue.reverse();
              localStorage.setItem('#QUEUE:'+controller+':'+action, JSON.stringify(queue));
+             
+             // Und am Ende noch die registrierten Listener aufrufen
+             for(var key in broker.queue.itemRemovedListeners) {
+                 broker.queue.itemRemovedListeners[key]();
+             }
+
              return item;
          },
     },

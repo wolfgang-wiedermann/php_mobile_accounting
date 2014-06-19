@@ -24,6 +24,7 @@
 <ul data-role="listview">
     <li><a href="#" id="buchung_form_erfassen" class="buchung_form_item">Buchung erfassen</a></li>
     <li><a href="#" id="buchung_form_newest" class="buchung_form_item">Aktuellste Buchungen</a></li>
+    <li><a href="#" id="buchung_form_queue" class="buchung_form_item">Buchungs-Warteschlange</a></li>
 <!--
     <li><a href="#" id="buchung_form_journal_temporal" class="buchung_form_item">Buchungen von bis</a></li>
 -->
@@ -47,6 +48,12 @@
 <!-- Anzeige der aktuellsten 25 Buchungen -->
 <div id="buchung_form_current" class="content_form">
 </div>
+<!-- Anzeige der Buchungswarteschlange -->
+<div id="buchung_form_queueview" class="content_form">
+    <ul data-role="listview" data-bind="foreach: buchungsqueue, jqmRefreshList: buchungsqueue">
+        <li><a href="#" data-bind="text: buchungstext"></a></li>
+    </ul>
+</div>
 <!-- JavaScript-Code -->
 <script type="text/javascript">
 var buchungenForm = {
@@ -55,6 +62,7 @@ registerBuchungFormEvents : function() {
     $(".buchung_form_item").unbind("click");
     $("#buchung_form_erfassen").click(buchungenForm.showErfassen);
     $("#buchung_form_newest").click(buchungenForm.showAktuellste);
+    $("#buchung_form_queue").click(buchungenForm.showQueuedElements);
 //    $("#buchung_form_journal_temporal").click(buchungenForm.showBuchungenVonBis);
 },    
 
@@ -88,6 +96,12 @@ showAktuellste : function() {
             alert("Fehler aufgetreten: "+JSON.stringify(error));
         }
     );
+},
+
+// Blendet die Anzeige der Buchungswarteschlange ein
+showQueuedElements : function() {
+    $(".content_form").hide();
+    $("#buchung_form_queueview").show();
 },
 
 create : function(jsonString) {
