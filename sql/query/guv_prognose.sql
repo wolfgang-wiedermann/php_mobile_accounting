@@ -10,7 +10,7 @@ from fi_buchungen b
 inner join fi_konto k
 on b.sollkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = 1 -- TODO: Mandant setzen
+where b.mandant_id = #mandant_id# -- TODO: Mandant setzen
 and year(datum) = year(date_sub(now(), interval 1 month))
 and month(datum) = month(date_sub(now(), interval 1 month))-1
 group by k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum), month(datum)
@@ -22,7 +22,7 @@ from fi_buchungen b
 inner join fi_konto k
 on b.habenkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = 1
+where b.mandant_id = #mandant_id#
 and year(datum) = year(date_sub(now(), interval 1 month))
 and month(datum) = month(date_sub(now(), interval 1 month))
 group by k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum), month(datum)
@@ -32,6 +32,7 @@ union
 select distinct k.kontenart_id, k.kontonummer, k.bezeichnung, year(date_sub(now(), interval 1 month)) as jahr, 
        month(date_sub(now(), interval 1 month)) as monat, 0 as betrag, 'Z' as buchungstyp, k.mandant_id
 from fi_konto as k
+where k.mandant_id = #mandant_id#
 
 ) as vormonat,
 
@@ -40,7 +41,7 @@ from fi_buchungen b
 inner join fi_konto k
 on b.sollkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = 1
+where b.mandant_id = #mandant_id#
 and year(datum) = year(now())
 and month(datum) = month(now())
 group by k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum), month(datum)
@@ -52,7 +53,7 @@ from fi_buchungen b
 inner join fi_konto k
 on b.habenkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = 1
+where b.mandant_id = #mandant_id#
 and year(datum) = year(now())
 and month(datum) = month(now())
 group by k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum), month(datum)
@@ -61,6 +62,7 @@ union
 
 select distinct k.kontenart_id, k.kontonummer, k.bezeichnung, year(now()) as jahr, month(now()) as monat, 0 as betrag, 'Z' as buchungstyp, k.mandant_id
 from fi_konto as k
+where k.mandant_id = #mandant_id#
 
 ) as aktuellermonat
 

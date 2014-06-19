@@ -35,6 +35,8 @@ function invoke($action, $request, $dispatcher) {
             return $this->getGuV();
         case "guv_month":
             return $this->getGuVMonth($request);
+        case "guv_prognose":
+            return $this->getGuVPrognose();
         case "verlauf":
             return $this->getVerlauf($request);
         case "verlauf_gewinn":
@@ -141,6 +143,27 @@ function getGuVMonth($request) {
         $ergebnisse[] = $erg;
     }
     $result['ergebnisse'] = $ergebnisse;
+    mysqli_close($db);
+    return $result;
+}
+
+#
+# Laden der GuV-Prognose
+# (GuV aktuelles-Monat + Vormonat)
+function getGuVPrognose() {
+    $db = getDbConnection();
+
+    $query = new QueryHandler("guv_prognose.sql");
+    $query->setParameter("mandant_id", $this->mandant_id);
+    $sql = $query->getSql();
+
+    $rs = mysqli_query($db, $sql);
+
+    $result = array();
+    while($erg = mysqli_fetch_object($rs)) {
+        $result[] = $erg;
+    }
+
     mysqli_close($db);
     return $result;
 }

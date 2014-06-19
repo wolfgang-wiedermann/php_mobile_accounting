@@ -31,6 +31,7 @@ if(!isset($_REQUEST['controller'])) {
    # Logger und Datenbank-Helper laden
    require_once("./lib/Logger.php");
    require_once("./lib/Database.php");
+   require_once("./lib/QueryHandler.php");
    # So umstellen das Errors als Exceptions geliefert werden
    include_once("./lib/ErrorsToExceptions.php");
    # Einstiegspunkt in das Framework
