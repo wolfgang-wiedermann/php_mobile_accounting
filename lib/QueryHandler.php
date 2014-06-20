@@ -18,8 +18,7 @@ class QueryHandler {
         $this->sql = file_get_contents("./sql/query/".$this->path);
     }
 
-    function setParameter($paramName, $paramValue) {
-        // TODO: Strings von $paramName und $paramValue prüfen
+    function setParameterUnchecked($paramName, $paramValue) {
         $this->sql = str_replace("#".$paramName."#", $paramValue, $this->sql);
     }
 

@@ -154,7 +154,7 @@ function getGuVPrognose() {
     $db = getDbConnection();
 
     $query = new QueryHandler("guv_prognose.sql");
-    $query->setParameter("mandant_id", $this->mandant_id);
+    $query->setParameterUnchecked("mandant_id", $this->mandant_id);
     $sql = $query->getSql();
 
     $rs = mysqli_query($db, $sql);
