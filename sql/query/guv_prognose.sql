@@ -5,14 +5,23 @@ select vormonat.kontonummer, vormonat.bezeichnung,
             else sum(aktuellermonat.betrag)-sum(vormonat.betrag) end as differenz
 from (
 
+select konten.kontenart_id, konten.kontonummer, konten.bezeichnung, coalesce(jahr, year(date_sub(now(), interval 1 month))) as jahr, 
+       coalesce(monat, month(date_sub(now(), interval 1 month))) as monat, coalesce(betrag, 0) as betrag, konten.mandant_id
+
+from fi_konto as konten
+left outer join (
+
+select kontenart_id, kontonummer, bezeichnung, jahr, monat, sum(betrag) as betrag, mandant_id
+from (
+
 select k.kontenart_id, k.kontonummer, k.bezeichnung,  year(datum) as jahr, month(datum) as monat, sum(betrag) as betrag, 'S' as buchungstyp, b.mandant_id
 from fi_buchungen b
 inner join fi_konto k
 on b.sollkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = #mandant_id# -- TODO: Mandant setzen
+where b.mandant_id = #mandant_id#
 and year(datum) = year(date_sub(now(), interval 1 month))
-and month(datum) = month(date_sub(now(), interval 1 month))-1
+and month(datum) = month(date_sub(now(), interval 1 month))
 group by k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum), month(datum)
 
 union 
@@ -26,27 +35,40 @@ where b.mandant_id = #mandant_id#
 and year(datum) = year(date_sub(now(), interval 1 month))
 and month(datum) = month(date_sub(now(), interval 1 month))
 group by k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum), month(datum)
+) as vormonat_base
 
-union 
+group by kontenart_id, kontonummer, bezeichnung, jahr, monat, mandant_id
 
-select distinct k.kontenart_id, k.kontonummer, k.bezeichnung, year(date_sub(now(), interval 1 month)) as jahr, 
-       month(date_sub(now(), interval 1 month)) as monat, 0 as betrag, 'Z' as buchungstyp, k.mandant_id
-from fi_konto as k
-where k.mandant_id = #mandant_id#
+) as vormonat_aggreg
+
+on konten.mandant_id = vormonat_aggreg.mandant_id
+and konten.kontonummer = vormonat_aggreg.kontonummer
+where konten.mandant_id = #mandant_id#
 
 ) as vormonat,
 
-(select k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum) as jahr, month(datum) as monat, sum(betrag) as betrag, 'S' as buchungstyp, b.mandant_id
+(
+
+select konten.kontenart_id, konten.kontonummer, konten.bezeichnung, coalesce(jahr, year(now())) as jahr,
+       coalesce(monat, month(now())) as monat, coalesce(betrag, 0) as betrag, konten.mandant_id
+
+from fi_konto as konten
+left outer join (
+
+select kontenart_id, kontonummer, bezeichnung, jahr, monat, sum(betrag) as betrag, mandant_id
+from (
+
+select k.kontenart_id, k.kontonummer, k.bezeichnung,  year(datum) as jahr, month(datum) as monat, sum(betrag) as betrag, 'S' as buchungstyp, b.mandant_id
 from fi_buchungen b
 inner join fi_konto k
 on b.sollkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = #mandant_id#
+where b.mandant_id = #mandant_id# 
 and year(datum) = year(now())
 and month(datum) = month(now())
 group by k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum), month(datum)
 
-union 
+union
 
 select k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum) as jahr, month(datum) as monat, sum(betrag)*-1 as betrag, 'H' as buchungstyp, b.mandant_id
 from fi_buchungen b
@@ -57,17 +79,19 @@ where b.mandant_id = #mandant_id#
 and year(datum) = year(now())
 and month(datum) = month(now())
 group by k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum), month(datum)
+) as aktmonat_base
 
-union
+group by kontenart_id, kontonummer, bezeichnung, jahr, monat, mandant_id
 
-select distinct k.kontenart_id, k.kontonummer, k.bezeichnung, year(now()) as jahr, month(now()) as monat, 0 as betrag, 'Z' as buchungstyp, k.mandant_id
-from fi_konto as k
-where k.mandant_id = #mandant_id#
+) as aktmonat_aggreg
+
+on konten.mandant_id = aktmonat_aggreg.mandant_id
+and konten.kontonummer = aktmonat_aggreg.kontonummer
+where konten.mandant_id = #mandant_id#
 
 ) as aktuellermonat
 
 where vormonat.kontonummer = aktuellermonat.kontonummer
-and vormonat.buchungstyp = aktuellermonat.buchungstyp
 and vormonat.kontenart_id in (3, 4)
 and not (vormonat.betrag = 0 and aktuellermonat.betrag = 0)
 
