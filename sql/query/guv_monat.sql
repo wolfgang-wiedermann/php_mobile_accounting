@@ -1,6 +1,6 @@
-select kontonummer, bezeichnung, 
+select kontonummer as konto, bezeichnung as kontenname,
 case when kontenart_id = 4 then sum(betrag)*-1
-     else sum(betrag) end as betrag
+     else sum(betrag) end as saldo
 from (
 
 select k.kontonummer as kontonummer,

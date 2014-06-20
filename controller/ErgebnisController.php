@@ -121,28 +121,31 @@ function getGuVMonth($request) {
     $month_id = $this->getMonthFromRequest($request);
 
     $db = getDbConnection();
-    $rs = mysqli_query($db, "select konto, kontenname, sum(betrag)*-1 as saldo from fi_ergebnisrechnungen_base ".
-          " where mandant_id = $this->mandant_id and (year(datum)*100)+month(datum) = ".$month_id." and kontenart_id in (3, 4) ".
-          "group by konto, kontenname");
+    $query = new QueryHandler("guv_monat.sql");
+    $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+    $query->setParameterUnchecked("monat_id", $month_id);
+    $sql = $query->getSql();
+
+    $rs = mysqli_query($db, $sql);
     $zeilen = array();
     $result = array();
     while($erg = mysqli_fetch_object($rs)) {
         $zeilen[] = $erg;
     }
     $result['zeilen'] = $zeilen;
-    $rs = mysqli_query($db, "select kontenart_id, sum(betrag)*-1 as saldo from fi_ergebnisrechnungen_base
-        where mandant_id = $this->mandant_id and kontenart_id in (3, 4) and gegenkontenart_id not in (5) 
-          and (year(datum)*100)+month(datum) = ".$month_id."
-        group by kontenart_id
-        union 
-        select '5', sum(betrag)*-1 as saldo from fi_ergebnisrechnungen_base 
-        where mandant_id = $this->mandant_id and kontenart_id in (3, 4) and gegenkontenart_id not in (5) 
-          and (year(datum)*100)+month(datum) = ".$month_id);
+
+    $query = new QueryHandler("guv_monat_summen.sql");
+    $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+    $query->setParameterUnchecked("monat_id", $month_id);
+    $sql = $query->getSql();
+
+    $rs = mysqli_query($db, $sql);
     $ergebnisse = array();
     while($erg = mysqli_fetch_object($rs)) {
         $ergebnisse[] = $erg;
     }
     $result['ergebnisse'] = $ergebnisse;
+
     mysqli_close($db);
     return $result;
 }
