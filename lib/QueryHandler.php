@@ -19,9 +19,9 @@
  */
 
 /*
-* Klasse zur Verwendung von SQL-Abfragen die in eigenständigen Dateien 
-* gespeichert werden.
-*/
+ * Klasse zur Verwendung von SQL-Abfragen die in eigenständigen Dateien 
+ * gespeichert werden.
+ */
 class QueryHandler {
 
     private $path;
