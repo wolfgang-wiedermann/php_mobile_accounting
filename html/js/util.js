@@ -22,3 +22,8 @@ util.escapeGtLt = function(string) {
     result = result.replace(">", "&gt;");
     return result;
 }
+
+// Ermittelt, ob der aktuelle Browser auf iOS läuft
+util.isiOS = function() {
+    return ( navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false )
+}

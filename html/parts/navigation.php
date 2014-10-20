@@ -85,7 +85,10 @@ var menu = {
             menu.loadQuickNodeTemplate(data, model);
             buchungenForm.showErfassen();
             $("#header_home_button").show();
-            $("#buchung_form_erfassung_betrag").focus();
+            // Fokusieren des Betrags-Feldes mit neuestem iOS problematisch
+            if(!util.isiOS()) {
+                $("#buchung_form_erfassung_betrag").focus();
+            }
         }, function(error) {
             alert("Fehler beim Laden des Templates aufgetreten");
         });

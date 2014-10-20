@@ -25,9 +25,6 @@
     <li><a href="#" id="buchung_form_erfassen" class="buchung_form_item">Buchung erfassen</a></li>
     <li><a href="#" id="buchung_form_newest" class="buchung_form_item">Aktuellste Buchungen</a></li>
     <li><a href="#" id="buchung_form_queue" class="buchung_form_item">Buchungs-Warteschlange</a></li>
-<!--
-    <li><a href="#" id="buchung_form_journal_temporal" class="buchung_form_item">Buchungen von bis</a></li>
--->
 </ul>
 </div>
 <!-- Formular zur Buchungseingabe -->
