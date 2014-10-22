@@ -163,8 +163,22 @@ function getGuVPrognose() {
     $rs = mysqli_query($db, $sql);
 
     $result = array();
+    $result['detail'] = array();
     while($erg = mysqli_fetch_object($rs)) {
-        $result[] = $erg;
+        $result['detail'][] = $erg;
+    }
+
+    mysqli_free_result($rs);
+
+    $query = new QueryHandler("guv_prognose_summen.sql");
+    $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+    $sql = $query->getSql();
+
+    $rs = mysqli_query($db, $sql);
+    
+    $result['summen'] = array();
+    while($erg = mysqli_fetch_object($rs)) {
+        $result['summen'][] = $erg;
     }
 
     mysqli_close($db);

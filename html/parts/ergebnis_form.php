@@ -239,12 +239,25 @@ loadGuVPrognose : function() {
             html += "<td>Vormonat</td><td>Aktuell</td>";
             html += "<td>Differenz</td></tr>";
 
-            for(var key in data) {
-                html += "<tr><td>"+data[key].kontonummer+"</td>";
-                html += "<td>"+data[key].bezeichnung+"</td>";
-                html += "<td class=\"td_betrag\">"+data[key].betrag_vormonat+"</td>";
-                html += "<td class=\"td_betrag\">"+data[key].betrag_aktuell+"</td>";
-                html += "<td class=\"td_betrag\">"+data[key].differenz+"</td></tr>";
+            for(var key in data.detail) {
+                html += "<tr><td>"+data.detail[key].kontonummer+"</td>";
+                html += "<td>"+data.detail[key].bezeichnung+"</td>";
+                html += "<td class=\"td_betrag\">"+data.detail[key].betrag_vormonat+"</td>";
+                html += "<td class=\"td_betrag\">"+data.detail[key].betrag_aktuell+"</td>";
+                html += "<td class=\"td_betrag\">"+data.detail[key].differenz+"</td></tr>";
+            }
+
+            html += "<tr><td></td></tr>";
+            html += "<tr><td colspan=\"4\"><b>Summen</b></td></tr>";
+            
+            for(var key in data.summen) {
+                if(data.summen[key].kontenart_id === '5') {
+                  html += "<tr><td>Saldo</td>";
+                } else {
+                  html += "<tr><td>"+data.summen[key].bezeichnung+"</td>";
+                }
+                html += "<td>"+data.summen[key].monat+"</td>";
+                html += "<td class=\"td_betrag\">"+data.summen[key].saldo+"</td></tr>";
             }
 
             html += "</table>";
