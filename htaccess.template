@@ -5,3 +5,9 @@ AuthName "html5-haushaltsbuch"
 order deny,allow
 allow from all
 require valid-user
+
+#Gzip fuer HTML-, CSS- und JavaScript-Content aktivieren
+<ifmodule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/text text/html text/plain text/xml text/css application/x-javascript application/javascript text/javascript
+</ifmodule>
+
