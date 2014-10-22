@@ -28,8 +28,8 @@ function invoke($action, $request, $dispatcher) {
 	$this->mandant_id = $dispatcher->getMandantId();
 	
     switch($action) {
-	    case "timetypes":
-		    return $this->getTimeTypes();
+        case "timetypes":
+            return $this->getTimeTypes();
         case "timeslices":
             return $this->getTimeSlices($request);
         default:
