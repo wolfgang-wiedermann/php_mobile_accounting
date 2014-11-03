@@ -29,9 +29,9 @@ Installation Information
 
 The installation can be handled within tree steps.
 
-First download this repository from GitHub (you will find it at http://download.html5-haushaltsbuch.de). I assume, you have loaded it as an ZIP-File. Unzip this file to your local computer and go to the directory you have unzipped it to.   
+First download this repository from GitHub (you will find it at http://download.html5-haushaltsbuch.de). I assume, you have loaded it as a ZIP-File. Unzip this file to your local computer and go to the directory you have unzipped it to.   
 
-At next please go to the ./sql-Folder, it contains a file named create-tables-and-views.sql. Execute this file on a Mysql-Server within a database you want to use for "php mobile accounting". In case of this manual I will assume that you have called it "fibu" but it can have every possible other name.
+At next please go to the ./sql-Folder, it contains a file named create-tables-and-views.sql. Execute this file on a Mysql-Server within a database you want to use for "html5-haushaltsbuch". In case of this manual I will assume that you have called it "fibu" but it can have every possible other name.
 
 Next step ist to configure your database connection. Therefore the file "Database.php" in the folder "lib" can be used. To prepare this please copy "Database.php.template" to "Database.php" and open it with your favorite Texteditor. Replace the placeholders for databasehost, database, username and password to enable access to the database you created one step before.
 
