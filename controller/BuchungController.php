@@ -55,7 +55,10 @@ function createBuchung($request) {
               .$input['datum']."', ".$this->dispatcher->getUserId().")";
         mysqli_query($db, $sql);
         mysqli_close($db);
-        return $void = array();
+
+        $empty = array();
+       
+        return wrap_response($empty, "json");
     } else {
         throw new ErrorException("Das Buchungsobjekt enthält nicht gültige Elemente");
     }
@@ -67,11 +70,13 @@ function getTop25($request) {
     $top = array();
     $rs = mysqli_query($db, "select * from fi_buchungen where mandant_id = $this->mandant_id "
                            ."order by buchungsnummer desc limit 25");
+
     while($obj = mysqli_fetch_object($rs)) {
         $top[] = $obj;
     }
+
     mysqli_close($db);
-    return $top;
+    return wrap_response($top);
 }
 
 function getListByKonto($request) {
@@ -113,7 +118,7 @@ function getListByKonto($request) {
             $result['saldo'] = "unbekannt";
         }
         mysqli_close($db);
-        return $result;
+        return wrap_response($result);
     # Wenn konto keine Ziffernfolge ist, leeres Ergebnis zurück liefern
     } else {
         throw new ErrorException("Die Kontonummer ist nicht numerisch");

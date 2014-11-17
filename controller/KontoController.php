@@ -50,7 +50,7 @@ function getKonto($id) {
         $rs = mysqli_query($db, "select * from fi_konto where kontonummer = $id and mandant_id = $this->mandant_id");
         $erg = mysqli_fetch_object($rs);
         mysqli_close($db); 
-        return $erg;
+        return wrap_response($erg);
     } else throw Exception("Kontonummer nicht numerisch");
 }
 
@@ -61,7 +61,7 @@ function getSaldo($id) {
         $rs = mysqli_query($db, "select saldo from fi_ergebnisrechnungen where mandant_id = $this->mandant_id and konto = '$id'");
         $erg = mysqli_fetch_object($rs);
         mysqli_close($db);
-        return $erg->saldo;
+        return wrap_response($erg->saldo);
     } else throw Exception("Kontonummer nicht numerisch");
 }
 
@@ -74,7 +74,7 @@ function getKonten() {
         $result[] = $obj;
     }
     mysqli_close($db);
-    return $result;
+    return wrap_response($result);
 }
 
 # Speichert das als JSON-Objekt übergebene Konto
@@ -87,7 +87,8 @@ function saveKonto($request) {
               ." where kontonummer = ".$input['kontonummer']." and mandant_id = ".$this->mandant_id;
         mysqli_query($db, $sql);
         mysqli_close($db);
-        return $void = array();
+        $void = array();
+        return wrap_response($void);
     } else {
         throw new Exception("Kontenobjekt enthaelt ungueltige Zeichen");
     }
@@ -104,7 +105,8 @@ function createKonto($request) {
               ."', ".$input['kontenart_id'].", ".$this->mandant_id.")";
         mysqli_query($db, $sql);
         mysqli_close($db);
-        return $void = array();
+        $void = array();
+        return wrap_response($void);
     } else {
         throw new Exception("Kontenobjekt enthaelt ungueltige Zeichen");
     }

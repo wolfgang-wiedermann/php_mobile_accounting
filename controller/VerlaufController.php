@@ -77,7 +77,7 @@ function getMonatsSalden($kontonummer) {
             }
             mysqli_free_result($rs);
             mysqli_close($db);
-            return $result;
+            return wrap_response($result);
         } else {
             mysqli_close($db);
             throw new Exception("Mindestens eine Kontonummer ist unbekannt");
@@ -131,7 +131,7 @@ function getCashFlow($kontonummer, $side) {
     } else {
         throw new Exception("getCashFlow ist nur für Aktiv-Konten verfügbar");
     }
-    return $values;
+    return wrap_response($values);
 }
 
 # Prüft, ob das angegebene Konto ein Aktiv-Konto ist.

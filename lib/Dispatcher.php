@@ -32,14 +32,22 @@ function invoke($request) {
     if($this->isValidControllerName()) {
         $controller = $this->getControllerObject();
         $action = $this->getActionName();
-        if(array_key_exists ("outputtype" , $request) 
-           && $request["outputtype"] == 'csv'
-           && $request["controller"] == 'ergebnis') {
-	    return $this->csvEncode($controller->invoke($action, $this->request, $this));
+        $response = $controller->invoke($action, $this->request, $this);
+
+        if($response->format == "csv") {
+            # HTTP-Header auf text/csv stellen
+            header("Content-type: text/csv");
+            header("Content-Disposition: attachment; filename=journal.csv");
+            header("Pragma: no-cache");
+	    return $this->csvEncode($response->obj);
         } else {
-            return json_encode($controller->invoke($action, $this->request, $this));
+            # HTTP-Header auf application/json stellen
+            header("Content-type: application/json");
+            return json_encode($response->obj);
         }
     } else {
+          # HTTP-Header auf application/json stellen
+          header("Content-type: application/json");
           return "{'message':'ControllerName enthält ungültige Zeichen'}";
     }    
 }
@@ -68,17 +76,17 @@ function csvEncode($data) {
     #error_log(print_r($data));
 
     $csv = ""; $header = ""; $id = 0;
-    foreach($data['zeilen'] as $line) {
-        $count = 2; # count($line);
+    foreach($data as $line) {
+        $count = count((array)$line)-1;
         $i = 0;
         foreach($line as $key => $value) {
             if($id == 0) {
-                 $header .= $key;
+                 $header .= $this->removeIllegalCsvChars($key);
                  if($i < $count) {
                      $header .= ";";
                  }
             }
-            $csv .= $value;
+            $csv .= $this->removeIllegalCsvChars($value);
             if($i < $count) {
                 $csv .= ";";
             }
@@ -88,6 +96,11 @@ function csvEncode($data) {
         $id++;
     }
     return $header."\n".$csv; 
+}
+
+# Methode zum entfernen von Strichpunkten und Newlines aus Strings
+function removeIllegalCsvChars($string) {
+    return str_replace("\n", " ", str_replace(";", " ", $string));
 }
 
 # Methode zum uebergeben des Benutzers an den Dispatcher

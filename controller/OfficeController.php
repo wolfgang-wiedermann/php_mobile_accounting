@@ -25,79 +25,43 @@ private $dispatcher, $mandant_id;
 # Einsprungpunkt, hier übergibt das Framework
 function invoke($action, $request, $dispatcher) {
     $this->dispatcher = $dispatcher;
-	$this->mandant_id = $dispatcher->getMandantId();
+    $this->mandant_id = $dispatcher->getMandantId();
 	
     switch($action) {
-        case "timetypes":
-            return $this->getTimeTypes();
-        case "timeslices":
-            return $this->getTimeSlices($request);
+        case "journal":
+            return $this->getJournal($request);
         default:
             throw new ErrorException("Unbekannte Action");
     }
 }
 
-# Liefert eine Liste der zulässigen Phasen-Typen
-# Woche, Monat, Jahr
-function getTimeTypes() {
-    $types = array();
-	$types[] = "Kalenderwoche";
-	$types[] = "Monat";
-	$types[] = "Jahr";
-    return $types;
-}
-
 # Erstellt eine Liste aller Kontenarten
-function getTimeSlices($request) {
-    
-	if(!isset($request['timetype'])) {
-	    throw new ErrorException("Der Parameter 'timetype' ist nicht gesetzt");
-    }
-	
-    $timetype = $request['timetype'];
-	if($this->isValidTimeType($timetype)) {
-	    $sql = "";
-		$orderby = "";
-	    if($timetype === 'Kalenderwoche') { 
-	        $sql =  "select (year(datum)*100)+weekofyear(datum) as zeitscheibe_id, ";
-			$sql .= "concat(year(datum), ' KW ', WEEKOFYEAR(datum)) as zeitscheibe_ktxt ";
-		    $orderby = "group by (year(datum)*100)+weekofyear(datum) order by (year(datum)*100)+weekofyear(datum)";
-		} else if($timetype === 'Monat') {
-		    $sql =  "select (year(datum)*100)+month(datum) as zeitscheibe_id, ";
-			$sql .= "concat(monthname(datum), ' ', year(datum)) as zeitscheibe_ktxt ";
-		    $orderby = "group by (year(datum)*100)+month(datum) order by (year(datum)*100)+month(datum)";
-		} else if($timetype === 'Jahr') {
-		    $sql = "select year(datum) as zeitscheibe_id, year(datum) as zeitscheibe_ktxt ";
-		    $orderby = "group by year(datum) order by year(datum)";
-		} else {
-		    throw new ErrorException("Ungültiger Zustand, nach isValidTimeType darf kein falscher timetype möglich sein");
-		}
-		$sql .= "from fi_buchungen where mandant_id = ".$this->mandant_id." ".$orderby;
-		
-		$result = array();
-		$db = getDbConnection();
-		$rs = mysqli_query($db, $sql);
-		
-		while($obj = mysqli_fetch_object($rs)) {
-		    $result[] = $obj;
-		}
-		
-		mysqli_close($db);
-		
-		return $result;
-	} else {
-	    throw new ErrorException("Ungültiger Zeittyp ausgewählt");
-	}
-}
+function getJournal($request) {
 
-private function isValidTimeType($timetype) {
-    $validTypes = $this->getTimeTypes();
-	foreach($validTypes as $item) {
-	    if($item === $timetype) {
-		    return true;
-		}
-	}
-	return false;
+    $format = "csv";    
+
+    if(isset($request['format'])) {
+       if($request['format'] == "json") {
+           $format = $request['format']; 
+       }
+    } 
+	
+    $result = array();
+    $db = getDbConnection();
+
+    $query = new QueryHandler("export_journal_to_excel.sql");
+    $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+    $sql = $query->getSql();
+
+    $rs = mysqli_query($db, $sql);
+		
+    while($obj = mysqli_fetch_object($rs)) {
+        $result[] = $obj;
+    }
+    	
+    mysqli_close($db);
+	
+    return wrap_response($result, $format);
 }
 
 }

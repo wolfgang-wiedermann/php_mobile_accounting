@@ -43,7 +43,7 @@ function getKontenart($id) {
         $rs = mysqli_query($db, "select * from fi_kontenart where kontenart_id = $id");
         $erg = mysqli_fetch_object($rs);
         mysqli_close($db);
-        return $erg;
+        return wrap_response($erg);
     } else {
         throw new ErrorException("Eine nicht numerische Kontenart-ID ist ungültig");
     }
@@ -58,7 +58,7 @@ function getKontenarten() {
         $result[] = $obj;
     }
     mysqli_close($db);
-    return $result;
+    return wrap_response($result);
 }
 
 }

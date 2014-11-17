@@ -81,7 +81,7 @@ function getBilanz() {
     }
     $result['ergebnisse'] = $ergebnisse;
     mysqli_close($db); 
-    return $result;
+    return wrap_response($result);
 }
 
 # Berechnet eine aktuelle GuV-Rechnung und liefert
@@ -112,7 +112,7 @@ function getGuV() {
     }
     $result['ergebnisse'] = $ergebnisse;
     mysqli_close($db);
-    return $result;
+    return wrap_response($result);
 }
 
 # Berechnet eine GuV-Rechnung fuer das angegebene oder aktuelle Monat
@@ -147,7 +147,7 @@ function getGuVMonth($request) {
     $result['ergebnisse'] = $ergebnisse;
 
     mysqli_close($db);
-    return $result;
+    return wrap_response($result);
 }
 
 #
@@ -182,7 +182,7 @@ function getGuVPrognose() {
     }
 
     mysqli_close($db);
-    return $result;
+    return wrap_response($result);
 }
 
 # Ermittelt aus dem Request und dessen Parameter "id" das ausgewählte Monat
@@ -215,7 +215,7 @@ function getMonths() {
 
     mysqli_free_result($rs);
     mysqli_close($db);
-    return $months;
+    return wrap_response($months);
 }
 
 # Verlauf Aufwand, Ertrag, Aktiva und Passiva in Monatsraster
@@ -251,7 +251,7 @@ function getVerlauf($request) {
 
         mysqli_close($db);
     } 
-    return $result;
+    return wrap_response($result);
 }
 
 # Verlauf des Gewinns in Monatsraster
@@ -278,7 +278,7 @@ function getVerlaufGewinn() {
 
     mysqli_close($db);
     
-    return $result;
+    return wrap_response($result);
 }
 
 
