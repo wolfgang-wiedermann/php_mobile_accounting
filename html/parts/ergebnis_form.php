@@ -23,16 +23,18 @@
 <div id="ergebnis_form" class="content_form">
 <ul data-role="listview">
     <li data-role="list-divider">Standard-Auswertungen</li>
-    <li><a href="#" id="ergebnis_action_bilanz" class="ergebnis_form_item">Bilanz</a></li>
-    <li><a href="#" id="ergebnis_action_guv" class="ergebnis_form_item">Gewinn und Verlust</a></li>
-    <li><a href="#" id="ergebnis_action_guv_month" class="ergebnis_form_item">GuV aktueller Monat</a></li>
-    <li><a href="#" id="ergebnis_action_guv_prognose" class="ergebnis_form_item">GuV Prognose</a></li>
+    <li><a href="#bilanz" id="ergebnis_action_bilanz" class="ergebnis_form_item">Bilanz</a></li>
+    <li><a href="#guv" id="ergebnis_action_guv" class="ergebnis_form_item">Gewinn und Verlust</a></li>
+    <li><a href="#guv_month" id="ergebnis_action_guv_month" class="ergebnis_form_item">GuV aktueller Monat</a></li>
+    <li><a href="#guv_prognose" id="ergebnis_action_guv_prognose" class="ergebnis_form_item">GuV Prognose</a></li>
     <li data-role="list-divider">Verlaufs-Auswertungen</li>
-    <li><a href="#" id="ergebnis_action_verlauf_aufwand" class="ergebnis_form_item">Aufwand (Monate)</a></li>
-    <li><a href="#" id="ergebnis_action_verlauf_ertrag" class="ergebnis_form_item">Ertrag (Monate)</a></li>
-    <li><a href="#" id="ergebnis_action_verlauf_gewinn" class="ergebnis_form_item">Gewinn (Monate)</a></li>
-    <li><a href="#" id="ergebnis_action_cacheflow" class="ergebnis_form_item">Zu- und Abfluss (Monate)</a></li>
-    <li><a href="#" id="ergebnis_action_verlauf_frei" class="ergebnis_form_item">Frei kombiniert (Monate)</a></li>
+    <li><a href="#verlauf_aufwand" id="ergebnis_action_verlauf_aufwand" class="ergebnis_form_item">Aufwand (Monate)</a></li>
+    <li><a href="#verlauf_ertrag" id="ergebnis_action_verlauf_ertrag" class="ergebnis_form_item">Ertrag (Monate)</a></li>
+    <li><a href="#verlauf_gewinn" id="ergebnis_action_verlauf_gewinn" class="ergebnis_form_item">Gewinn (Monate)</a></li>
+    <li><a href="#cacheflow" id="ergebnis_action_cacheflow" class="ergebnis_form_item">Zu- und Abfluss (Monate)</a></li>
+    <li><a href="#verlauf_frei" id="ergebnis_action_verlauf_frei" class="ergebnis_form_item">Frei kombiniert (Monate)</a></li>
+    <li data-role="list-divider">Datenexport</li>
+    <li><a href="#export" id="ergebnis_action_export_journal" class="ergebnis_form_item">Journal exportieren</a></li>
 </ul>
 </div>
 <!-- Bilanz -->
@@ -107,6 +109,8 @@ registerErgebnisFormEvents : function() {
     $("#ergebnis_action_verlauf_frei").click(ergebnisForm.showVerlaufFreiVorauswahl);
     $("#ergebnis_action_cacheflow").click(ergebnisForm.showVerlaufCacheFlow);
     $("#ergebnis_action_verlauf_frei_anzeigen").click(ergebnisForm.showVerlaufFrei);
+    // Datenexport
+    $("#ergebnis_action_export_journal").click(ergebnisForm.exportJournal);
 
     $("#ergebnis_form_guv_months").unbind("change");
     $("#ergebnis_form_guv_months").change(ergebnisForm.loadGuVMonth);
@@ -391,6 +395,10 @@ loadVerlaufFrei : function() {
     //alert(kontoNumbers);
     ergebnisForm.loadVerlauf('verlauf', 'monatssalden', {'id':kontoNumbers}, 'Konten:'+kontoNumbers); 
 },
+
+exportJournal : function () {
+    var win = window.open("../index.php?controller=office&action=journal&format=csv", "Download");
+}
 
 };
 </script>
