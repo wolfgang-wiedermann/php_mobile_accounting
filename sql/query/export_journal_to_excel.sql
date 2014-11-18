@@ -1,6 +1,9 @@
-select * 
+select data.mandant_id, data.buchungsart, data.buchungsnummer, data.buchungstext,
+ data.konto, k.bezeichnung as konto_bezeichnung, k.kontenart_id,
+ data.gegenkonto, format(data.betrag, 2, 'de_DE') as betrag, 
+ date_format(data.datum, '%d.%m.%Y') as datum
 from (select mandant_id as mandant_id
-, 'S' AS KNZ
+, 'S' AS buchungsart
 , fi_buchungen.buchungsnummer AS buchungsnummer
 , fi_buchungen.buchungstext AS buchungstext
 , fi_buchungen.sollkonto AS konto
@@ -11,14 +14,17 @@ from fi_buchungen
 where mandant_id = #mandant_id#
 union
 select mandant_id as mandant_id
-, 'H' AS KNZ
+, 'H' AS buchungsart
 , fi_buchungen.buchungsnummer AS buchungsnummer
 , fi_buchungen.buchungstext AS buchungstext
-, fi_buchungen.habenkonto AS habenkonto
-, fi_buchungen.sollkonto AS sollkonto
+, fi_buchungen.habenkonto AS konto
+, fi_buchungen.sollkonto AS gegenkonto
 , (fi_buchungen.betrag * -(1)) AS betrag
 , fi_buchungen.datum AS datum
 from fi_buchungen
 where mandant_id = #mandant_id#
 ) as data
-order by buchungsnummer, KNZ;
+inner join fi_konto as k
+on k.kontonummer = data.konto
+and k.mandant_id = #mandant_id#
+order by buchungsnummer, buchungsart;
