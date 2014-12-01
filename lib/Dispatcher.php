@@ -38,7 +38,7 @@ function invoke($request) {
         if($response->format == "csv") {
             # HTTP-Header auf text/csv stellen
             header("Content-type: text/csv");
-            header("Content-Disposition: attachment; filename=journal.csv");
+            header("Content-Disposition: attachment; filename=export.csv");
             header("Pragma: no-cache");
 	    return $this->csvEncode($response->obj);
         } else {

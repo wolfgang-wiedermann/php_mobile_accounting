@@ -30,12 +30,14 @@ function invoke($action, $request, $dispatcher) {
     switch($action) {
         case "journal":
             return $this->getJournal($request);
+        case "guvmonate":
+            return $this->getGuvMonate($request);
         default:
             throw new ErrorException("Unbekannte Action");
     }
 }
 
-# Erstellt eine Liste aller Kontenarten
+# Erstellt eine Liste aller Buchungen
 function getJournal($request) {
 
     $format = "csv";    
@@ -63,6 +65,36 @@ function getJournal($request) {
 	
     return wrap_response($result, $format);
 }
+
+# Erstellt eine Liste aller GuV-Monatssalden
+function getGuvMonate($request) {
+
+    $format = "csv";    
+
+    if(isset($request['format'])) {
+       if($request['format'] == "json") {
+           $format = $request['format']; 
+       }
+    } 
+        
+    $result = array();
+    $db = getDbConnection();
+
+    $query = new QueryHandler("guv_monat_csv.sql");
+    $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+    $sql = $query->getSql();
+
+    $rs = mysqli_query($db, $sql);
+
+    while($obj = mysqli_fetch_object($rs)) {
+        $result[] = $obj;
+    }
+
+    mysqli_close($db);
+
+    return wrap_response($result, $format);
+}
+
 
 }
 

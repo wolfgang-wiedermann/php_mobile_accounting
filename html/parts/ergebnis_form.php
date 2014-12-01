@@ -35,6 +35,7 @@
     <li><a href="#verlauf_frei" id="ergebnis_action_verlauf_frei" class="ergebnis_form_item">Frei kombiniert (Monate)</a></li>
     <li data-role="list-divider">Datenexport</li>
     <li><a href="#export" id="ergebnis_action_export_journal" class="ergebnis_form_item">Journal exportieren</a></li>
+    <li><a href="#export" id="ergebnis_action_export_guv_monate" class="ergebnis_form_item">GuV Monate exportieren</a></li>
 </ul>
 </div>
 <!-- Bilanz -->
@@ -111,6 +112,7 @@ registerErgebnisFormEvents : function() {
     $("#ergebnis_action_verlauf_frei_anzeigen").click(ergebnisForm.showVerlaufFrei);
     // Datenexport
     $("#ergebnis_action_export_journal").click(ergebnisForm.exportJournal);
+    $("#ergebnis_action_export_guv_monate").click(ergebnisForm.exportGuvMonate);
 
     $("#ergebnis_form_guv_months").unbind("change");
     $("#ergebnis_form_guv_months").change(ergebnisForm.loadGuVMonth);
@@ -398,6 +400,10 @@ loadVerlaufFrei : function() {
 
 exportJournal : function () {
     var win = window.open("../index.php?controller=office&action=journal&format=csv", "Download");
+},
+
+exportGuvMonate : function () {
+    var win = window.open("../index.php?controller=office&action=guvmonate&format=csv", "Download");
 }
 
 };
