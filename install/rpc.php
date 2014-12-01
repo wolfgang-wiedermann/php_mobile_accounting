@@ -22,6 +22,7 @@
 header("Content-type: application/json");
 # Logger und Datenbank-Helper laden
 require_once("../lib/Logger.php");
+include_once("../lib/Util.php");
 # So umstellen das Errors als Exceptions geliefert werden
 include_once("../lib/ErrorsToExceptions.php");
 # Einstiegspunkt in das Framework

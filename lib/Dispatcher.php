@@ -34,6 +34,7 @@ function invoke($request) {
         $action = $this->getActionName();
         $response = $controller->invoke($action, $this->request, $this);
 
+        if(isset($response->format)) 
         if($response->format == "csv") {
             # HTTP-Header auf text/csv stellen
             header("Content-type: text/csv");

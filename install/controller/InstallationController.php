@@ -70,7 +70,7 @@ function checkDatabaseSettings($request) {
 
     mysqli_close($db);
 
-    return "Verbindung erfolgreich hergestellt, Test erfolgreich";
+    return wrap_response("Verbindung erfolgreich hergestellt, Test erfolgreich");
 }
 
 # Speichert die Datenbankeinstellungen in die Datei lib/Database.php
@@ -96,9 +96,10 @@ function storeDatabaseSettings($request) {
     $response = array();
     try {
         file_put_contents($path, $content);
+        error_log("Gespeichert!");
         $response['isError'] = FALSE;
         $response['message'] = "Erfolgreich als $path gespeichert.\nAktuelles Verzeichnis:".getcwd();
-        return $response;
+        return wrap_response($response);
 
     } catch(Exception $ex) {
         if(file_exists($path)) {
@@ -109,7 +110,7 @@ function storeDatabaseSettings($request) {
           $response['message'] = "Die Datei $path konnte nicht geschrieben werden, keine Schreibrechte vorhanden!";
           $response['content'] = $content;
         }
-        return $response;
+        return wrap_response($response);
     } 
 }
 
@@ -133,7 +134,7 @@ function createDatabaseSchema() {
         $result['isError'] = TRUE;
         $result['message'] = "Datenbankfehler aufgetreten: $error";
         $result['sql'] = $sql;
-        return $result;
+        return wrap_response($result);
       }
  
    }
@@ -142,7 +143,7 @@ function createDatabaseSchema() {
    $result = array();
    $result['isError'] = FALSE;
    $result['message'] = "Schema erfolgreich angelegt.";
-   return $result;
+   return wrap_response($result);
     
 }
 
@@ -176,7 +177,7 @@ function addUser($request) {
        $message['message'] = "Der Benutzer wurde erfolgreich in die Datei .htpasswd im Ordner $appRootDir geschrieben "
                             ."und in der Datenbank dem Mandanten 1 zugeordnet";
       
-       return $message; 
+       return wrap_response($message); 
     } else {
        // 2. Wenn nein, inhalt der .htpasswd bei Weiter anzeigen 
        //    (mit Hinweis wohin die Datei soll)
@@ -186,7 +187,7 @@ function addUser($request) {
                             ."manuell im Ordner $appRootDir an. Die Zuordnung des Benutzers zu Mandant 1 in der "
                             ."Datenbank wurde ausgeführt.";
        $message['htpasswd'] = $htpasswd;
-       return $message;
+       return wrap_response($message);
     }
 }
 
@@ -205,19 +206,19 @@ function setHtAccess() {
          $message['isError'] = TRUE;
          $message['message'] = "Die .htaccess-Datei konnte nicht nach $appRootDir geschrieben werden.";
          $message['htaccess'] = $htaccess;
-         return $message;
+         return wrap_response($message);
       }
 
       $message = array();
       $message['isError'] = FALSE;
       $message['message'] = "Der Passwortschutz Ihrer Anwendung wurde aktiviert";
-      return $message;
+      return wrap_response($message);
    } else {
       $message = array();
       $message['isError'] = TRUE;
       $message['message'] = "Die .htaccess-Datei konnte nicht nach $appRootDir geschrieben werden.";
       $message['htaccess'] = $htaccess;
-      return $message;
+      return wrap_response($message);
    }
 }
 
