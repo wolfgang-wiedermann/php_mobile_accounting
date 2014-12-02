@@ -32,15 +32,21 @@ function invoke($request) {
     if($this->isValidControllerName()) {
         $controller = $this->getControllerObject();
         $action = $this->getActionName();
+        $filename = "export.csv";
         $response = $controller->invoke($action, $this->request, $this);
 
         if(isset($response->format)) 
         if($response->format == "csv") {
+            # Wenn der Action-Name keine ungültigen Zeichen enthält
+            # diesen als Dateinamen für den Export verwenden.
+            if($this->isValidActionName($action)) {
+                $filename = $action.".csv";
+            }
             # HTTP-Header auf text/csv stellen
             header("Content-type: text/csv");
-            header("Content-Disposition: attachment; filename=export.csv");
+            header("Content-Disposition: attachment; filename=$filename");
             header("Pragma: no-cache");
-	    return $this->csvEncode($response->obj);
+	        return $this->csvEncode($response->obj);
         } else {
             # HTTP-Header auf application/json stellen
             header("Content-type: application/json");
@@ -149,6 +155,14 @@ function isValidControllerName() {
     # Regex: [^a-zA-Z0-9]
     $pattern = '/[^a-zA-Z0-9]/';
     preg_match($pattern, $this->getControllerString(), $results);
+    return count($results) == 0;
+}
+
+# Prüft, ob der Bezeichner der Action keine ungültigen Zeichen enthält
+function isValidActionName($action) {
+    # Regex: [^a-zA-Z0-9]
+    $pattern = '/[^a-zA-Z0-9]/';
+    preg_match($pattern, $action, $results);
     return count($results) == 0;
 }
 
