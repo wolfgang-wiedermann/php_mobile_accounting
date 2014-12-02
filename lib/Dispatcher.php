@@ -131,7 +131,6 @@ function getControllerObject() {
     $name = $this->getControllerString();
     if($this->isValidControllerName()) {
         $fileName = "./controller/".ucwords($name)."Controller.php";
-        logX("Controller-Datei: ".$fileName);
         require_once($fileName);
         $className = ucwords($name)."Controller";
         $obj = new $className;
