@@ -58,13 +58,13 @@ class QueryHandler {
         }
     }
 
-    private function isValidString($string) {
+    function isValidString($string) {
         $pattern = "/[']/";
         preg_match($pattern, $string, $results);
         return count($results) == 0;
     }
 
-    private function isValidNumber($number) {
+    function isValidNumber($number) {
         $pattern = "/[^0-9\\.,]/";
         preg_match($pattern, $number, $results);
         return count($results) == 0;
