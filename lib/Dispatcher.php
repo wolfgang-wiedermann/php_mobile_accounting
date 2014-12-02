@@ -79,9 +79,6 @@ function getUserId() {
 
 # Methode zum Encodieren von Arrays in *.csv-Strings
 function csvEncode($data) {
-
-    #error_log(print_r($data));
-
     $csv = ""; $header = ""; $id = 0;
     foreach($data as $line) {
         $count = count((array)$line)-1;
@@ -124,7 +121,6 @@ function setRemoteUser($user) {
             throw new Exception("Kein Mandant für den Benutzer $user konfiguriert");
         }
         mysqli_close($db);
-        //logX("Remote use ".$this->user." registered");
     } else {
         throw new Exception("Der Benutzername enthält ungültige Zeichen");
     }
@@ -152,7 +148,6 @@ function getControllerString() {
 
 # Prüft, ob der ControllerName keine ungültigen Zeichen enthält
 function isValidControllerName() {
-    # Regex: [^a-zA-Z0-9]
     $pattern = '/[^a-zA-Z0-9]/';
     preg_match($pattern, $this->getControllerString(), $results);
     return count($results) == 0;
@@ -160,7 +155,6 @@ function isValidControllerName() {
 
 # Prüft, ob der Bezeichner der Action keine ungültigen Zeichen enthält
 function isValidActionName($action) {
-    # Regex: [^a-zA-Z0-9]
     $pattern = '/[^a-zA-Z0-9]/';
     preg_match($pattern, $action, $results);
     return count($results) == 0;

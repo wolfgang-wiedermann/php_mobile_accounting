@@ -40,6 +40,36 @@ class QueryHandler {
         $this->sql = str_replace("#".$paramName."#", $paramValue, $this->sql);
     }
 
+    function setStringParameter($paramName, $paramValue) {
+        if($this->isValidString($paramValue)) {
+            $this->setParameterUnchecked($paramName, $paramValue);
+        } else {
+            throw new Exception("Der übergebene Wert entspricht nicht den Anforderungen "
+                ."an einen String-Parameter");
+        }
+    }
+
+    function setNumericParameter($paramName, $paramValue) {
+        if($this->isValidNumber($paramValue)) {
+            $this->setParameterUnchecked($paramName, $paramValue);
+        } else {
+            throw new Exception("Der übergebene Wert entspricht nicht den Anforderungen "
+                ."an einen numerischen Parameter");
+        }
+    }
+
+    private function isValidString($string) {
+        $pattern = "/[']/";
+        preg_match($pattern, $string, $results);
+        return count($results) == 0;
+    }
+
+    private function isValidNumber($number) {
+        $pattern = "/[^0-9\\.,]/";
+        preg_match($pattern, $number, $results);
+        return count($results) == 0;
+    }
+
     function getSql() {
         return $this->sql;
     }
