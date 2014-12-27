@@ -111,6 +111,8 @@ function getGuV($request) {
         $query->setParameterUnchecked("jahr_id", $year);
         $sql2  = $query->getSql();
 
+        error_log($sql2);
+
         $rs = mysqli_query($db, $sql2);
         $ergebnisse = array();
         while($erg = mysqli_fetch_object($rs)) {
