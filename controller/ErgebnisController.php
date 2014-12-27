@@ -43,6 +43,8 @@ function invoke($action, $request, $dispatcher) {
             return $this->getVerlaufGewinn();
         case "months":
             return $this->getMonths();
+        case "years":
+            return $this->getYears();
         default:
             $message = array();
             $message['message'] = "Unbekannte Action";
@@ -216,6 +218,25 @@ function getMonths() {
     mysqli_free_result($rs);
     mysqli_close($db);
     return wrap_response($months);
+}
+
+# Liefert eine Liste der gültigen Jahre aus den Buchungen des Mandanten
+function getYears() {
+    $db = getDbConnection();
+    $years = array();
+
+    $sql = "select distinct year(datum) as year ";
+    $sql .= "from fi_buchungen where mandant_id = ".$this->mandant_id;
+    $sql .= " order by year";
+
+    $rs = mysqli_query($db, $sql);
+    while($obj = mysqli_fetch_object($rs)) {
+        $years[] = $obj->year;
+    }
+
+    mysqli_free_result($rs);
+    mysqli_close($db);
+    return wrap_response($years);
 }
 
 # Verlauf Aufwand, Ertrag, Aktiva und Passiva in Monatsraster

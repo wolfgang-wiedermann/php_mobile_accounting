@@ -46,7 +46,7 @@
 </div>
 <!-- GuV -->
 <div id="ergebnis_form_guv" class="content_form">
-<div id="ergebnis_form_guv_controls">
+<div id="ergebnis_form_guv_controls_m" class="ergebnis_form_guv_controls">
     <table><tr><td style="width:100%">
     <select id="ergebnis_form_guv_months" 
             data-bind="value: $root.selectedMonat, options: buchungsmonate, optionsText: 'monat', optionsValue: 'monat'">
@@ -54,6 +54,11 @@
     <a id="ergebnis_form_guv_months_refresh" data-role="button" data-bind="click:$root.updateMonateSimple"
                data-icon="refresh" data-inline="true" data-iconpos="notext"></a>
     </td></tr></table>
+</div>
+<div id="ergebnis_form_guv_controls_y" class="ergebnis_form_guv_controls">
+    <select id="ergebnis_form_guv_years"
+            data-bind="value: $root.selectedYear, options: buchungsjahre, optionsText: 'jahr', optionsValue: 'jahr'">
+    </select>
 </div>
 <div id="ergebnis_form_guv_inner">
 </div>
@@ -206,7 +211,10 @@ loadBilanz : function() {
 },
 
 loadGuV : function() {
-    $("#ergebnis_form_guv_controls").hide();
+    $(".ergebnis_form_guv_controls").hide();
+    $("#ergebnis_form_guv_controls_y").show();
+
+    // TODO: jahr aus Model auslesen und als Parameter an doGETwithCache übergeben
 
     doGETwithCache("ergebnis", "guv", [], 
         function(data) {
@@ -277,7 +285,8 @@ loadGuVPrognose : function() {
 
 loadGuVMonth : function() {
     // Combobox anzeigen
-    $("#ergebnis_form_guv_controls").show();
+    $(".ergebnis_form_guv_controls").hide();
+    $("#ergebnis_form_guv_controls_m").show();
     var selectedMonth = $("#ergebnis_form_guv_months").val();
     // Alte Anzeige (alte GuV-Inhalte) löschen
     var bitteWarten = "Bitte warten, die Ergebnisse werden geladen";

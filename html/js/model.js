@@ -73,6 +73,8 @@ function AppViewModel() {
     m.privat.initQuick(self);
     // Buchungsmonate
     m.privat.initMonate(self);
+    // Buchungsjahre
+    m.privat.initJahre(self);
 
     // Buchungen
     self.saveBuchung = function(tmpModel) {
@@ -294,6 +296,43 @@ m.privat.initMonate = function(self) {
         });
     }
 };
+
+/*
+* Auswählbare Buchungsjahre für Berichtsauswertung nach Jahren laden und im Model bereitstellen
+*/
+m.privat.initJahre = function(self) {
+    self.buchungsjahre = ko.observableArray([]);
+    self.selectedJahr = ko.observable('2014');
+
+    self.updateJahre = function(successHandler) {
+        doGETwithCache("ergebnis", "years", [], 
+            function(data) {
+                self.buchungsjahre.removeAll();
+                for(var i = 0; i < data.length; i++) {
+                    if(i+1 === data.length) {
+                        self.buchungsjahre.push({'jahr':data[i], 'selected':true});
+                        self.selectedMonat(data[i]);
+                    } else {
+                        self.buchungsjahre.push({'jahr':data[i], 'selected':false});
+                    }
+                }
+
+                if(!!successHandler) {
+                    successHandler();
+                }
+            }, 
+            function(error) {
+                alert("Fehler aufgetreten: "+JSON.stringify(error));
+            });
+    };
+    self.updateJahre();
+
+    self.updateJahreSimple = function() {
+        self.updateJahre(function() {
+            $("#ergebnis_form_guv_years").selectmenu('refresh');
+        });
+    }
+}
 
 /*
 * Computed-Observable für die Buchungsqueue im Model registrieren
