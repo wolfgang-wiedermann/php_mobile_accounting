@@ -32,7 +32,7 @@ function invoke($action, $request, $dispatcher) {
         case "bilanz":
             return $this->getBilanz();
         case "guv":
-            return $this->getGuV();
+            return $this->getGuV($request);
         case "guv_month":
             return $this->getGuVMonth($request);
         case "guv_prognose":
@@ -88,33 +88,40 @@ function getBilanz() {
 
 # Berechnet eine aktuelle GuV-Rechnung und liefert
 # sie als Array zurück
-function getGuV() {
+function getGuV($request) {
     $db = getDbConnection();
+    $year = $request['year'];
+    if($this->isValidYear($year)) {
 
-    $sql =  "select konto, kontenname, saldo*-1 as saldo from fi_ergebnisrechnungen ";
-    $sql .= "where mandant_id = $this->mandant_id and kontenart_id in (3, 4) ";
-    $sql .= "order by konto";
+        $query = new QueryHandler("guv_jahr.sql");
+        $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+        $query->setParameterUnchecked("jahr_id", $year);
+        $sql = $query->getSql();
    
-    $rs = mysqli_query($db, $sql);
-    $zeilen = array();
-    $result = array();
-    while($erg = mysqli_fetch_object($rs)) {
-        $zeilen[] = $erg;
+        $rs = mysqli_query($db, $sql);
+        $zeilen = array();
+        $result = array();
+        while($erg = mysqli_fetch_object($rs)) {
+            $zeilen[] = $erg;
+        }
+        $result['zeilen'] = $zeilen;
+
+        $query = new QueryHandler("guv_jahr_summen.sql");
+        $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+        $query->setParameterUnchecked("jahr_id", $year);
+        $sql2  = $query->getSql();
+
+        $rs = mysqli_query($db, $sql2);
+        $ergebnisse = array();
+        while($erg = mysqli_fetch_object($rs)) {
+            $ergebnisse[] = $erg;
+        }
+        $result['ergebnisse'] = $ergebnisse;
+        mysqli_close($db);
+        return wrap_response($result);
+    } else {
+        return wrap_response("Der übergebene Parameter year erfüllt nicht die Formatvorgaben für gültige Jahre");
     }
-    $result['zeilen'] = $zeilen;
-    $rs = mysqli_query($db, "select kontenart_id, sum(saldo)*-1 as saldo from fi_ergebnisrechnungen
-        where kontenart_id in (3, 4) and mandant_id = $this->mandant_id
-        group by kontenart_id
-        union 
-        select '5', sum(saldo)*-1 as saldo from fi_ergebnisrechnungen 
-        where kontenart_id in (3, 4) and mandant_id = $this->mandant_id");
-    $ergebnisse = array();
-    while($erg = mysqli_fetch_object($rs)) {
-        $ergebnisse[] = $erg;
-    }
-    $result['ergebnisse'] = $ergebnisse;
-    mysqli_close($db);
-    return wrap_response($result);
 }
 
 # Berechnet eine GuV-Rechnung fuer das angegebene oder aktuelle Monat
@@ -302,7 +309,16 @@ function getVerlaufGewinn() {
     return wrap_response($result);
 }
 
-
+# Prüft, ob das Zahlenformat des übergebenen Jahres korrekt ist
+function isValidYear($year) {
+    // Jahr-Regex: [0-9]{4}
+    if(preg_match("/[0-9]{4}/", $year, $matches) == 1) {
+        if($matches[0] == $year) {
+            return true;
+        }
+    } 
+    return false;
+}
 }
 
 ?>

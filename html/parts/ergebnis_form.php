@@ -121,6 +121,9 @@ registerErgebnisFormEvents : function() {
 
     $("#ergebnis_form_guv_months").unbind("change");
     $("#ergebnis_form_guv_months").change(ergebnisForm.loadGuVMonth);
+
+    $("#ergebnis_form_guv_years").unbind("change");
+    $("#ergebnis_form_guv_years").change(ergebnisForm.loadGuV);
 },    
 
 showBilanz : function() {
@@ -214,9 +217,9 @@ loadGuV : function() {
     $(".ergebnis_form_guv_controls").hide();
     $("#ergebnis_form_guv_controls_y").show();
 
-    // TODO: jahr aus Model auslesen und als Parameter an doGETwithCache übergeben
+    params = {'year': $("#ergebnis_form_guv_years").val()};
 
-    doGETwithCache("ergebnis", "guv", [], 
+    doGETwithCache("ergebnis", "guv", params, 
         function(data) {
             var html = "Gewinn und Verlust:<br/><table>";
             for(var key in data.zeilen) {
@@ -236,6 +239,7 @@ loadGuV : function() {
             }
             html += "</table>";
             $("#ergebnis_form_guv_inner").html(html);
+            $("#ergebnis_form_guv_years").selectmenu('refresh');
         }, 
         function(error) {
             alert(error);

@@ -3,7 +3,7 @@
 ?>
 CACHE MANIFEST
 # Version im Kommentar ändern um einen Update des Apps zu erzwingen
-# App-Version: 0.1.04#04
+# App-Version: 0.1.04#06
 # ----------------------
 
 CACHE:
