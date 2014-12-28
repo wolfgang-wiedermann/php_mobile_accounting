@@ -34,14 +34,22 @@ if(!isset($_REQUEST['controller'])) {
    include_once("./lib/ErrorsToExceptions.php");
    # Einstiegspunkt in das Framework
    require_once("./lib/Dispatcher.php");
-   
+  
+   // für MOD-PHP unter Apache2 
    if(isset($_SERVER['REMOTE_USER'])) {
        $disp = new Dispatcher();
        $user = $_SERVER['REMOTE_USER'];
        $disp->setRemoteUser($user);
        echo $disp->invoke($_REQUEST);
+   } 
+   // für PHP5-FPM mit nginx
+   else if(isset($_SERVER["PHP_AUTH_USER"])) {
+       $disp = new Dispatcher();
+       $user = $_SERVER["PHP_AUTH_USER"];
+       $disp->setRemoteUser($user);
+       echo $disp->invoke($_REQUEST);
    } else {
-       throw new Exception("Fehler: Benutzer nicht über \$_SERVER['REMOTE_USER'] ermittelbar"); 
+       throw new Exception("Fehler: Benutzer nicht über \$_SERVER['REMOTE_USER'] oder \$_SERVER['PHP_AUTH_USER'] ermittelbar"); 
    }
 }
 ?>
