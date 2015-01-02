@@ -140,23 +140,33 @@ function getCashFlow($kontonummer, $side) {
 function getIntraMonth($request) {
     $db = getDbConnection();
 
-    // TODO: Monat_id prüfen um sql-Injections zu 
+    if(isset($request['month_id'])) { 
+      if($this->is_number($request['month_id'])) {
 
-    $query = new QueryHandler("guv_intramonth.sql");
-    $query->setParameterUnchecked("mandant_id", $this->mandant_id);
-    $query->setParameterUnchecked("monat_id", ""); // Monat-setzen
-    $sql = $query->getSql();
+        $month_id = $request['month_id'];
 
-    $result = array();
-    $rs = mysqli_query($db, $sql);
-    while($obj = mysqli_fetch_object($rs)) {
-        $result[] = $obj;
+        $query = new QueryHandler("guv_intramonth.sql");
+        $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+        $query->setParameterUnchecked("monat_id", $month_id);
+        $sql = $query->getSql();
+
+        $result = array();
+        $rs = mysqli_query($db, $sql);
+        while($obj = mysqli_fetch_object($rs)) {
+            $result[] = $obj;
+        }
+
+        mysqli_free_result($rs);
+        mysqli_close($db);
+
+        return wrap_response($result);
+
+      } else {
+        return wrap_response("Parameter month_id ist nicht ausschließlich numerisch");
+      }
+    } else {
+        return wrap_response("Parameter month_id fehlt");
     }
-
-    mysqli_free_result($rs);
-    mysqli_close($db);
-
-    return wrap_response($result);
 }
 
 # Prüft, ob das angegebene Konto ein Aktiv-Konto ist.
@@ -208,6 +218,13 @@ function prepareKontoNummern($value) {
 # Prüft mittels RegEx ob $value ausschließlich aus Ziffern und Kommas besteht
 function is_numeric_list($value) {
     $pattern = '/[^0-9,]/';
+    preg_match($pattern, $value, $results);
+    return count($results) == 0;
+}
+
+# Prüft mittels RegEx ob der übergebene Wert ausschließlich aus Ziffern besteht
+function is_number($value) {
+    $pattern = '/[^0-9]/';
     preg_match($pattern, $value, $results);
     return count($results) == 0;
 }

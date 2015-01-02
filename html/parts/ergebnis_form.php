@@ -67,6 +67,14 @@
 <!-- Verlauf -->
 <div id="ergebnis_form_verlauf" class="content_form">
 </div>
+<!-- Verlauf Intra-Month -->
+<div id="ergebnis_form_verlauf_intra" class="content_form">
+    <select id="ergebnis_form_intra_months"
+            data-bind="value: $root.selectedMonat, options: buchungsmonate, optionsText: 'monat', optionsValue: 'monat'">
+    </select>
+    <div id="ergebnis_form_verlauf_intra_inner"> 
+    </div>
+</div>
 <!-- Verlaufsauswertung frei, Vorauswahl -->
 <div id="ergebnis_form_verlauf_vorauswahl" class="content_form">
     <h2>Ausw&auml;hlbare Konten</h2>
@@ -124,6 +132,9 @@ registerErgebnisFormEvents : function() {
     $("#ergebnis_form_guv_months").unbind("change");
     $("#ergebnis_form_guv_months").change(ergebnisForm.loadGuVMonth);
 
+    $("#ergebnis_form_intra_months").unbind("change");
+    $("#ergebnis_form_intra_months").change(ergebnisForm.loadVerlaufIntraMonth);
+
     $("#ergebnis_form_guv_years").unbind("change");
     $("#ergebnis_form_guv_years").change(ergebnisForm.loadGuV);
 },    
@@ -166,7 +177,8 @@ showVerlaufErtrag : function() {
 
 showVerlaufIntraMonth : function() {
     $(".content_form").hide();
-    $("#ergebnis_form_verlauf").show();
+    $("#ergebnis_form_intra_months").selectmenu('refresh');
+    $("#ergebnis_form_verlauf_intra").show();
     ergebnisForm.loadVerlaufIntraMonth();
 },
 
@@ -395,16 +407,19 @@ loadVerlauf : function(controller, action, parameter, kontenart_txt) {
 },
 
 loadVerlaufIntraMonth : function() {
-    $("#ergebnis_action_intramonth").html("Monatssalden werden geladen");
-    
-    doGETwithCache("verlauf", "intramonth", [],
+    $("#ergebnis_form_verlauf_intra_inner").html("Monatssalden werden geladen");
+
+    $("#ergebnis_form_intra_months").selectmenu('refresh');
+    var month_id = $("#ergebnis_form_intra_months").val(); 
+  
+    doGETwithCache("verlauf", "intramonth", {'month_id': month_id},
         function(data) {
             var table = '<table width="100%" style="max-width:400px">';
             var code = "<b>Verlauf innerhalb des Monats:</b><br/>";
-            code += '<canvas id="ergebnis_show_monatssalden_canvas" width="300px" height="300px"></canvas>';
-            code += '<div id="ergebnis_show_monatssalden_table"></div>';
-            $("#ergebnis_form_verlauf").html(code);
-            d.init("ergebnis_show_monatssalden_canvas");
+            code += '<canvas id="ergebnis_show_intramonth_canvas" width="300px" height="300px"></canvas>';
+            code += '<div id="ergebnis_show_intramonth_table"></div>';
+            $("#ergebnis_form_verlauf_intra_inner").html(code);
+            d.init("ergebnis_show_intramonth_canvas");
             d.setToWindowWidth();
             var diagrammData = [[], [], []];
             table += '<tr><td width="25%">Tag</td><td width="25%">Aufwand</td>';
@@ -412,12 +427,14 @@ loadVerlaufIntraMonth : function() {
             for(var key in data) {
                 diagrammData[0].push(data[key].aufwand);
                 diagrammData[1].push(data[key].ertrag);
-                diagrammData[2].push( data[key].gewinn);
-                table += "<tr><td>"+data[key].day+"</td><td class=\"td_betrag\">"+data[key].aufwand+"</td>";
-                table += "<td class=\"td_betrag\">"+data[key].ertrag+"</td><td class=\"td_betrag\">"+data[key].gewinn+"</td></tr>";
+                diagrammData[2].push(data[key].gewinn);
+                table += "<tr><td>"+data[key].day+"</td>";
+                table += "<td class=\"td_betrag\">"+data[key].aufwand+"</td>";
+                table += "<td class=\"td_betrag\">"+data[key].ertrag+"</td>";
+                table += "<td class=\"td_betrag\">"+data[key].gewinn+"</td></tr>";
             }
             table += "</table>";
-            $("#ergebnis_show_monatssalden_table").html(table);
+            $("#ergebnis_show_intramonth_table").html(table);
             d.drawMultiLineDiagramFor(diagrammData);
         }, 
         function(error) {

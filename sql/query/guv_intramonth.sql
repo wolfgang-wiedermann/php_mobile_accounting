@@ -26,13 +26,13 @@ sum(b.betrag) as betrag,
 from fi_buchungen as b
 inner join fi_hlp_days as d
 on day(b.datum) <= d.xday
-and (year(b.datum)*100)+month(b.datum) = 201309 -- #monat_id#
-and b.mandant_id = 1 -- #mandant_id#
+and (year(b.datum)*100)+month(b.datum) = #monat_id#
+and b.mandant_id = #mandant_id#
 inner join fi_konto as k
 on b.sollkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where k.mandant_id = 1 -- #mandant_id#
-and (year(b.datum)*100)+month(b.datum) = 201309 -- #monat_id#
+where k.mandant_id = #mandant_id#
+and (year(b.datum)*100)+month(b.datum) = #monat_id#
 and k.kontenart_id in (3, 4)
 group by d.xday, k.kontenart_id
 )
@@ -47,13 +47,13 @@ sum(b.betrag)*-1 as betrag,
 from fi_buchungen as b
 inner join fi_hlp_days as d
 on day(b.datum) <= d.xday
-and (year(b.datum)*100)+month(b.datum) = 201309 --#monat_id#
-and b.mandant_id = 1 -- #mandant_id#
+and (year(b.datum)*100)+month(b.datum) = #monat_id#
+and b.mandant_id = #mandant_id#
 inner join fi_konto as k
 on b.habenkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where k.mandant_id = 1 -- #mandant_id#
-and (year(b.datum)*100)+month(b.datum) = 201309 --#monat_id#
+where k.mandant_id = #mandant_id#
+and (year(b.datum)*100)+month(b.datum) = #monat_id#
 and k.kontenart_id in (3, 4)
 group by d.xday, k.kontenart_id
 )) as base
@@ -73,13 +73,13 @@ sum(b.betrag)*-1 as betrag,
 from fi_buchungen as b
 inner join fi_hlp_days as d
 on day(b.datum) <= d.xday
-and (year(b.datum)*100)+month(b.datum) = 201309 -- #monat_id#
-and b.mandant_id = 1 -- #mandant_id#
+and (year(b.datum)*100)+month(b.datum) = #monat_id#
+and b.mandant_id = #mandant_id#
 inner join fi_konto as k
 on b.sollkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where k.mandant_id = 1 -- #mandant_id#
-and (year(b.datum)*100)+month(b.datum) = 201309 -- #monat_id#
+where k.mandant_id = #mandant_id#
+and (year(b.datum)*100)+month(b.datum) = #monat_id#
 and k.kontenart_id in (3, 4)
 group by d.xday, k.kontenart_id
 )
@@ -94,13 +94,13 @@ sum(b.betrag) as betrag,
 from fi_buchungen as b
 inner join fi_hlp_days as d
 on day(b.datum) <= d.xday
-and (year(b.datum)*100)+month(b.datum) = 201309 --#monat_id#
-and b.mandant_id = 1 -- #mandant_id#
+and (year(b.datum)*100)+month(b.datum) = #monat_id#
+and b.mandant_id = #mandant_id#
 inner join fi_konto as k
 on b.habenkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where k.mandant_id = 1 -- #mandant_id#
-and (year(b.datum)*100)+month(b.datum) = 201309 --#monat_id#
+where k.mandant_id = #mandant_id#
+and (year(b.datum)*100)+month(b.datum) = #monat_id#
 and k.kontenart_id in (3, 4)
 group by d.xday, k.kontenart_id
 )) as base
