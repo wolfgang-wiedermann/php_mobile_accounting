@@ -31,6 +31,8 @@ function invoke($action, $request, $dispatcher) {
             return $this->getMonatsSalden($request['id']);
         case "cashflow":
             return $this->getCashFlow($request['id'], $request['side']);
+        case "intramonth":
+            return $this->getIntraMonth($request);
         default:
             throw new ErrorException("Unbekannte Action");
     }
@@ -132,6 +134,29 @@ function getCashFlow($kontonummer, $side) {
         throw new Exception("getCashFlow ist nur für Aktiv-Konten verfügbar");
     }
     return wrap_response($values);
+}
+
+# Monats-internen Verlauf ermitteln
+function getIntraMonth($request) {
+    $db = getDbConnection();
+
+    // TODO: Monat_id prüfen um sql-Injections zu 
+
+    $query = new QueryHandler("guv_intramonth.sql");
+    $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+    $query->setParameterUnchecked("monat_id", ""); // Monat-setzen
+    $sql = $query->getSql();
+
+    $result = array();
+    $rs = mysqli_query($db, $sql);
+    while($obj = mysqli_fetch_object($rs)) {
+        $result[] = $obj;
+    }
+
+    mysqli_free_result($rs);
+    mysqli_close($db);
+
+    return wrap_response($result);
 }
 
 # Prüft, ob das angegebene Konto ein Aktiv-Konto ist.

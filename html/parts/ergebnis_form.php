@@ -31,6 +31,7 @@
     <li><a href="#verlauf_aufwand" id="ergebnis_action_verlauf_aufwand" class="ergebnis_form_item">Aufwand (Monate)</a></li>
     <li><a href="#verlauf_ertrag" id="ergebnis_action_verlauf_ertrag" class="ergebnis_form_item">Ertrag (Monate)</a></li>
     <li><a href="#verlauf_gewinn" id="ergebnis_action_verlauf_gewinn" class="ergebnis_form_item">Gewinn (Monate)</a></li>
+    <li><a href="#verlauf_intramonth" id="ergebnis_action_intramonth" class="ergebnis_form_item">Monatsinterner Verlauf</a></li>
     <li><a href="#cacheflow" id="ergebnis_action_cacheflow" class="ergebnis_form_item">Zu- und Abfluss (Monate)</a></li>
     <li><a href="#verlauf_frei" id="ergebnis_action_verlauf_frei" class="ergebnis_form_item">Frei kombiniert (Monate)</a></li>
     <li data-role="list-divider">Datenexport</li>
@@ -112,6 +113,7 @@ registerErgebnisFormEvents : function() {
     $("#ergebnis_action_verlauf_aufwand").click(ergebnisForm.showVerlaufAufwand);
     $("#ergebnis_action_verlauf_ertrag").click(ergebnisForm.showVerlaufErtrag);
     $("#ergebnis_action_verlauf_gewinn").click(ergebnisForm.showVerlaufGewinn);
+    $("#ergebnis_action_intramonth").click(ergebnisForm.showVerlaufIntraMonth);
     $("#ergebnis_action_verlauf_frei").click(ergebnisForm.showVerlaufFreiVorauswahl);
     $("#ergebnis_action_cacheflow").click(ergebnisForm.showVerlaufCacheFlow);
     $("#ergebnis_action_verlauf_frei_anzeigen").click(ergebnisForm.showVerlaufFrei);
@@ -160,6 +162,12 @@ showVerlaufErtrag : function() {
     $(".content_form").hide();
     $("#ergebnis_form_verlauf").show();
     ergebnisForm.loadVerlaufKontenart(4);
+},
+
+showVerlaufIntraMonth : function() {
+    $(".content_form").hide();
+    $("#ergebnis_form_verlauf").show();
+    ergebnisForm.loadVerlaufIntraMonth();
 },
 
 showVerlaufGewinn : function() {
@@ -378,6 +386,39 @@ loadVerlauf : function(controller, action, parameter, kontenart_txt) {
             table += "</table>";
             $("#ergebnis_show_monatssalden_table").html(table);
             d.drawLineDiagramFor(diagrammData);
+        }, 
+        function(error) {
+            $("#account_show_monatssalden").html("Es ist ein Fehler aufgetreten, die Daten konnten nicht geladen werden");
+            console.log(error);
+        }
+    );
+},
+
+loadVerlaufIntraMonth : function() {
+    $("#ergebnis_action_intramonth").html("Monatssalden werden geladen");
+    
+    doGETwithCache("verlauf", "intramonth", [],
+        function(data) {
+            var table = '<table width="100%" style="max-width:400px">';
+            var code = "<b>Verlauf innerhalb des Monats:</b><br/>";
+            code += '<canvas id="ergebnis_show_monatssalden_canvas" width="300px" height="300px"></canvas>';
+            code += '<div id="ergebnis_show_monatssalden_table"></div>';
+            $("#ergebnis_form_verlauf").html(code);
+            d.init("ergebnis_show_monatssalden_canvas");
+            d.setToWindowWidth();
+            var diagrammData = [[], [], []];
+            table += '<tr><td width="25%">Tag</td><td width="25%">Aufwand</td>';
+            table += '<td width="25%">Ertrag</td><td width="25%">Gewinn</td></tr>';
+            for(var key in data) {
+                diagrammData[0].push(data[key].aufwand);
+                diagrammData[1].push(data[key].ertrag);
+                diagrammData[2].push( data[key].gewinn);
+                table += "<tr><td>"+data[key].day+"</td><td class=\"td_betrag\">"+data[key].aufwand+"</td>";
+                table += "<td class=\"td_betrag\">"+data[key].ertrag+"</td><td class=\"td_betrag\">"+data[key].gewinn+"</td></tr>";
+            }
+            table += "</table>";
+            $("#ergebnis_show_monatssalden_table").html(table);
+            d.drawMultiLineDiagramFor(diagrammData);
         }, 
         function(error) {
             $("#account_show_monatssalden").html("Es ist ein Fehler aufgetreten, die Daten konnten nicht geladen werden");

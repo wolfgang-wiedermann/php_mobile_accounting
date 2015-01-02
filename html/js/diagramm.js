@@ -36,7 +36,10 @@ var d = {
     },
 
     // Diagramm für mehrere gleichlange Zahlenreihen zeichnen
-    drawMultiLineDiagramFor: function(values) {
+    drawMultiLineDiagramFor: function(values, useDots) {
+        // Sicherstellen, dass der Parameter korrekt gesetzt ist.
+        useDots = !!useDots;
+
         var first = values[0][0];
         var max = d.util.getMax2(values) - first;
         var min = d.util.getMin2(values) - first;
@@ -61,7 +64,9 @@ var d = {
             for(var idx in values[lineIdx]) {
                 var val = (values[lineIdx][idx] - first) * scaleFactor;
                 ctx.lineTo(currentStep, (d.getHeight()/2) - val);
-                ctx.fillRect (currentStep - 5, (d.getHeight()/2) - val - 5, 10, 10);
+                if(useDots) {
+                    ctx.fillRect (currentStep - 5, (d.getHeight()/2) - val - 5, 10, 10);
+                }
                 ctx.stroke();
                 currentStep += stepSize;
             }
