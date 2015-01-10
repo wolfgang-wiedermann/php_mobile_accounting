@@ -429,7 +429,7 @@ loadVerlaufIntraMonth : function() {
                 diagrammData[1].push(data[key].aktuell);
                 table += "<tr><td>"+data[key].tag+"</td>";
                 table += "<td class=\"td_betrag\">"+data[key].vormonat+"</td>";
-                table += "<td class=\"td_betrag\">"+data[key].aktuell+"</td>";
+                table += "<td class=\"td_betrag\">"+data[key].aktuell+"</td></tr>";
             }
             table += "</table>";
             $("#ergebnis_show_intramonth_table").html(table);
