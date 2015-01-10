@@ -421,17 +421,15 @@ loadVerlaufIntraMonth : function() {
             $("#ergebnis_form_verlauf_intra_inner").html(code);
             d.init("ergebnis_show_intramonth_canvas");
             d.setToWindowWidth();
-            var diagrammData = [[], [], []];
-            table += '<tr><td width="25%">Tag</td><td width="25%">Aufwand</td>';
-            table += '<td width="25%">Ertrag</td><td width="25%">Gewinn</td></tr>';
+            var diagrammData = [[], []];
+            table += '<tr><td width="34%">Tag</td><td width="33%">Vormonat</td>';
+            table += '<td width="33%">Aktuell</td></tr>';
             for(var key in data) {
-                diagrammData[0].push(data[key].aufwand);
-                diagrammData[1].push(data[key].ertrag);
-                diagrammData[2].push(data[key].gewinn);
-                table += "<tr><td>"+data[key].day+"</td>";
-                table += "<td class=\"td_betrag\">"+data[key].aufwand+"</td>";
-                table += "<td class=\"td_betrag\">"+data[key].ertrag+"</td>";
-                table += "<td class=\"td_betrag\">"+data[key].gewinn+"</td></tr>";
+                diagrammData[0].push(data[key].vormonat);
+                diagrammData[1].push(data[key].aktuell);
+                table += "<tr><td>"+data[key].tag+"</td>";
+                table += "<td class=\"td_betrag\">"+data[key].vormonat+"</td>";
+                table += "<td class=\"td_betrag\">"+data[key].aktuell+"</td>";
             }
             table += "</table>";
             $("#ergebnis_show_intramonth_table").html(table);
