@@ -129,7 +129,7 @@ var d = {
                 max = d.util.getMax(values[idx]);
             }
             var val = d.util.getMax(values[idx]);
-            if(max < val) {
+            if((max*1) < (val*1)) {
                 max = val;
             }
         }
