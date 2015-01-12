@@ -18,7 +18,7 @@ and b.sollkonto = k.kontonummer
 where 
 k.kontenart_id = 3
 and b.mandant_id = #mandant_id#
-and (year(b.datum)*100)+month(b.datum) = #month_id1#
+and (year(b.datum)*100)+month(b.datum) = #month_id#
 group by day(b.datum)
 
 union
@@ -33,7 +33,7 @@ and b.habenkonto = k.kontonummer
 where 
 k.kontenart_id = 3
 and b.mandant_id = #mandant_id#
-and (year(b.datum)*100)+month(b.datum) = #month_id1#
+and (year(b.datum)*100)+month(b.datum) = #month_id#
 group by day(b.datum)
 ) as a
 on a.tag <= d.xday
@@ -59,7 +59,7 @@ and b.sollkonto = k.kontonummer
 where 
 k.kontenart_id = 3
 and b.mandant_id = #mandant_id#
-and (year(b.datum)*100)+month(b.datum) = #month_id2#
+and (year(date_add(b.datum, INTERVAL 1 MONTH))*100)+month(date_add(b.datum, INTERVAL 1 MONTH)) = #month_id#
 group by day(b.datum)
 
 union
@@ -74,7 +74,7 @@ and b.habenkonto = k.kontonummer
 where 
 k.kontenart_id = 3
 and b.mandant_id = #mandant_id#
-and (year(b.datum)*100)+month(b.datum) = #month_id2#
+and (year(date_add(b.datum, INTERVAL 1 MONTH))*100)+month(date_add(b.datum, INTERVAL 1 MONTH)) = #month_id#
 group by day(b.datum)
 ) as a
 on a.tag <= d.xday

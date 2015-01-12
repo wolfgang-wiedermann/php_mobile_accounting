@@ -143,13 +143,11 @@ function getIntraMonth($request) {
     if(isset($request['month_id'])) { 
       if($this->is_number($request['month_id'])) {
 
-        $month_id1 = $request['month_id'];
-        $month_id2 = $request['month_id']+1;
+        $month_id = $request['month_id'];
 
         $query = new QueryHandler("guv_intramonth_aufwand.sql");
         $query->setParameterUnchecked("mandant_id", $this->mandant_id);
-        $query->setParameterUnchecked("month_id1", $month_id1);
-        $query->setParameterUnchecked("month_id2", $month_id2);
+        $query->setParameterUnchecked("month_id", $month_id);
         $sql = $query->getSql();
 
         $result = array();
