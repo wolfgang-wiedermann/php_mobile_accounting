@@ -36,5 +36,6 @@
 <body>
   <?php include_once("./forms/navigation/navigation.php"); ?>
   <?php include_once("./forms/navigation/buchen_menue.php"); ?>
+  <?php include_once("./forms/buchen/buchen.php"); ?>
 </body>
 </html>

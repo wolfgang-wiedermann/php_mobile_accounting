@@ -1,4 +1,4 @@
-// -- <?php 
+// -- <?php
 /*
  * Copyright (c) 2015 by Wolfgang Wiedermann
  *
@@ -22,22 +22,34 @@
 var hhb = hhb || {};
 hhb.model = hhb.model || {};
 hhb.model.types = hhb.model.types || {};
-hhb.model.MainModel = null;
 
 /*
-* Root-Knoten des Knockout.js Models
+* Datenmodell eines Buchungseintrags
 */
-hhb.model.types.MainModel = function() {
+hhb.model.types.Buchung = function(config) {
   var self = this;
-  // Model der Menüstruktur
-  self.navigation = ko.observable(new hhb.model.types.NavigationModel());
-  self.buchen = ko.observable(new hhb.model.types.BuchungenModel());
+
+  self.buchungstext = ko.observable("");
+  self.buchungsnummer = ko.observable(0);
+  self.sollkonto = ko.observable("0");
+  self.habenkonto = ko.observable("0");
+  self.buchungsdatum = ko.observable("01.01.2000"); // TODO: Aktuelles Datum eintragen!
+
+  if(!!config) {
+    self.buchungstext(config.buchungstext);
+    self.buchungsnummer(config.buchungsnummer);
+    self.sollkonto(config.sollkonto);
+    self.habenkonto(config.habenkonto);
+    self.buchungsdatum(config.buchungsdatum);
+  } 
 };
 
 /*
-* Knockout.js Model initialisieren und binden
+* Zusammenfassenden Model-Typen für den Themenbereich Buchungen 
 */
-$(document).ready(function() {
-  hhb.model.MainModel = new hhb.model.types.MainModel();
-  ko.applyBindings(hhb.model.MainModel);
-});
+hhb.model.types.BuchungenModel = function() {
+  var self = this;
+  
+  self.selectedBuchung = ko.observable(new hhb.model.types.Buchung());
+  self.buchungen = ko.observableArray([]);
+}

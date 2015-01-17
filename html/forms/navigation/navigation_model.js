@@ -51,6 +51,7 @@ hhb.model.types.NavigationModel = function() {
     target:'#buchen_menue',
     callback: function(data) {
       console.log(data.label());
+      jQuery.mobile.changePage(data.target());
     },
   }));
 
@@ -59,6 +60,7 @@ hhb.model.types.NavigationModel = function() {
     target:'#konten_menue',
     callback: function(data) {
       console.log(data.label());
+      jQuery.mobile.changePage(data.target());
     },
   }));
 
@@ -67,6 +69,7 @@ hhb.model.types.NavigationModel = function() {
     target:'#auswertungen_menue',
     callback: function(data) {
       console.log(data.label());
+      jQuery.mobile.changePage(data.target());
     },
   }));
 
@@ -78,6 +81,7 @@ hhb.model.types.NavigationModel = function() {
     target:'#schnellbuchungen_verwalten',
     callback: function(data) {
       console.log(data.label());
+      jQuery.mobile.changePage(data.target());
     },
   }));
 
@@ -91,10 +95,11 @@ hhb.model.types.NavigationModel = function() {
 
   self.buchungsmenue.push(new hhb.model.types.NavigationEntry({
     label:'Buchung erfassen',
-    target:'#erfassen',
+    target:'#buchungen_erfassen',
     callback: function(data) {
       // TODO: allgemeinen Code zu öffnen der Buchungsmaske einbauen/aufrufen ...
       console.log(data.label());
+      jQuery.mobile.changePage(data.target());
     },
   }));
 
@@ -104,6 +109,7 @@ hhb.model.types.NavigationModel = function() {
     callback: function(data) {
       // TODO: Code zu öffnen der Buchungsliste aufrufen ...
       console.log(data.label());
+      jQuery.mobile.changePage(data.target());
     },
   }));
 
@@ -113,6 +119,7 @@ hhb.model.types.NavigationModel = function() {
     callback: function(data) {
       // TODO: Code zum laden und öffnen der Warteschlange aufrufen ...
       console.log(data.label());
+      jQuery.mobile.changePage(data.target());
     },
   }));
 

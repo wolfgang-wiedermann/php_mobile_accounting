@@ -23,6 +23,7 @@
 header('Content-Type: application/javascript');
 // Laden und zusammenfassen aller Javascript-Code-Dateien aus den Formularen
 include_once("../forms/navigation/navigation_model.js");
+include_once("../forms/buchen/buchen_model.js");
 
 // MainModel importieren
 include_once("./main_model.js");
