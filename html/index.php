@@ -31,6 +31,7 @@
     <script src="./js/jquery.mobile-1.4.5.min.js"></script>
     <script src="./js/knockout-3.2.0.js"></script>
     <!-- App-spezifische Code-Dateien -->
+    <script src="./js/rpc.js"></script>
     <script src="./js/app.php"></script>
 </head>
 <body>
