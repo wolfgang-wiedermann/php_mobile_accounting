@@ -105,7 +105,7 @@ hhb.model.types.NavigationModel = function() {
 
   self.buchungsmenue.push(new hhb.model.types.NavigationEntry({
     label:'Aktuellste Buchungen',
-    target:'#current',
+    target:'#aktuellste_buchungen',
     callback: function(data) {
       // TODO: Code zu öffnen der Buchungsliste aufrufen ...
       console.log(data.label());

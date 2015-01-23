@@ -34,8 +34,11 @@
     <script src="./js/app.php"></script>
 </head>
 <body>
+  <!-- Menüs -->
   <?php include_once("./forms/navigation/navigation.php"); ?>
   <?php include_once("./forms/navigation/buchen_menue.php"); ?>
+  <!-- Masken aus dem Menü "Buchungen" -->
   <?php include_once("./forms/buchen/buchen.php"); ?>
+  <?php include_once("./forms/buchen/aktuellste_buchungen.php"); ?>
 </body>
 </html>
