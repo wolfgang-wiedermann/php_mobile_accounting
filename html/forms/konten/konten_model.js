@@ -33,6 +33,7 @@ hhb.model.types.Konto = function(config) {
   self.bezeichnung = ko.observable("");
   self.kontenart_id = ko.observable(0);
   self.mandant_id = ko.observable(0);
+
   self.tostring = ko.computed(function() {
     return self.kontonummer()+" : "+self.bezeichnung();
   });
@@ -57,7 +58,7 @@ hhb.model.types.KontenModel = function() {
   // self.konten mit den auf dem Server vorgehaltenen Konten befüllen
   self.refreshKonten = function() {
     self.konten.removeAll();
-    doGET("konto", "list", [], 
+    doGETwithCache("konto", "list", [], 
       function(data) {
         for(var i = 0; i < data.length; i++) {
           self.konten.push(new hhb.model.types.Konto(data[i]));
