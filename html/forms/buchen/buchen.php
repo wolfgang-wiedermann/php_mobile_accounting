@@ -7,15 +7,13 @@
     <label for="b_buchungstext">Buchungstext</label>
     <input type="text" id="b_buchungstext" data-bind="value: buchen().selectedBuchung().buchungstext">
     <label for="b_sollkonto">Soll-Konto</label>
-    <select id="b_sollkonto">
-      <option>Dummy</option>
+    <select id="b_sollkonto" data-bind="value: buchen().selectedBuchung().sollkonto, options: konten().konten, optionsText: 'tostring', optionsValue: 'kontonummer'">
     </select>
     <label for="b_habenkonto">Haben-Konto</label>
-    <select id="b_habenkonto">
-      <option>Dummy</option>
+    <select id="b_habenkonto" data-bind="value: buchen().selectedBuchung().sollkonto, options: konten().konten, optionsText: 'tostring', optionsValue: 'kontonummer'">
     </select>
     <label id="b_betrag">Betrag</label>
-    <input type="number" id="b_betrag" data-bind="value: buchen().selectedBuchung().betrag">
+    <input type="number" step="0.01" id="b_betrag" data-bind="value: buchen().selectedBuchung().betrag">
     <label id="b_buchungsdatum">Buchungsdatum</label>
     <input type="date" id="b_buchungsdatum" data-bind="value: buchen().selectedBuchung().buchungsdatum">
     <button data-bind="click: buchen().speichern">Speichern</button>

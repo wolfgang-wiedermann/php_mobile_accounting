@@ -32,6 +32,7 @@ hhb.model.types.Konto = function(config) {
   self.kontonummer = ko.observable("0000");
   self.bezeichnung = ko.observable("");
   self.kontenart_id = ko.observable(0);
+  self.mandant_id = ko.observable(0);
   self.tostring = ko.computed(function() {
     return self.kontonummer()+" : "+self.bezeichnung();
   });
@@ -40,6 +41,7 @@ hhb.model.types.Konto = function(config) {
     self.kontonummer(config.kontonummer);
     self.bezeichnung(config.bezeichnung);
     self.kontenart_id(config.kontenart_id);
+    self.mandant_id(config.mandant_id);
   } 
 };
 
@@ -52,5 +54,22 @@ hhb.model.types.KontenModel = function() {
   self.selectedKonto = ko.observable(new hhb.model.types.Konto());
   self.konten = ko.observableArray([]);
 
-  // TODO: Kontenplan per AJAX holen und nach self.konten laden
+  // self.konten mit den auf dem Server vorgehaltenen Konten befüllen
+  self.refreshKonten = function() {
+    self.konten.removeAll();
+    doGET("konto", "list", [], 
+      function(data) {
+        for(var i = 0; i < data.length; i++) {
+          self.konten.push(new hhb.model.types.Konto(data[i]));
+        }
+      },
+      function(error) {
+        console.log(error);
+        alert("Fehler aufgetreten, details siehe Log");
+      }
+    ); 
+  };
+
+  // Konten intial laden
+  self.refreshKonten();
 }

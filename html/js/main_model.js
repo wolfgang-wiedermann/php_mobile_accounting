@@ -32,6 +32,7 @@ hhb.model.types.MainModel = function() {
   // Model der Menüstruktur
   self.navigation = ko.observable(new hhb.model.types.NavigationModel());
   self.buchen = ko.observable(new hhb.model.types.BuchungenModel());
+  self.konten = ko.observable(new hhb.model.types.KontenModel());
 };
 
 /*
