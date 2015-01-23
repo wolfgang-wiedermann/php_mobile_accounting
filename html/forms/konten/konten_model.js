@@ -26,34 +26,31 @@ hhb.model.types = hhb.model.types || {};
 /*
 * Datenmodell eines Buchungseintrags
 */
-hhb.model.types.Buchung = function(config) {
+hhb.model.types.Konto = function(config) {
   var self = this;
 
-  self.buchungstext = ko.observable("");
-  self.buchungsnummer = ko.observable(0);
-  self.sollkonto = ko.observable("0");
-  self.habenkonto = ko.observable("0");
-  self.betrag = ko.observable("0");
-  self.datum = ko.observable("01.01.2000"); // TODO: Aktuelles Datum eintragen!
-  self.benutzer = ko.observable("");
+  self.kontonummer = ko.observable("0000");
+  self.bezeichnung = ko.observable("");
+  self.kontenart_id = ko.observable(0);
+  self.tostring = ko.computed(function() {
+    return self.kontonummer()+" : "+self.bezeichnung();
+  });
 
   if(!!config) {
-    self.buchungstext(config.buchungstext);
-    self.buchungsnummer(config.buchungsnummer);
-    self.sollkonto(config.sollkonto);
-    self.habenkonto(config.habenkonto);
-    self.betrag(config.betrag);
-    self.datum(config.datum);
-    self.benutzer(config.benutzer);
+    self.kontonummer(config.kontonummer);
+    self.bezeichnung(config.bezeichnung);
+    self.kontenart_id(config.kontenart_id);
   } 
 };
 
 /*
 * Zusammenfassenden Model-Typen für den Themenbereich Buchungen 
 */
-hhb.model.types.BuchungenModel = function() {
+hhb.model.types.KontenModel = function() {
   var self = this;
   
-  self.selectedBuchung = ko.observable(new hhb.model.types.Buchung());
-  self.buchungen = ko.observableArray([]);
+  self.selectedKonto = ko.observable(new hhb.model.types.Konto());
+  self.konten = ko.observableArray([]);
+
+  // TODO: Kontenplan per AJAX holen und nach self.konten laden
 }
