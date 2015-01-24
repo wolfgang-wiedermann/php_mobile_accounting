@@ -71,6 +71,13 @@ hhb.model.types.KontenModel = function() {
     ); 
   };
 
+  self.openKontenMenu = function(item) {
+    self.selectedKonto(item);
+    jQuery.mobile.changePage("#konten_menu");
+  };
+
   // Konten intial laden
   self.refreshKonten();
+  // Das muss noch raus, das ist wieder mal nur so ein sch... notbehelf
+  $( "#konten_liste_lv" ).listview();
 }

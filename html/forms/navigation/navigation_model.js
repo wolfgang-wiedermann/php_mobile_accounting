@@ -57,9 +57,11 @@ hhb.model.types.NavigationModel = function() {
 
   self.basisfunktionen.push(new hhb.model.types.NavigationEntry({
     label:'Konten',
-    target:'#konten_menue',
+    target:'#konten_liste',
     callback: function(data) {
+      hhb.model.MainModel.konten().refreshKonten();
       console.log(data.label());
+      // Liste refreshen
       jQuery.mobile.changePage(data.target());
     },
   }));

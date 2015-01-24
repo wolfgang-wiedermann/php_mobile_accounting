@@ -31,6 +31,7 @@
     <script src="./js/jquery.mobile-1.4.5.min.js"></script>
     <script src="./js/knockout-3.2.0.js"></script>
     <!-- App-spezifische Code-Dateien -->
+    <script src="./js/knockout-ext.js"></script>
     <script src="./js/rpc.js"></script>
     <script src="./js/util.js"></script>
     <script src="./js/app.php"></script>
@@ -42,5 +43,8 @@
   <!-- Masken aus dem Menü "Buchungen" -->
   <?php include_once("./forms/buchen/buchen.php"); ?>
   <?php include_once("./forms/buchen/aktuellste_buchungen.php"); ?>
+  <!-- Masken aus dem Menü "Konten" -->
+  <?php include_once("./forms/konten/konten_liste.php"); ?>
+  <?php include_once("./forms/konten/konten_menu.php"); ?>
 </body>
 </html>
