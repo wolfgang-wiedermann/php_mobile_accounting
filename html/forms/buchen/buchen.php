@@ -10,13 +10,13 @@
     <select id="b_sollkonto" data-bind="value: buchen().selectedBuchung().sollkonto, options: konten().konten, optionsText: 'tostring', optionsValue: 'kontonummer'">
     </select>
     <label for="b_habenkonto">Haben-Konto</label>
-    <select id="b_habenkonto" data-bind="value: buchen().selectedBuchung().sollkonto, options: konten().konten, optionsText: 'tostring', optionsValue: 'kontonummer'">
+    <select id="b_habenkonto" data-bind="value: buchen().selectedBuchung().habenkonto, options: konten().konten, optionsText: 'tostring', optionsValue: 'kontonummer'">
     </select>
     <label id="b_betrag">Betrag</label>
     <input type="number" step="0.01" id="b_betrag" data-bind="value: buchen().selectedBuchung().betrag">
     <label id="b_buchungsdatum">Buchungsdatum</label>
-    <input type="date" id="b_buchungsdatum" data-bind="value: buchen().selectedBuchung().buchungsdatum">
-    <button data-bind="click: buchen().speichern">Speichern</button>
+    <input type="date" id="b_buchungsdatum" data-bind="value: buchen().selectedBuchung().datum">
+    <button data-bind="click: buchen().verbuchen">verbuchen</button>
   </div><!-- /content -->
   <div data-role="footer">
     <h4>&copy; by Wolfgang Wiedermann</h4>

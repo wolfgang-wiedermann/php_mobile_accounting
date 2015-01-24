@@ -97,7 +97,7 @@ hhb.model.types.NavigationModel = function() {
     label:'Buchung erfassen',
     target:'#buchungen_erfassen',
     callback: function(data) {
-      // TODO: allgemeinen Code zu öffnen der Buchungsmaske einbauen/aufrufen ...
+      hhb.model.MainModel.konten().refreshKonten()
       console.log(data.label());
       jQuery.mobile.changePage(data.target());
     },
@@ -107,7 +107,7 @@ hhb.model.types.NavigationModel = function() {
     label:'Aktuellste Buchungen',
     target:'#aktuellste_buchungen',
     callback: function(data) {
-      // TODO: Code zu öffnen der Buchungsliste aufrufen ...
+      hhb.model.MainModel.buchen().loadAktuellsteBuchungen();
       console.log(data.label());
       jQuery.mobile.changePage(data.target());
     },

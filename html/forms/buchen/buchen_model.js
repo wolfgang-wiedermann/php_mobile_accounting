@@ -33,8 +33,11 @@ hhb.model.types.Buchung = function(config) {
   self.buchungsnummer = ko.observable(0);
   self.sollkonto = ko.observable("0");
   self.habenkonto = ko.observable("0");
-  self.betrag = ko.observable("0");
-  self.datum = ko.observable("01.01.2000"); // TODO: Aktuelles Datum eintragen!
+  self.betrag = ko.observable(0.00);
+  self.datum = ko.observable(JSON.stringify(new Date()).substring(1,11));
+  self.datum_de = ko.computed(function() {
+    return util.formatDateAtG(self.datum());
+  });
   self.benutzer = ko.observable("");
 
   if(!!config) {
@@ -56,4 +59,32 @@ hhb.model.types.BuchungenModel = function() {
   
   self.selectedBuchung = ko.observable(new hhb.model.types.Buchung());
   self.buchungen = ko.observableArray([]);
+
+  // Event-Handler für den Klick auf den Verbuchen-Button
+  self.verbuchen = function() {
+    var jsonString = ko.toJSON(self.selectedBuchung);
+    doPOSTwithQueue("buchung", "create", jsonString,
+      function(data) {
+        alert("Buchung erfolgreich angelegt");
+      },
+      function(error) {
+        alert("Fehler beim Anlegen der Buchung aufgetreten: "+JSON.stringify(error));
+      }
+    );
+  };
+
+  // Handler für das Laden der 25 aktuellsten Buchungen
+  // in die Variable self.buchungen
+  self.loadAktuellsteBuchungen = function() {
+    self.buchungen.removeAll();
+    doGETwithCache("buchung", "aktuellste", [], 
+      function(data) {
+        for(var i = 0; i < data.length; i++) {
+          self.buchungen.push(new hhb.model.types.Buchung(data[i]));
+        }
+      }, 
+      function(error) {
+      }
+    ); 
+  };
 }
