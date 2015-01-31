@@ -24,7 +24,7 @@ group by day(b.datum)
 union
 
 select
-sum(b.betrag) as betrag,
+sum(b.betrag) * -1 as betrag,
 day(b.datum) as tag
 from fi_buchungen as b
 inner join fi_konto as k
@@ -63,7 +63,7 @@ group by day(b.datum)
 union
 
 select
-sum(b.betrag) as betrag,
+sum(b.betrag) * -1 as betrag,
 day(b.datum) as tag
 from fi_buchungen as b
 inner join fi_konto as k
