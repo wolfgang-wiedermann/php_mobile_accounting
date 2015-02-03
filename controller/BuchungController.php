@@ -153,6 +153,7 @@ function isInValidFields($key) {
        case 'habenkonto':     return true;
        case 'betrag':         return true;
        case 'datum':          return true;
+       case 'datum_de':          return true;
        case 'benutzer':       return true;
        default:               return false;
    }
@@ -172,6 +173,7 @@ function isValidValueForField($key, $value) {
             return count($results) == 0;
        case 'buchungstext':
        case 'datum':
+       case 'datum_de':
             $pattern = '/[\']/';
             preg_match($pattern, $value, $results);
             return count($results) == 0;
