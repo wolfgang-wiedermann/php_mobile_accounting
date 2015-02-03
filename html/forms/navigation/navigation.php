@@ -4,15 +4,15 @@
   </div><!-- /header -->
   <div data-role="content">
     <ul data-role="listview" data-inset="false" data-filter="true">
-      <li>Basisfunktionen</li>
+      <li data-role="list-divider">Basisfunktionen</li>
       <!-- ko foreach: navigation().basisfunktionen -->
       <li><a data-bind="text: label, click:callback"></a></li>
       <!-- /ko -->
-      <li>Administration</li>
+      <li data-role="list-divider">Administration</li>
       <!-- ko foreach: navigation().administration -->
       <li><a data-bind="text: label, click: callback"></a></li>
       <!-- /ko -->
-      <li>Schnellbuchungen</li>
+      <li data-role="list-divider">Schnellbuchungen</li>
       <!-- ko foreach: navigation().schnellbuchungen -->
       <li><a data-bind="text:label, click: callback"></a></li>
       <!-- /ko -->

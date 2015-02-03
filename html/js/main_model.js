@@ -42,3 +42,10 @@ $(document).ready(function() {
   hhb.model.MainModel = new hhb.model.types.MainModel();
   ko.applyBindings(hhb.model.MainModel);
 });
+
+/*
+* Fade-In bei Seitenwechsel deaktivieren
+*/
+$(document).bind('pageinit', function () {
+  $.mobile.defaultPageTransition = 'none';
+});
