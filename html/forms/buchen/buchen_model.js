@@ -48,7 +48,7 @@ hhb.model.types.Buchung = function(config) {
     self.betrag(config.betrag);
     self.datum(config.datum);
     self.benutzer(config.benutzer);
-  } 
+  }
 };
 
 /*

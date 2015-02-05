@@ -45,6 +45,7 @@
   <?php include_once("./forms/buchen/aktuellste_buchungen.php"); ?>
   <!-- Masken aus dem Menü "Konten" -->
   <?php include_once("./forms/konten/konten_liste.php"); ?>
-  <?php include_once("./forms/konten/konten_menu.php"); ?>
+  <?php include_once("./forms/konten/konten_menue.php"); ?>
+  <?php include_once("./forms/konten/konten_form.php"); ?>
 </body>
 </html>

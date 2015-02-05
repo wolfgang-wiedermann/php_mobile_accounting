@@ -43,7 +43,7 @@ hhb.model.types.Konto = function(config) {
     self.bezeichnung(config.bezeichnung);
     self.kontenart_id(config.kontenart_id);
     self.mandant_id(config.mandant_id);
-  } 
+  }
 };
 
 /*
@@ -54,6 +54,7 @@ hhb.model.types.KontenModel = function() {
   
   self.selectedKonto = ko.observable(new hhb.model.types.Konto());
   self.konten = ko.observableArray([]);
+  self.konten.push(self.selectedKonto);
 
   // self.konten mit den auf dem Server vorgehaltenen Konten befüllen
   self.refreshKonten = function() {
@@ -63,6 +64,7 @@ hhb.model.types.KontenModel = function() {
         for(var i = 0; i < data.length; i++) {
           self.konten.push(new hhb.model.types.Konto(data[i]));
         }
+        $(".konten_liste").listview("refresh");
       },
       function(error) {
         console.log(error);
@@ -73,7 +75,7 @@ hhb.model.types.KontenModel = function() {
 
   self.openKontenMenu = function(item) {
     self.selectedKonto(item);
-    jQuery.mobile.changePage("#konten_menu");
+    jQuery.mobile.changePage("#konten_menue");
   };
 
   // Konten intial laden

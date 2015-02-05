@@ -61,7 +61,6 @@ hhb.model.types.NavigationModel = function() {
     callback: function(data) {
       hhb.model.MainModel.konten().refreshKonten();
       console.log(data.label());
-      // Liste refreshen
       jQuery.mobile.changePage(data.target());
     },
   }));
