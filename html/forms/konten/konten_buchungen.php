@@ -9,11 +9,12 @@
     <table data-bind="foreach: konten().buchungen">
       <tr>
         <td data-bind="text:buchungsnummer"></td>
-        <td data-bind="text:buchungstext" colspan="2"></td>
+        <td data-bind="text:buchungstext" colspan="3"></td>
       </tr>
       <tr>
         <td data-bind="text:gegenkonto"></td>
         <td data-bind="text:betrag" class="td_betrag"></td>
+        <td style="width:10px"></td>
         <td data-bind="text:datum_de"></td>
       </tr>
     </table>
