@@ -34,6 +34,7 @@
     <script src="./js/knockout-ext.js"></script>
     <script src="./js/rpc.js"></script>
     <script src="./js/util.js"></script>
+    <script src="./js/diagram.js"></script>
     <script src="./js/app.php"></script>
 </head>
 <body>
@@ -48,5 +49,6 @@
   <?php include_once("./forms/konten/konten_menue.php"); ?>
   <?php include_once("./forms/konten/konten_form.php"); ?>
   <?php include_once("./forms/konten/konten_buchungen.php"); ?>
+  <?php include_once("./forms/konten/konten_monatssalden.php"); ?>
 </body>
 </html>

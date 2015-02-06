@@ -47,6 +47,21 @@ hhb.model.types.Konto = function(config) {
 };
 
 /*
+* Eintrag in der Salden-Liste
+*/
+hhb.model.types.SaldenEintrag = function(obj) {
+  var self = this;
+
+  self.grouping = ko.observable("000000");
+  self.saldo = ko.observable(0.00);
+
+  if(!!obj) {
+    self.grouping(obj.grouping);
+    self.saldo(obj.saldo);
+  }
+};
+
+/*
 * Zusammenfassenden Model-Typen für den Themenbereich Konten
 */
 hhb.model.types.KontenModel = function() {
@@ -58,6 +73,8 @@ hhb.model.types.KontenModel = function() {
   self.buchungen = ko.observableArray([]);
   self.buchungen.push(new hhb.model.types.KontoBuchung());
   self.saldo = ko.observable("");
+  self.salden = ko.observableArray([]);
+  self.salden.push(new hhb.model.types.SaldenEintrag());
 
   // self.konten mit den auf dem Server vorgehaltenen Konten befüllen
   self.refreshKonten = function() {
@@ -101,6 +118,27 @@ hhb.model.types.KontenModel = function() {
             self.buchungen.push(new hhb.model.types.KontoBuchung(list[i]));
           }
           jQuery.mobile.changePage("#konto_buchungen");
+        },
+        function(error) {
+          // TODO: Fehlermeldung ausgeben!
+        }
+    );
+  };
+
+  // Grafik und Tabelle der Monatssalden anzeigen
+  self.openMonatssalden = function() {
+    self.salden.removeAll();
+    doGETwithCache("verlauf", "monatssalden", {'id':self.selectedKonto().kontonummer()},
+        function(data) {
+          var diagramData = [];
+          for(var i = 0; i < data.length; i++) {
+            self.salden.push(new hhb.model.types.SaldenEintrag(data[i]));
+            diagramData.push(data[i].saldo);
+          }
+          d.init("konto_monatssalden_grafik");
+          d.setToWindowWidth();
+          d.drawLineDiagramFor(diagramData);
+          jQuery.mobile.changePage("#konto_monatssalden");
         },
         function(error) {
           // TODO: Fehlermeldung ausgeben!

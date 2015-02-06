@@ -5,7 +5,7 @@
   </div><!-- /header -->
   <div data-role="content">
     <ul data-role="listview">
-      <li><a href="#konto_monatssalden">Monatssalden</a></li>
+      <li><a href="#konto_monatssalden" data-bind="click: $root.konten().openMonatssalden">Monatssalden</a></li>
       <li><a href="#konto_buchungen" data-bind="click: $root.konten().openBuchungen">Buchungen anzeigen</a></li>
       <li><a href="#konto_bearbeiten" data-bind="click: $root.konten().openKontenBearbeiten">Konto bearbeiten</a></li>
     </ul>
