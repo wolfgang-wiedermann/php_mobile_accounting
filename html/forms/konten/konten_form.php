@@ -4,6 +4,9 @@
   <input type="text" id="k_kontonummer" data-bind="value: kontonummer">
   <label for="k_bezeichnung">Bezeichnung</label>
   <input type="text" id="k_bezeichnung" data-bind="value: bezeichnung">
+  <label for="k_kontenart">Kontenart</label>
+  <select id="k_kontenart" data-bind="value: kontenart_id, options: $root.kontenarten,
+    optionsValue: 'kontenart_id', optionsText: 'bezeichnung'"></select>
 </script>
 <!-- Konto anlegen -->
 <div data-role="page" id="konto_neu">

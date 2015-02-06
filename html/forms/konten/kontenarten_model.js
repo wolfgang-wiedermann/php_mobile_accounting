@@ -1,4 +1,4 @@
-// -- <?php 
+// -- <?php
 /*
  * Copyright (c) 2015 by Wolfgang Wiedermann
  *
@@ -22,33 +22,35 @@
 var hhb = hhb || {};
 hhb.model = hhb.model || {};
 hhb.model.types = hhb.model.types || {};
-hhb.model.MainModel = null;
 
 /*
-* Root-Knoten des Knockout.js Models
-*/
-hhb.model.types.MainModel = function() {
-  var self = this;
-  // Modelbestandteile laden
-  self.kontenarten = ko.observableArray([]);
-  hhb.model.types.Kontenart.load(self.kontenarten);
+ * Datenmodell einer Kontenart
+ */
+hhb.model.types.Kontenart = function(config) {
+    var self = this;
+    self.kontenart_id = ko.observable(0);
+    self.bezeichnung = ko.observable("");
 
-  self.navigation = ko.observable(new hhb.model.types.NavigationModel());
-  self.buchen = ko.observable(new hhb.model.types.BuchungenModel());
-  self.konten = ko.observable(new hhb.model.types.KontenModel());
-};
-
-/*
-* Knockout.js Model initialisieren und binden
-*/
-$(document).ready(function() {
-  hhb.model.MainModel = new hhb.model.types.MainModel();
-  ko.applyBindings(hhb.model.MainModel);
-});
+    if(!!config) {
+        self.kontenart_id(config.kontenart_id);
+        self.bezeichnung(config.bezeichnung);
+    }
+}
 
 /*
-* Fade-In bei Seitenwechsel deaktivieren
+* Statische Methode zum laden der Kontenarten
 */
-$(document).bind('pageinit', function () {
-  $.mobile.defaultPageTransition = 'none';
-});
+hhb.model.types.Kontenart.load = function(observableArray) {
+    doGET('kontenart', 'list', [],
+        function(data) {
+            for(var i = 0; i < data.length; i++) {
+                observableArray.push(new hhb.model.types.Kontenart(data[i]));
+            }
+        },
+        function(error) {
+            // TODO: noch nachbessern!
+            console.log(error);
+            alert('Fehler aufgetreten');
+        }
+    )
+}

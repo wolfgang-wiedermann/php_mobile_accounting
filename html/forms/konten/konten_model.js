@@ -24,7 +24,7 @@ hhb.model = hhb.model || {};
 hhb.model.types = hhb.model.types || {};
 
 /*
-* Datenmodell eines Buchungseintrags
+* Datenmodell eines Kontos
 */
 hhb.model.types.Konto = function(config) {
   var self = this;
@@ -47,7 +47,7 @@ hhb.model.types.Konto = function(config) {
 };
 
 /*
-* Zusammenfassenden Model-Typen für den Themenbereich Buchungen 
+* Zusammenfassenden Model-Typen für den Themenbereich Konten
 */
 hhb.model.types.KontenModel = function() {
   var self = this;
