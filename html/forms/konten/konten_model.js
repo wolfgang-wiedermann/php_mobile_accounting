@@ -74,15 +74,47 @@ hhb.model.types.KontenModel = function() {
     ); 
   };
 
+  // Menü nach der Auswahl eines Kontos öffnen
   self.openKontenMenu = function(item) {
     self.selectedKonto(item);
     jQuery.mobile.changePage("#konten_menue");
   };
 
+  // Formular Konto bearbeiten öffnen
   self.openKontenBearbeiten = function() {
     jQuery.mobile.changePage("#konto_bearbeiten");
     $('#konto_bearbeiten').trigger('create');
-  }
+  };
+
+  // Neues Konto anlegen
+  self.anlegen = function() {
+    var kontoJSON = ko.toJSON(self.selectedKonto());
+    doPOST("konto", "create", kontoJSON,
+        function(data) {
+          alert('Das Konto wurde angelegt');
+        },
+        function(error) {
+          // TODO: Fehlerbehandlung noch verallgemeinern
+          console.log(error);
+          alert("Es ist ein Fehler beim Anlegen des Kontos aufgetreten");
+        }
+    );
+  };
+
+  // Bestehendes Konto aktualisieren
+  self.speichern = function() {
+    var kontoJSON = ko.toJSON(self.selectedKonto());
+    doPOST("konto", "save", kontoJSON,
+        function(data) {
+          alert('Die Änderungen wurden gespeichert');
+        },
+        function(error) {
+          // TODO: Fehlerbehandlung noch verallgemeinern
+          console.log(error);
+          alert("Es ist ein Fehler beim Speichern des Kontos aufgetreten");
+        }
+    );
+  };
 
   // Konten intial laden
   self.refreshKonten();
