@@ -3,7 +3,7 @@
     <h1>Buchhaltung</h1>
   </div><!-- /header -->
   <div data-role="content">
-    <ul data-role="listview" data-inset="false" data-filter="true">
+    <ul id="h_navigation" data-role="listview" data-inset="false" data-filter="true">
       <li data-role="list-divider">Basisfunktionen</li>
       <!-- ko foreach: navigation().basisfunktionen -->
       <li><a data-bind="text: label, click:callback"></a></li>
@@ -13,7 +13,7 @@
       <li><a data-bind="text: label, click: callback"></a></li>
       <!-- /ko -->
       <li data-role="list-divider">Schnellbuchungen</li>
-      <!-- ko foreach: navigation().schnellbuchungen -->
+      <!-- ko foreach: schnellbuchungen().schnellbuchungen_navigation -->
       <li><a data-bind="text:label, click: callback"></a></li>
       <!-- /ko -->
     </ul>

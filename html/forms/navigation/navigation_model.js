@@ -35,6 +35,9 @@ hhb.model.types.NavigationEntry = function(config) {
   self.label = ko.observable(config.label);
   self.target = ko.observable(config.target);
   self.callback = config.callback;
+  if(!!config.data) {
+    self.data = config.data;
+  }
 };
 
 /*
@@ -52,7 +55,7 @@ hhb.model.types.NavigationModel = function() {
     callback: function(data) {
       console.log(data.label());
       jQuery.mobile.changePage(data.target());
-    },
+    }
   }));
 
   self.basisfunktionen.push(new hhb.model.types.NavigationEntry({
@@ -62,7 +65,7 @@ hhb.model.types.NavigationModel = function() {
       hhb.model.MainModel.konten().refreshKonten();
       console.log(data.label());
       jQuery.mobile.changePage(data.target());
-    },
+    }
   }));
 
   self.basisfunktionen.push(new hhb.model.types.NavigationEntry({
@@ -71,7 +74,7 @@ hhb.model.types.NavigationModel = function() {
     callback: function(data) {
       console.log(data.label());
       jQuery.mobile.changePage(data.target());
-    },
+    }
   }));
 
   // Administration - Menü
@@ -83,13 +86,8 @@ hhb.model.types.NavigationModel = function() {
     callback: function(data) {
       console.log(data.label());
       jQuery.mobile.changePage(data.target());
-    },
+    }
   }));
-
-  // Schnellbuchungen - Menü
-  self.schnellbuchungen = ko.observableArray([]);
-  
-  // TODO: Schnellbuchungen laden ...
 
   // Buchungsmenü (Untermenü in/für Formular buchen_menue.php)
   self.buchungsmenue = ko.observableArray([]);
@@ -101,7 +99,7 @@ hhb.model.types.NavigationModel = function() {
       hhb.model.MainModel.konten().refreshKonten()
       console.log(data.label());
       jQuery.mobile.changePage(data.target());
-    },
+    }
   }));
 
   self.buchungsmenue.push(new hhb.model.types.NavigationEntry({
@@ -111,7 +109,7 @@ hhb.model.types.NavigationModel = function() {
       hhb.model.MainModel.buchen().loadAktuellsteBuchungen();
       console.log(data.label());
       jQuery.mobile.changePage(data.target());
-    },
+    }
   }));
 
   self.buchungsmenue.push(new hhb.model.types.NavigationEntry({
@@ -121,7 +119,7 @@ hhb.model.types.NavigationModel = function() {
       // TODO: Code zum laden und öffnen der Warteschlange aufrufen ...
       console.log(data.label());
       jQuery.mobile.changePage(data.target());
-    },
+    }
   }));
 
 };
