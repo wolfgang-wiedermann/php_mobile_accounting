@@ -55,6 +55,9 @@ hhb.model.types.KontenModel = function() {
   self.selectedKonto = ko.observable(new hhb.model.types.Konto());
   self.konten = ko.observableArray([]);
   self.konten.push(self.selectedKonto);
+  self.buchungen = ko.observableArray([]);
+  self.buchungen.push(new hhb.model.types.KontoBuchung());
+  self.saldo = ko.observable("");
 
   // self.konten mit den auf dem Server vorgehaltenen Konten befüllen
   self.refreshKonten = function() {
@@ -84,6 +87,25 @@ hhb.model.types.KontenModel = function() {
   self.openKontenBearbeiten = function() {
     jQuery.mobile.changePage("#konto_bearbeiten");
     $('#konto_bearbeiten').trigger('create');
+  };
+
+  // Buchungen des aktuell selektierten Kontos in #konto_buchungen anzeigen
+  self.openBuchungen = function() {
+    self.buchungen.removeAll();
+    var kontonummer = self.selectedKonto().kontonummer();
+    doGETwithCache("buchung", "listbykonto", {'konto':kontonummer},
+        function(data) {
+          var list = data.list;
+          self.saldo(data.saldo);
+          for(var i = 0; i < list.length; i++) {
+            self.buchungen.push(new hhb.model.types.KontoBuchung(list[i]));
+          }
+          jQuery.mobile.changePage("#konto_buchungen");
+        },
+        function(error) {
+          // TODO: Fehlermeldung ausgeben!
+        }
+    );
   };
 
   // Neues Konto anlegen

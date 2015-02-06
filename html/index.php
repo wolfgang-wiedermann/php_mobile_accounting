@@ -47,5 +47,6 @@
   <?php include_once("./forms/konten/konten_liste.php"); ?>
   <?php include_once("./forms/konten/konten_menue.php"); ?>
   <?php include_once("./forms/konten/konten_form.php"); ?>
+  <?php include_once("./forms/konten/konten_buchungen.php"); ?>
 </body>
 </html>

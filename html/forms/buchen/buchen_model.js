@@ -52,6 +52,32 @@ hhb.model.types.Buchung = function(config) {
 };
 
 /*
+* Datenmodell eines aus Sicht eines einzelnen Kontos betrachteten Buchungseintrags
+*/
+hhb.model.types.KontoBuchung = function(config) {
+  var self = this;
+
+  self.buchungstext = ko.observable("");
+  self.buchungsnummer = ko.observable(0);
+  self.gegenkonto = ko.observable("0");
+  self.betrag = ko.observable(0.00);
+  self.datum = ko.observable(JSON.stringify(new Date()).substring(1,11));
+  self.datum_de = ko.computed(function() {
+    return util.formatDateAtG(self.datum());
+  });
+  self.benutzer = ko.observable("");
+
+  if(!!config) {
+    self.buchungstext(config.buchungstext);
+    self.buchungsnummer(config.buchungsnummer);
+    self.gegenkonto(config.gegenkonto);
+    self.betrag(config.betrag);
+    self.datum(config.datum);
+    self.benutzer(config.benutzer);
+  }
+};
+
+/*
 * Zusammenfassenden Model-Typen für den Themenbereich Buchungen 
 */
 hhb.model.types.BuchungenModel = function() {

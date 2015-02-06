@@ -7,7 +7,7 @@
     <ul data-role="listview">
       <li><a href="#konto_saldo">Saldo anzeigen</a></li>
       <li><a href="#konto_monatssalden">Monatssalden</a></li>
-      <li><a href="#konto_buchungen">Buchungen anzeigen</a></li>
+      <li><a href="#konto_buchungen" data-bind="click: $root.konten().openBuchungen">Buchungen anzeigen</a></li>
       <li><a href="#konto_bearbeiten" data-bind="click: $root.konten().openKontenBearbeiten">Konto bearbeiten</a></li>
     </ul>
   </div><!-- /content -->
