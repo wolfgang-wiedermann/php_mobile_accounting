@@ -8,10 +8,10 @@
       <li><a href="#konto_saldo">Saldo anzeigen</a></li>
       <li><a href="#konto_monatssalden">Monatssalden</a></li>
       <li><a href="#konto_buchungen">Buchungen anzeigen</a></li>
-      <li><a href="#konto_bearbeiten">Konto bearbeiten</a></li>
+      <li><a href="#konto_bearbeiten" data-bind="click: $root.konten().openKontenBearbeiten">Konto bearbeiten</a></li>
     </ul>
   </div><!-- /content -->
   <div data-role="footer">
-    <h4>&copy; by Wolfgang Wiedermann</h4>
+    <h4>&copy; 2013-2015 by Wolfgang Wiedermann</h4>
   </div><!-- /footer --> 
 </div><!-- /page -->

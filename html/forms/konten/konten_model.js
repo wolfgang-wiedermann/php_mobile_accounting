@@ -64,6 +64,7 @@ hhb.model.types.KontenModel = function() {
         for(var i = 0; i < data.length; i++) {
           self.konten.push(new hhb.model.types.Konto(data[i]));
         }
+        $(".konten_liste").listview();
         $(".konten_liste").listview("refresh");
       },
       function(error) {
@@ -78,8 +79,11 @@ hhb.model.types.KontenModel = function() {
     jQuery.mobile.changePage("#konten_menue");
   };
 
+  self.openKontenBearbeiten = function() {
+    jQuery.mobile.changePage("#konto_bearbeiten");
+    $('#konto_bearbeiten').trigger('create');
+  }
+
   // Konten intial laden
   self.refreshKonten();
-  // Das muss noch raus, das ist wieder mal nur so ein sch... notbehelf
-  $( "#konten_liste_lv" ).listview();
 }
