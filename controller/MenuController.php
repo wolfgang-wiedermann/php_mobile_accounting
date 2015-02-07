@@ -33,6 +33,8 @@ function invoke($action, $request, $dispatcher) {
              return $this->getQuickMenuById($request);
         case 'add':
              return $this->addQuickMenu($request);
+        case 'update':
+             return $this->updateQuickMenu($request);
         case 'remove':
              return $this->removeQuickMenu($request);
         default:
@@ -86,6 +88,37 @@ function addQuickMenu($request) {
         }
         mysqli_close($db);
         return wrap_response("Fehler: $error");
+    } else {
+        mysqli_close($db);
+        throw new ErrorException("Die uebergebene Schnellbuchungsvorlage ist nicht valide: ".$inputJSON);
+    }
+}
+
+function updateQuickMenu($request) {
+    $db = getDbConnection();
+    $inputJSON = file_get_contents('php://input');
+    $input = json_decode( $inputJSON, TRUE );
+    if($this->isValidQuickMenu($input)) {
+        $sql = "update fi_quick_config set ";
+        $sql .= "config_knz = '".$input['config_knz']."', ";
+        $sql .= "buchungstext = '".$input['buchungstext']."', ";
+        $sql .= "sollkonto = '".$input['sollkonto']."', ";
+        $sql .= "habenkonto = '".$input['habenkonto']."', ";
+        $sql .= "betrag = '".$input['betrag']."' ";
+        $sql .= "where mandant_id = ".$this->mandant_id;
+        $sql .= " and config_id = ".$input['config_id'];
+
+        mysqli_query($db, $sql);
+        $error = mysqli_error($db);
+        if($error) {
+            error_log($error);
+            error_log($sql);
+            mysqli_close($db);
+            return wrap_response("Fehler: $error");
+        } else {
+            mysqli_close($db);
+            return wrap_response("Gelöscht");
+        }
     } else {
         mysqli_close($db);
         throw new ErrorException("Die uebergebene Schnellbuchungsvorlage ist nicht valide: ".$inputJSON);

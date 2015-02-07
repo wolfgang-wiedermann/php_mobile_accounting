@@ -97,7 +97,17 @@ hhb.model.types.SchnellbuchungModel = function() {
 
     // Den ausgewählten Eintrag speichern (update)
     self.speichern = function() {
-        // Update-Funktion fehlt noch
+        var selected = self.selectedSchnellbuchung();
+        var selectedJSON = ko.toJSON(selected);
+        doPOST("menu", "update", selectedJSON,
+            function(data) {
+                jQuery.mobile.changePage("#schnellbuchungen_liste");
+                self.load();
+            },
+            function(error) {
+                // TODO: Fehlerausgabe
+            }
+        );
     };
 
     // Einen neuen Eintrag anlegen
