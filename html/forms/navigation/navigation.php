@@ -1,5 +1,5 @@
 <div data-role="page" id="hauptmenue">
-  <div data-role="header">
+  <div data-role="header" data-position="fixed">
     <h1>Buchhaltung</h1>
   </div><!-- /header -->
   <div data-role="content">
@@ -18,7 +18,7 @@
       <!-- /ko -->
     </ul>
   </div><!-- /content -->
-  <div data-role="footer">
+  <div data-role="footer" data-position="fixed">
     <h4>&copy; by Wolfgang Wiedermann</h4>
   </div><!-- /footer --> 
 </div><!-- /page -->

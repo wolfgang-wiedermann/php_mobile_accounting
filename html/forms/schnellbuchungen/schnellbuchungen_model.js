@@ -58,10 +58,17 @@ hhb.model.types.SchnellbuchungModel = function() {
     // Schnellbuchung nach Klick ausführen
     self.executeSchnellbuchung = function(entry) {
         var selectedBuchung = hhb.model.MainModel.buchen().selectedBuchung();
+
         selectedBuchung.buchungstext(entry.buchungstext());
         selectedBuchung.sollkonto(entry.sollkonto());
         selectedBuchung.habenkonto(entry.habenkonto());
         selectedBuchung.betrag(entry.betrag());
+
+        // jQuery-Mobile Selectboxen neu laden
+        $("#b_sollkonto").selectmenu();
+        $("#b_habenkonto").selectmenu();
+        $("#b_sollkonto").selectmenu("refresh", true);
+        $("#b_habenkonto").selectmenu("refresh", true);
     };
 
     // Laden der Liste der Schnellbuchungen
@@ -82,6 +89,7 @@ hhb.model.types.SchnellbuchungModel = function() {
                         }
                     }));
                 }
+                $("#h_navigation").listview();
                 $("#h_navigation").listview('refresh');
             },
             function(error) {

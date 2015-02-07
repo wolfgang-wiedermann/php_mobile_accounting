@@ -11,7 +11,7 @@
 
 <!-- Konto anlegen -->
 <div data-role="page" id="konto_neu">
-  <div data-role="header">
+  <div data-role="header" data-position="fixed">
     <a href="#konten_liste" data-role="button" data-icon="home">Zur&uuml;ck</a>
     <h1>Konto anlegen</h1>
   </div><!-- /header -->
@@ -19,14 +19,14 @@
     <div data-bind="template: { name: 'konto_form_template', data: konten().selectedKonto() }"></div>
     <button data-bind="click: konten().anlegen">Anlegen</button>
   </div><!-- /content -->
-  <div data-role="footer">
+  <div data-role="footer" data-position="fixed">
     <h4>&copy; by Wolfgang Wiedermann</h4>
   </div><!-- /footer --> 
 </div><!-- /page -->
 
 <!-- Konto bearbeiten -->
 <div data-role="page" id="konto_bearbeiten">
-  <div data-role="header">
+  <div data-role="header" data-position="fixed">
     <a href="#konten_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
     <h1>Konto bearbeiten</h1>
   </div><!-- /header -->
@@ -34,7 +34,7 @@
     <div data-bind="template: { name: 'konto_form_template', data: konten().selectedKonto() }"></div>
     <button data-bind="click: konten().speichern">Speichern</button>
   </div><!-- /content -->
-  <div data-role="footer">
+  <div data-role="footer" data-position="fixed">
     <h4>&copy; by Wolfgang Wiedermann</h4>
   </div><!-- /footer -->
 </div><!-- /page -->

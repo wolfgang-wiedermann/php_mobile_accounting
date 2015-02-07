@@ -82,7 +82,7 @@ hhb.model.types.NavigationModel = function() {
 
   self.administration.push(new hhb.model.types.NavigationEntry({
     label:'Schnellbuchungen verwalten',
-    target:'#schnellbuchungen_verwalten',
+    target:'#schnellbuchungen_liste',
     callback: function(data) {
       console.log(data.label());
       jQuery.mobile.changePage(data.target());
@@ -99,6 +99,12 @@ hhb.model.types.NavigationModel = function() {
       hhb.model.MainModel.konten().refreshKonten()
       console.log(data.label());
       jQuery.mobile.changePage(data.target());
+
+      // jQuery-Mobile Selectboxen neu laden
+      $("#b_sollkonto").selectmenu();
+      $("#b_habenkonto").selectmenu();
+      $("#b_sollkonto").selectmenu("refresh", true);
+      $("#b_habenkonto").selectmenu("refresh", true);
     }
   }));
 

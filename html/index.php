@@ -50,5 +50,7 @@
   <?php include_once("./forms/konten/konten_form.php"); ?>
   <?php include_once("./forms/konten/konten_buchungen.php"); ?>
   <?php include_once("./forms/konten/konten_monatssalden.php"); ?>
+  <!-- Masken aus dem Menü "Administration" -->
+  <?php include_once("./forms/schnellbuchungen/schnellbuchungen_liste.php"); ?>
 </body>
 </html>

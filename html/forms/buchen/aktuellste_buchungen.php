@@ -1,5 +1,5 @@
 <div data-role="page" id="aktuellste_buchungen">
-  <div data-role="header">
+  <div data-role="header" data-position="fixed">
     <a href="#buchen_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
     <h1>Buchhaltung</h1>
   </div><!-- /header -->
@@ -18,7 +18,7 @@
       </tr>
     </table>
   </div><!-- /content -->
-  <div data-role="footer">
+  <div data-role="footer" data-position="fixed">
     <h4>&copy; by Wolfgang Wiedermann</h4>
   </div><!-- /footer --> 
 </div><!-- /page -->

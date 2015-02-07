@@ -1,5 +1,5 @@
 <div data-role="page" id="konto_buchungen">
-  <div data-role="header">
+  <div data-role="header" data-position="fixed">
     <a href="#konten_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
     <h1>Konto: <span data-bind="text: konten().selectedKonto().kontonummer"></span></h1>
   </div><!-- /header -->
@@ -19,7 +19,7 @@
       </tr>
     </table>
   </div><!-- /content -->
-  <div data-role="footer">
+  <div data-role="footer" data-position="fixed">
     <h4>&copy; by Wolfgang Wiedermann</h4>
   </div><!-- /footer --> 
 </div><!-- /page -->

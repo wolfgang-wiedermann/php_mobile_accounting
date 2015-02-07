@@ -45,6 +45,7 @@ hhb.model.types.MainModel = function() {
 $(document).ready(function() {
   hhb.model.MainModel = new hhb.model.types.MainModel();
   ko.applyBindings(hhb.model.MainModel);
+  jQuery.mobile.changePage("#");
 });
 
 /*

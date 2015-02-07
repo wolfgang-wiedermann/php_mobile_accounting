@@ -1,5 +1,5 @@
 <div data-role="page" id="konten_liste">
-  <div data-role="header">
+  <div data-role="header" data-position="fixed">
     <a href="#hauptmenue" data-role="button" data-icon="home">Zur&uuml;ck</a>
     <h1>Buchhaltung</h1>
     <a href="#konto_neu" data-role="button" data-icon="plus">Konto anlegen</a>
@@ -11,7 +11,7 @@
       <!-- /ko -->
     </ul>
   </div><!-- /content -->
-  <div data-role="footer">
+  <div data-role="footer" data-position="fixed">
     <h4>&copy; 2013-2015 by Wolfgang Wiedermann</h4>
   </div><!-- /footer --> 
 </div><!-- /page -->
