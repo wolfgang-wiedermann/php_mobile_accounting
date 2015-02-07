@@ -44,6 +44,7 @@
     <label id="sb_betrag">Betrag</label>
     <input type="number" step="0.01" id="b_betrag" data-bind="value: schnellbuchungen().selectedSchnellbuchung().betrag">
     <button data-bind="click: schnellbuchungen().speichern">Speichern</button>
+    <button data-bind="click: schnellbuchungen().loeschen">L&ouml;schen</button>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
     <h4>&copy; by Wolfgang Wiedermann</h4>

@@ -85,7 +85,7 @@ hhb.model.types.SchnellbuchungModel = function() {
 
     // Formular zum neu anlegen einer Schnellbuchung öffnen
     self.openNewForm = function(eintrag) {
-        //self.selectedSchnellbuchung(eintrag); // TODO: auf einen Default-Zustand setzen?
+        self.selectedSchnellbuchung(new hhb.model.types.Schnellbuchung());
         jQuery.mobile.changePage("#schnellbuchung_anlegen");
 
         // jQuery-Mobile Selectboxen neu laden
@@ -95,10 +95,44 @@ hhb.model.types.SchnellbuchungModel = function() {
         $("#sb_habenkonto").selectmenu("refresh", true);
     };
 
+    // Den ausgewählten Eintrag speichern (update)
+    self.speichern = function() {
+        // Update-Funktion fehlt noch
+    };
+
+    // Einen neuen Eintrag anlegen
+    self.anlegen = function() {
+        var selected = self.selectedSchnellbuchung();
+        var selectedJSON = ko.toJSON(selected);
+        doPOST("menu", "add", selectedJSON,
+            function(data) {
+                jQuery.mobile.changePage("#schnellbuchungen_liste");
+                self.load();
+            },
+            function(error) {
+                // TODO: Fehlerausgabe
+            }
+        );
+    };
+
+    // Eintrag aus dem Schnellbuchungsmenü löschen
+    self.loeschen = function() {
+        var id = self.selectedSchnellbuchung().config_id();
+        doGET("menu", "remove", {'id': id},
+            function(data){
+                jQuery.mobile.changePage("#schnellbuchungen_liste");
+                self.load();
+            },
+            function(error) {
+                // TODO: Fehlerausgabe
+            }
+        );
+    };
 
     // Laden der Liste der Schnellbuchungen
     self.load = function() {
         self.schnellbuchungen.removeAll();
+        self.schnellbuchungen_navigation.removeAll();
         doGETwithCache("menu", "quick", [],
             function(data) {
                 for(var i = 0; i < data.length; i++) {
@@ -116,6 +150,9 @@ hhb.model.types.SchnellbuchungModel = function() {
                 }
                 $("#h_navigation").listview();
                 $("#h_navigation").listview('refresh');
+
+                $("#s_liste").listview();
+                $("#s_liste").listview('refresh');
             },
             function(error) {
                 // TODO: Fehlermeldung ausgeben

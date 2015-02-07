@@ -6,7 +6,7 @@
        data-bind="click: $root.schnellbuchungen().openNewForm">Schnellbuchung anlegen</a>
   </div><!-- /header -->
   <div data-role="content">
-    <ul data-role="listview" data-inset="false" data-filter="true">
+    <ul data-role="listview" data-inset="false" data-filter="true" id="s_liste">
       <!-- ko foreach: schnellbuchungen().schnellbuchungen -->
       <li><a data-bind="text: config_knz, click: $root.schnellbuchungen().openForEdit"></a></li>
       <!-- /ko -->
