@@ -71,6 +71,31 @@ hhb.model.types.SchnellbuchungModel = function() {
         $("#b_habenkonto").selectmenu("refresh", true);
     };
 
+    // Zum Bearbeiten öffnen
+    self.openForEdit = function(eintrag) {
+        self.selectedSchnellbuchung(eintrag);
+        jQuery.mobile.changePage("#schnellbuchung_bearbeiten");
+
+        // jQuery-Mobile Selectboxen neu laden
+        $("#sb_sollkonto").selectmenu();
+        $("#sb_habenkonto").selectmenu();
+        $("#sb_sollkonto").selectmenu("refresh", true);
+        $("#sb_habenkonto").selectmenu("refresh", true);
+    };
+
+    // Formular zum neu anlegen einer Schnellbuchung öffnen
+    self.openNewForm = function(eintrag) {
+        //self.selectedSchnellbuchung(eintrag); // TODO: auf einen Default-Zustand setzen?
+        jQuery.mobile.changePage("#schnellbuchung_anlegen");
+
+        // jQuery-Mobile Selectboxen neu laden
+        $("#sb_sollkonto").selectmenu();
+        $("#sb_habenkonto").selectmenu();
+        $("#sb_sollkonto").selectmenu("refresh", true);
+        $("#sb_habenkonto").selectmenu("refresh", true);
+    };
+
+
     // Laden der Liste der Schnellbuchungen
     self.load = function() {
         self.schnellbuchungen.removeAll();

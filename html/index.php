@@ -52,5 +52,6 @@
   <?php include_once("./forms/konten/konten_monatssalden.php"); ?>
   <!-- Masken aus dem Menü "Administration" -->
   <?php include_once("./forms/schnellbuchungen/schnellbuchungen_liste.php"); ?>
+  <?php include_once("./forms/schnellbuchungen/schnellbuchung_form.php"); ?>
 </body>
 </html>
