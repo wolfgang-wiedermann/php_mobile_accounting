@@ -24,7 +24,9 @@
 <html lang="de">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./css/lib/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="./css/lib/haushaltsbuch-theme.min.css" />
+    <link rel="stylesheet" href="./css/lib/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="./css/lib/jquery.mobile.structure-1.4.5.min.css" />
     <link rel="stylesheet" href="./css/hhb.css" />
     <!-- Standard-Bibliotheken -->
     <script src="./js/jquery-2.1.3.min.js"></script>
