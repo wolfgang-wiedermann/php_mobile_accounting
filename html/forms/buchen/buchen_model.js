@@ -94,7 +94,7 @@ hhb.model.types.BuchungenModel = function() {
         alert("Buchung erfolgreich angelegt");
       },
       function(error) {
-        alert("Fehler beim Anlegen der Buchung aufgetreten: "+JSON.stringify(error));
+        util.showErrorMessage(error, "Fehler beim Anlegen der Buchung aufgetreten: ");
       }
     );
   };
@@ -110,6 +110,7 @@ hhb.model.types.BuchungenModel = function() {
         }
       }, 
       function(error) {
+        util.showErrorMessage(error, "Fehler beim Laden der Buchungen");
       }
     ); 
   };

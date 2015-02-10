@@ -105,7 +105,7 @@ hhb.model.types.SchnellbuchungModel = function() {
                 self.load();
             },
             function(error) {
-                // TODO: Fehlerausgabe
+                util.showErrorMessage(error, "Fehler beim Speichern der Schnellbuchung aufgetreten");
             }
         );
     };
@@ -120,7 +120,7 @@ hhb.model.types.SchnellbuchungModel = function() {
                 self.load();
             },
             function(error) {
-                // TODO: Fehlerausgabe
+                util.showErrorMessage(error, "Fehler beim Anlegen der Schnellbuchung aufgetreten");
             }
         );
     };
@@ -134,7 +134,7 @@ hhb.model.types.SchnellbuchungModel = function() {
                 self.load();
             },
             function(error) {
-                // TODO: Fehlerausgabe
+                util.showErrorMessage(error, "Fehler beim Löschen der Schnellbuchung aufgetreten");
             }
         );
     };
@@ -165,7 +165,7 @@ hhb.model.types.SchnellbuchungModel = function() {
                 $("#s_liste").listview('refresh');
             },
             function(error) {
-                // TODO: Fehlermeldung ausgeben
+                util.showErrorMessage(error, "Fehler beim Laden der Schnellbuchungen aufgetreten");
             }
         );
     };

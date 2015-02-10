@@ -14,16 +14,27 @@ util.formatDateAtG = function(dateStringIn) {
                        +dateStringIn.substr(0,4);
 
     return dateStringOut;
-}
+};
+
+// Fehlermeldung ausgeben
+util.showErrorMessage = function(error, message) {
+    if(!!message) {
+        alert(message+": "+error.status+" "+error.statusText);
+    } else {
+        alert('Fehler aufgetreten: '+error.status+" "+error.statusText);
+    }
+    //console.log(error);
+    //console.log(JSON.stringify(error));
+};
 
 // Ersetzt < mit &lt; und > mit &gt;
 util.escapeGtLt = function(string) {
     var result = string.replace("<", "&lt;");
     result = result.replace(">", "&gt;");
     return result;
-}
+};
 
 // Ermittelt, ob der aktuelle Browser auf iOS läuft
 util.isiOS = function() {
     return ( navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false )
-}
+};

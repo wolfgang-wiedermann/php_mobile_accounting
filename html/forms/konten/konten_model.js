@@ -87,10 +87,9 @@ hhb.model.types.KontenModel = function() {
         $(".konten_liste").listview();
         $(".konten_liste").listview("refresh");
       },
-      function(error) {
-        console.log(error);
-        alert("Fehler aufgetreten, details siehe Log");
-      }
+        function(error) {
+          util.showErrorMessage(error, "Fehler beim Laden der Konten aufgetreten");
+        }
     ); 
   };
 
@@ -120,7 +119,7 @@ hhb.model.types.KontenModel = function() {
           jQuery.mobile.changePage("#konto_buchungen");
         },
         function(error) {
-          // TODO: Fehlermeldung ausgeben!
+          util.showErrorMessage(error, "Fehler beim Laden der Buchungen des Kontos aufgetreten");
         }
     );
   };
@@ -141,7 +140,7 @@ hhb.model.types.KontenModel = function() {
           jQuery.mobile.changePage("#konto_monatssalden");
         },
         function(error) {
-          // TODO: Fehlermeldung ausgeben!
+          util.showErrorMessage(error, "Fehler beim Laden der Monatssalden aufgetreten");
         }
     );
   };
@@ -154,9 +153,7 @@ hhb.model.types.KontenModel = function() {
           alert('Das Konto wurde angelegt');
         },
         function(error) {
-          // TODO: Fehlerbehandlung noch verallgemeinern
-          console.log(error);
-          alert("Es ist ein Fehler beim Anlegen des Kontos aufgetreten");
+          util.showErrorMessage(error, "Fehler beim Anlegen des Kontos aufgetreten");
         }
     );
   };
@@ -169,9 +166,7 @@ hhb.model.types.KontenModel = function() {
           alert('Die Änderungen wurden gespeichert');
         },
         function(error) {
-          // TODO: Fehlerbehandlung noch verallgemeinern
-          console.log(error);
-          alert("Es ist ein Fehler beim Speichern des Kontos aufgetreten");
+          util.showErrorMessage(error, "Fehler beim Speichern des Kontos aufgetreten");
         }
     );
   };
