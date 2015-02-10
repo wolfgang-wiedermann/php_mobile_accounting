@@ -70,7 +70,7 @@ hhb.model.types.NavigationModel = function() {
 
   self.basisfunktionen.push(new hhb.model.types.NavigationEntry({
     label:'Auswertungen',
-    target:'#auswertungen_menue',
+    target:'#ergebnis_menue',
     callback: function(data) {
       console.log(data.label());
       jQuery.mobile.changePage(data.target());

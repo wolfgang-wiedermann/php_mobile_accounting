@@ -1,4 +1,4 @@
-<?php 
+// -- <?php
 /*
  * Copyright (c) 2015 by Wolfgang Wiedermann
  *
@@ -17,18 +17,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
  * USA
  */
-?>
-<?php
-// Content-Type auf application/javascript setzen
-header('Content-Type: application/javascript');
-// Laden und zusammenfassen aller Javascript-Code-Dateien aus den Formularen
-include_once("../forms/navigation/navigation_model.js");
-include_once("../forms/schnellbuchungen/schnellbuchungen_model.js");
-include_once("../forms/konten/kontenarten_model.js");
-include_once("../forms/konten/konten_model.js");
-include_once("../forms/buchen/buchen_model.js");
-include_once("../forms/ergebnis/ergebnis_model.js");
+//?>
 
-// MainModel importieren
-include_once("./main_model.js");
-?>
+var hhb = hhb || {};
+hhb.model = hhb.model || {};
+hhb.model.types = hhb.model.types || {};
+
+// Eintrag der Ergebnisrechnungen Bilanz, GuV und GuV-Monat
+hhb.model.types.ErgebnisRechnungEintrag = function(data) {
+    var self = this;
+
+    self.kontonummer = ko.observable("");
+    self.bezeichnung = ko.observable("");
+    self.betrag = ko.observable("0,00");
+};
+
+// Model für Ergebnisrechnungen
+hhb.model.types.ErgebnisModel = function() {
+    var self = this;
+
+    self.titel = ko.observable("Ergebnisrechnung");
+    self.rechnung = ko.observableArray([]);
+    self.rechnung.push(new hhb.model.types.ErgebnisRechnungEintrag());
+
+    // Funktionen zum Laden der Daten ...
+};
