@@ -4,15 +4,23 @@
     <h1 data-bind="text: ergebnis().titel"></h1>
   </div><!-- /header -->
   <div data-role="content">
-    <b>Monatssalden</b>
-    <table data-bind="foreach: konten().salden">
+    <b data-bind="text: ergebnis().untertitel"></b>
+    <table data-bind="foreach: ergebnis().rechnung">
       <tr>
-        <td data-bind="text: grouping"></td>
-        <td> : </td>
-        <td data-bind="text: saldo" class="td_betrag"></td>
+        <td data-bind="text: kontonummer"></td>
+        <td>&nbsp;&nbsp;</td>
+        <td data-bind="text: bezeichnung"></td>
+        <td>&nbsp;&nbsp;</td>
+        <td data-bind="text: betrag" class="td_betrag"></td>
+      </tr>
+    </table><br/>
+    <table data-bind="foreach: ergebnis().summen">
+      <tr>
+        <td data-bind="text: label"></td>
+        <td>&nbsp;&nbsp;</td>
+        <td data-bind="text: betrag" class="td_betrag"></td>
       </tr>
     </table>
-    <canvas id="konto_monatssalden_grafik" style="width:100%; height:300px;"></canvas>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
     <h4>&copy; 2013-2015 by Wolfgang Wiedermann</h4>

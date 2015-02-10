@@ -30,6 +30,25 @@ hhb.model.types.ErgebnisRechnungEintrag = function(data) {
     self.kontonummer = ko.observable("");
     self.bezeichnung = ko.observable("");
     self.betrag = ko.observable("0,00");
+
+    if(!!data) {
+        self.kontonummer(data.kontonummer);
+        self.bezeichnung(data.bezeichnung);
+        self.betrag(data.betrag);
+    }
+};
+
+// Eintrag in den Summenbereich der Ergebnisrechnungen Bilanz, GuV und GuV-Monat
+hhb.model.types.ErgebnisRechnungSumme = function(data) {
+    var self = this;
+
+    self.label = ko.observable("");
+    self.betrag = ko.observable("0,00");
+
+    if(!!data) {
+        self.label(data.label);
+        self.betrag(data.betrag);
+    }
 };
 
 // Model für Ergebnisrechnungen
@@ -37,8 +56,54 @@ hhb.model.types.ErgebnisModel = function() {
     var self = this;
 
     self.titel = ko.observable("Ergebnisrechnung");
+    self.untertitel = ko.observable("Name der Ergebnisrechnung");
+
     self.rechnung = ko.observableArray([]);
     self.rechnung.push(new hhb.model.types.ErgebnisRechnungEintrag());
 
+    self.summen = ko.observableArray([]);
+    self.summen.push(new hhb.model.types.ErgebnisRechnungSumme());
+
     // Funktionen zum Laden der Daten ...
+    self.bilanz = function() {
+        self.rechnung.removeAll();
+        self.summen.removeAll();
+
+        self.titel("Bilanz");
+        self.untertitel("Vermögen und Kapital");
+
+        doGETwithCache("ergebnis", "bilanz", [],
+            function (data) {
+                for (var key in data.zeilen) {
+                    var line = data.zeilen[key];
+                    var item = new hhb.model.types.ErgebnisRechnungEintrag();
+
+                    item.kontonummer(line.konto);
+                    item.bezeichnung(line.kontenname);
+                    item.betrag(line.saldo);
+
+                    self.rechnung.push(item);
+                }
+
+                for (var key in data.ergebnisse) {
+                    var line = data.ergebnisse[key];
+                    var bezeichnung = '';
+                    if (line.kontenart_id === '1') bezeichnung = 'Aktiva';
+                    else if (line.kontenart_id === '2') bezeichnung = 'Passiva';
+                    else if (line.kontenart_id === '5') bezeichnung = 'Saldo';
+
+                    var item = new hhb.model.types.ErgebnisRechnungSumme();
+                    item.label(bezeichnung);
+                    item.betrag(line.saldo);
+
+                    self.summen.push(item);
+                }
+
+                jQuery.mobile.changePage('#ergebnis_view');
+            },
+            function (error) {
+                util.showErrorMessage(error, 'Fehler beim Laden der Bilanz aufgetreten');
+            }
+        );
+    };
 };
