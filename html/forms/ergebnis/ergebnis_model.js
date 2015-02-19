@@ -140,7 +140,8 @@ hhb.model.types.ErgebnisModel = function() {
         self.jahr_selection_visible(true);
         self.monat_selection_visible(false);
         self.onchange = self.guvjahr;
-        priv.result("guv", "Gewinn und Verlust", "Aufwand und Ertrag pro Jahr", {'year':self.selected_jahr()});
+        priv.loadErgebnisrechnung("guv", "Gewinn und Verlust", "Aufwand und Ertrag pro Jahr",
+                                  {'year':self.selected_jahr()});
     };
 
     // Funktion zum Laden der Daten der GuV-Rechnung nach Monaten
@@ -148,13 +149,14 @@ hhb.model.types.ErgebnisModel = function() {
         self.jahr_selection_visible(false);
         self.monat_selection_visible(true);
         self.onchange = self.guvmonat;
-        priv.result("guv_month", "Gewinn und Verlust", "Aufwand und Ertrag pro Monat", {'id':self.selected_monat()});
+        priv.loadErgebnisrechnung("guv_month", "Gewinn und Verlust", "Aufwand und Ertrag pro Monat",
+                                  {'id':self.selected_monat()});
     };
 
 
 
     // Allgemeine Funktion zum Laden von Bilanz und GuV-Rechnungen
-    priv.result = function(action, titel, untertitel, parameters) {
+    priv.loadErgebnisrechnung = function(action, titel, untertitel, parameters) {
         var parameters = parameters || [];
 
         self.rechnung.removeAll();
