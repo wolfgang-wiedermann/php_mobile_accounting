@@ -132,7 +132,7 @@ hhb.model.types.ErgebnisModel = function() {
     self.bilanz = function() {
         self.jahr_selection_visible(false);
         self.monat_selection_visible(false);
-        priv.result("bilanz", "Bilanz", "Vermögen und Kapital", []);
+        priv.loadErgebnisrechnung("bilanz", "Bilanz", "Vermögen und Kapital", []);
     };
 
     // Funktion zum Laden der Daten der GuV-Rechnung nach Jahren
