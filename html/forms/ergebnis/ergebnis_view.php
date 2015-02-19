@@ -4,6 +4,16 @@
     <h1 data-bind="text: ergebnis().titel"></h1>
   </div><!-- /header -->
   <div data-role="content">
+    <div id="monat_selection_view" data-bind="visible: ergebnis().monat_selection_visible">
+      <select data-bind="value: ergebnis().selected_monat, options: ergebnis().monate,
+                         optionsText: 'monat', optionsValue: 'monat', event:{'change': ergebnis().onchange}">
+      </select>
+    </div>
+    <div id="jahr_selection_view" data-bind="visible: ergebnis().jahr_selection_visible">
+      <select data-bind="value: ergebnis().selected_jahr, options: ergebnis().jahre,
+                         optionsText: 'jahr', optionsValue: 'jahr', event:{'change': ergebnis().onchange}">
+      </select>
+    </div>
     <b data-bind="text: ergebnis().untertitel"></b>
     <table data-bind="foreach: ergebnis().rechnung">
       <tr>

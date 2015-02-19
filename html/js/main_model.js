@@ -38,6 +38,8 @@ hhb.model.types.MainModel = function() {
   self.konten = ko.observable(new hhb.model.types.KontenModel());
   self.schnellbuchungen = ko.observable(new hhb.model.types.SchnellbuchungModel());
   self.ergebnis = ko.observable(new hhb.model.types.ErgebnisModel());
+
+  self.ergebnis().initialize();
 };
 
 /*

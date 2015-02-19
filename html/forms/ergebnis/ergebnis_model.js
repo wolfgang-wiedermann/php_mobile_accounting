@@ -54,9 +54,17 @@ hhb.model.types.ErgebnisRechnungSumme = function(data) {
 // Model für Ergebnisrechnungen
 hhb.model.types.ErgebnisModel = function() {
     var self = this;
+    var priv = {};
 
     self.titel = ko.observable("Ergebnisrechnung");
     self.untertitel = ko.observable("Name der Ergebnisrechnung");
+    self.selected_monat = ko.observable('201502');
+    self.selected_jahr = ko.observable('2015');
+    self.monat_selection_visible = ko.observable(false);
+    self.jahr_selection_visible = ko.observable(false);
+
+    self.jahre = ko.observableArray([]);
+    self.monate = ko.observableArray([]);
 
     self.rechnung = ko.observableArray([]);
     self.rechnung.push(new hhb.model.types.ErgebnisRechnungEintrag());
@@ -64,15 +72,98 @@ hhb.model.types.ErgebnisModel = function() {
     self.summen = ko.observableArray([]);
     self.summen.push(new hhb.model.types.ErgebnisRechnungSumme());
 
-    // Funktionen zum Laden der Daten ...
+    // Liste der auswählbaren Monate aktualisieren
+    self.updateMonate = function(successHandler) {
+        doGETwithCache("ergebnis", "months", [],
+            function(data) {
+                self.monate.removeAll();
+                for(var i = 0; i < data.length; i++) {
+                    if(i+1 === data.length) {
+                        self.monate.push({'monat':data[i], 'selected':true});
+                        self.selected_monat(data[i]);
+                    } else {
+                        self.monate.push({'monat':data[i], 'selected':false});
+                    }
+                }
+
+                if(!!successHandler) {
+                    successHandler();
+                }
+            },
+            function(error) {
+                alert("Fehler aufgetreten: "+JSON.stringify(error));
+            }
+        );
+    };
+
+    // Liste der auswählbaren Jahre aktualisieren
+    self.updateJahre = function(successHandler) {
+        doGETwithCache("ergebnis", "years", [],
+            function(data) {
+                self.jahre.removeAll();
+                for(var i = 0; i < data.length; i++) {
+                    if(i+1 === data.length) {
+                        self.jahre.push({'jahr':data[i], 'selected':true});
+                        self.selected_jahr(data[i]);
+                    } else {
+                        self.jahre.push({'jahr':data[i], 'selected':false});
+                    }
+                }
+
+                if(!!successHandler) {
+                    successHandler();
+                }
+            },
+            function(error) {
+                alert("Fehler aufgetreten: "+JSON.stringify(error));
+            });
+    };
+
+    // Jahre und Monate laden (wird von MainModel aufgerufen!)
+    self.initialize = function() {
+        self.updateMonate();
+        self.updateJahre();
+    };
+
+    // Dummy-Funktion die jeweils durch self.bilanz, self.guvjahr etc. ersetzt wird
+    self.onchange = function() {};
+
+    // Funktionen zum Laden der Daten Bilanz
     self.bilanz = function() {
+        self.jahr_selection_visible(false);
+        self.monat_selection_visible(false);
+        priv.result("bilanz", "Bilanz", "Vermögen und Kapital", []);
+    };
+
+    // Funktion zum Laden der Daten der GuV-Rechnung nach Jahren
+    self.guvjahr = function() {
+        self.jahr_selection_visible(true);
+        self.monat_selection_visible(false);
+        self.onchange = self.guvjahr;
+        priv.result("guv", "Gewinn und Verlust", "Aufwand und Ertrag pro Jahr", {'year':self.selected_jahr()});
+    };
+
+    // Funktion zum Laden der Daten der GuV-Rechnung nach Monaten
+    self.guvmonat = function() {
+        self.jahr_selection_visible(false);
+        self.monat_selection_visible(true);
+        self.onchange = self.guvmonat;
+        priv.result("guv_month", "Gewinn und Verlust", "Aufwand und Ertrag pro Monat", {'id':self.selected_monat()});
+    };
+
+
+
+    // Allgemeine Funktion zum Laden von Bilanz und GuV-Rechnungen
+    priv.result = function(action, titel, untertitel, parameters) {
+        var parameters = parameters || [];
+
         self.rechnung.removeAll();
         self.summen.removeAll();
 
-        self.titel("Bilanz");
-        self.untertitel("Vermögen und Kapital");
+        self.titel(titel);
+        self.untertitel(untertitel);
 
-        doGETwithCache("ergebnis", "bilanz", [],
+        doGETwithCache("ergebnis", action, parameters,
             function (data) {
                 for (var key in data.zeilen) {
                     var line = data.zeilen[key];
@@ -90,6 +181,8 @@ hhb.model.types.ErgebnisModel = function() {
                     var bezeichnung = '';
                     if (line.kontenart_id === '1') bezeichnung = 'Aktiva';
                     else if (line.kontenart_id === '2') bezeichnung = 'Passiva';
+                    else if (line.kontenart_id === '3') bezeichnung = 'Aufwand';
+                    else if (line.kontenart_id === '4') bezeichnung = 'Ertrag';
                     else if (line.kontenart_id === '5') bezeichnung = 'Saldo';
 
                     var item = new hhb.model.types.ErgebnisRechnungSumme();
@@ -102,7 +195,7 @@ hhb.model.types.ErgebnisModel = function() {
                 jQuery.mobile.changePage('#ergebnis_view');
             },
             function (error) {
-                util.showErrorMessage(error, 'Fehler beim Laden der Bilanz aufgetreten');
+                util.showErrorMessage(error, 'Fehler beim Laden der '+titel+' aufgetreten');
             }
         );
     };
