@@ -38,6 +38,25 @@ hhb.model.types.ErgebnisRechnungEintrag = function(data) {
     }
 };
 
+// Eintrag für die GuV-Prognose-Rechnung
+hhb.model.types.PrognoseRechnungEintrag = function(data) {
+    var self = this;
+
+    self.kontonummer = ko.observable("");
+    self.bezeichnung = ko.observable("");
+    self.betrag_vormonat = ko.observable(0);
+    self.betrag_aktuell = ko.observable(0);
+    self.differenz = ko.observable(0);
+
+    if(!!data) {
+        self.kontonummer(data.kontonummer);
+        self.bezeichnung(data.bezeichnung);
+        self.betrag_vormonat(data.betrag_vormonat);
+        self.betrag_aktuell(data.betrag_aktuell);
+        self.differenz(data.differenz);
+    }
+};
+
 // Eintrag in den Summenbereich der Ergebnisrechnungen Bilanz, GuV und GuV-Monat
 hhb.model.types.ErgebnisRechnungSumme = function(data) {
     var self = this;
@@ -48,6 +67,21 @@ hhb.model.types.ErgebnisRechnungSumme = function(data) {
     if(!!data) {
         self.label(data.label);
         self.betrag(data.betrag);
+    }
+};
+
+// Eintrag in den Summenbereich der GuV-Prognose-Rechnung
+hhb.model.types.PrognoseRechnungSumme = function(data) {
+    var self = this;
+
+    self.bezeichnung = ko.observable("");
+    self.monat = ko.observable("201501");
+    self.summe = ko.observable(0);
+
+    if(!!data) {
+        self.bezeichnung(data.bezeichnung);
+        self.monat(data.monat);
+        self.summe(data.saldo);
     }
 };
 
@@ -71,6 +105,12 @@ hhb.model.types.ErgebnisModel = function() {
 
     self.summen = ko.observableArray([]);
     self.summen.push(new hhb.model.types.ErgebnisRechnungSumme());
+
+    self.prognose = ko.observableArray([]);
+    self.prognose.push(new hhb.model.types.PrognoseRechnungEintrag());
+
+    self.prognose_summen = ko.observableArray([]);
+    self.prognose_summen.push(new hhb.model.types.PrognoseRechnungSumme());
 
     // Liste der auswÃ¤hlbaren Monate aktualisieren
     self.updateMonate = function(successHandler) {
@@ -153,7 +193,13 @@ hhb.model.types.ErgebnisModel = function() {
                                   {'id':self.selected_monat()});
     };
 
-
+    // Funktion zum Laden der Prognoserechnung
+    self.guvprognose = function() {
+        self.jahr_selection_visible(false);
+        self.monat_selection_visible(true);
+        self.onchange = self.guvprognose;
+        priv.loadPrognoserechnung("guv_prognose", "Gewinn und Verlust", "Monatsvergleich", []);
+    };
 
     // Allgemeine Funktion zum Laden von Bilanz und GuV-Rechnungen
     priv.loadErgebnisrechnung = function(action, titel, untertitel, parameters) {
@@ -195,6 +241,45 @@ hhb.model.types.ErgebnisModel = function() {
                 }
 
                 jQuery.mobile.changePage('#ergebnis_view');
+            },
+            function (error) {
+                util.showErrorMessage(error, 'Fehler beim Laden der '+titel+' aufgetreten');
+            }
+        );
+    };
+
+    // Allgemeine Funktion zum Laden von GuV-Prognoserechnungen
+    priv.loadPrognoserechnung = function(action, titel, untertitel, parameters) {
+        var parameters = parameters || [];
+
+        self.prognose.removeAll();
+        self.prognose_summen.removeAll();
+
+        self.titel(titel);
+        self.untertitel(untertitel);
+
+        doGETwithCache("ergebnis", action, parameters,
+            function (data) {
+                for (var key in data.detail) {
+                    var line = data.detail[key];
+                    var item = new hhb.model.types.PrognoseRechnungEintrag();
+
+                    item.kontonummer(line.kontonummer);
+                    item.bezeichnung(line.bezeichnung);
+                    item.betrag_vormonat(line.betrag_vormonat);
+                    item.betrag_aktuell(line.betrag_aktuell);
+                    item.differenz(line.differenz);
+
+                    self.prognose.push(item);
+                }
+
+                for (var key in data.summen) {
+                    var line = data.summen[key];
+                    var item = new hhb.model.types.PrognoseRechnungSumme(line);
+                    self.prognose_summen.push(item);
+                }
+
+                jQuery.mobile.changePage('#prognose_view');
             },
             function (error) {
                 util.showErrorMessage(error, 'Fehler beim Laden der '+titel+' aufgetreten');
