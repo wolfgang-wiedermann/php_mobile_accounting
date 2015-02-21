@@ -59,5 +59,7 @@
   <?php include_once("./forms/ergebnis/ergebnis_view.php"); ?>
   <?php include_once("./forms/ergebnis/ergebnis_menue.php"); ?>
   <?php include_once("./forms/ergebnis/prognose_view.php"); ?>
+  <?php include_once("./forms/verlauf/verlauf_view_einfach.php"); ?>
+  <?php include_once("./forms/verlauf/verlauf_view_mehrfach.php"); ?>
 </body>
 </html>

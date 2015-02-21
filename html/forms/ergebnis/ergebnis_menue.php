@@ -11,12 +11,12 @@
       <li><a data-bind="click: ergebnis().guvmonat" href="#ergebnis_view">GuV (Monat)</a></li>
       <li><a data-bind="click: ergebnis().guvprognose" href="#ergebnis_view">GuV Prognose</a></li>
       <li data-role="list-divider">Verlaufs-Auswertungen</li>
-      <li><a data-bind="click: ergebnis().verlaufaufwand" href="#ergebnis_view">Aufwand (Monate)</a></li>
-      <li><a data-bind="click: ergebnis().verlaufertrag" href="#ergebnis_view">Ertrag (Monate)</a></li>
-      <li><a data-bind="click: ergebnis().verlaufgewinn" href="#ergebnis_view">Gewinn (Monate)</a></li>
-      <li><a data-bind="click: ergebnis().verlaufintern" href="#ergebnis_view">Monatsinterner Verlauf</a></li>
-      <li><a data-bind="click: ergebnis().verlaufzuundabfluss" href="#ergebnis_view">Zu- und Abfluss</a></li>
-      <li><a data-bind="click: ergebnis().verlauffrei" href="#ergebnis_view">Frei kombiniert</a></li>
+      <li><a data-bind="click: verlauf().verlaufaufwand" href="#ergebnis_view">Aufwand (Monate)</a></li>
+      <li><a data-bind="click: verlauf().verlaufertrag" href="#ergebnis_view">Ertrag (Monate)</a></li>
+      <li><a data-bind="click: verlauf().verlaufgewinn" href="#ergebnis_view">Gewinn (Monate)</a></li>
+      <li><a data-bind="click: verlauf().verlaufintern" href="#ergebnis_view">Monatsinterner Verlauf</a></li>
+      <li><a data-bind="click: verlauf().verlaufzuundabfluss" href="#ergebnis_view">Zu- und Abfluss</a></li>
+      <li><a data-bind="click: verlauf().verlauffrei" href="#ergebnis_view">Frei kombiniert</a></li>
       <li data-role="list-divider">Datenexport</li>
       <li><a data-bind="click: ergebnis().exportjournal" href="#ergebnis_view">Journal exportieren</a></li>
       <li><a data-bind="click: ergebnis().exportguvmonat" href="#ergebnis_view">GuV Monate exportieren</a></li>
