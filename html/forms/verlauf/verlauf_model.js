@@ -44,9 +44,10 @@ hhb.model.types.VerlaufEintragMehrfach = function(data) {
     self.betraege = ko.observableArray([0, 0]);
 
     if(!!data) {
-        self.monat(data.monat);
-        self.betraege.push(data.betrag_vormonat);
-        self.betraege.push(data.betrag_aktuell);
+        self.monat(data.tag);
+        self.betraege.removeAll();
+        self.betraege.push(data.vormonat);
+        self.betraege.push(data.aktuell);
     }
 };
 
@@ -55,12 +56,15 @@ hhb.model.types.VerlaufModel = function() {
     var self = this;
 
     self.titel = ko.observable("Verlaufsauswertung");
+    self.selected_monat = ko.observable("000000");
 
     self.verlauf_einfach = ko.observableArray([]);
     self.verlauf_einfach.push(new hhb.model.types.VerlaufEintragEinfach());
 
     self.verlauf_mehrfach = ko.observableArray([]);
     self.verlauf_mehrfach.push(new hhb.model.types.VerlaufEintragMehrfach());
+
+    self.onchange = null;
 
     self.verlaufaufwand = function() {
         self.titel('Verlauf: Aufwand');
@@ -80,6 +84,13 @@ hhb.model.types.VerlaufModel = function() {
         self.loadVerlaufEinfach('ergebnis', 'verlauf_gewinn', {});
     };
 
+    self.verlaufintern = function() {
+        self.titel('Monatsinterne Verlaufsauswertung');
+        self.verlauf_mehrfach.removeAll();
+        self.loadVerlaufMehrfach('verlauf', 'intramonth', {'month_id': self.selected_monat()});
+        self.onchange = self.verlaufintern;
+    };
+
     self.loadVerlaufEinfach = function(controller, action, parameters) {
         doGETwithCache(controller, action, parameters,
             function(data) {
@@ -95,6 +106,31 @@ hhb.model.types.VerlaufModel = function() {
                     d.drawLineDiagramFor(diagramData);
                 }
                 jQuery.mobile.changePage('#verlauf_einfach_view');
+            },
+            function(error) {
+                util.showErrorMessage(error);
+            }
+        );
+    };
+
+    self.loadVerlaufMehrfach = function(controller, action, parameters) {
+        doGETwithCache(controller, action, parameters,
+            function(data) {
+                var diagramData = [];
+                diagramData[0] = [];
+                diagramData[1] = [];
+
+                for(var key in data) {
+                    var line = data[key];
+                    self.verlauf_mehrfach.push(new hhb.model.types.VerlaufEintragMehrfach(line));
+                    diagramData[0].push(line.vormonat);
+                    diagramData[1].push(line.aktuell);
+
+                    d.init("verlauf_mehrfach_grafik");
+                    d.setToWindowWidth();
+                    d.drawMultiLineDiagramFor(diagramData, false);
+                }
+                jQuery.mobile.changePage('#verlauf_mehrfach_view');
             },
             function(error) {
                 util.showErrorMessage(error);
