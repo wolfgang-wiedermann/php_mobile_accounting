@@ -19,6 +19,9 @@ hhb.i4l = {
         betrag:'Betrag',
         buchungsdatum:'Buchungsdatum',
         verbuchen:'verbuchen',
+        successful_created:'Buchung erfolgreich angelegt',
+        error_on_create:'Fehler beim Anlegen der Buchung aufgetreten',
+        error_on_load:'Fehler beim Laden der Buchungen aufgetreten',
     },
     ergebnis:{
         standardauswertungen:'Standard-Auswertungen',

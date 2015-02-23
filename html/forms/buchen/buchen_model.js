@@ -91,10 +91,10 @@ hhb.model.types.BuchungenModel = function() {
     var jsonString = ko.toJSON(self.selectedBuchung);
     doPOSTwithQueue("buchung", "create", jsonString,
       function(data) {
-        alert("Buchung erfolgreich angelegt");
+        alert(hhb.i4l.buchen.successful_created);
       },
       function(error) {
-        util.showErrorMessage(error, "Fehler beim Anlegen der Buchung aufgetreten: ");
+        util.showErrorMessage(error, hhb.i4l.buchen.error_on_create);
       }
     );
   };
@@ -110,7 +110,7 @@ hhb.model.types.BuchungenModel = function() {
         }
       }, 
       function(error) {
-        util.showErrorMessage(error, "Fehler beim Laden der Buchungen");
+        util.showErrorMessage(error, hhb.i4l.buchen.error_on_load);
       }
     ); 
   };
