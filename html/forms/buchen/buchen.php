@@ -1,22 +1,22 @@
 <div data-role="page" id="buchungen_erfassen">
   <div data-role="header" data-position="fixed">
-    <a href="#buchen_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
+    <a href="#buchen_menue" data-role="button" data-icon="home" data-bind="text:i4l.general.back"></a>
     <h1 data-bind="text:i4l.general.buchhaltung"></h1>
   </div><!-- /header -->
   <div data-role="content">
-    <label for="b_buchungstext">Buchungstext</label>
+    <label for="b_buchungstext" data-bind="text:i4l.buchen.buchungstext"></label>
     <input type="text" id="b_buchungstext" data-bind="value: buchen().selectedBuchung().buchungstext">
-    <label for="b_sollkonto">Soll-Konto</label>
+    <label for="b_sollkonto" data-bind="text:i4l.buchen.sollkonto"></label>
     <select id="b_sollkonto" data-bind="value: buchen().selectedBuchung().sollkonto, options: konten().konten, optionsText: 'tostring', optionsValue: 'kontonummer'">
     </select>
-    <label for="b_habenkonto">Haben-Konto</label>
+    <label for="b_habenkonto" data-bind="text:i4l.buchen.habenkonto"></label>
     <select id="b_habenkonto" data-bind="value: buchen().selectedBuchung().habenkonto, options: konten().konten, optionsText: 'tostring', optionsValue: 'kontonummer'">
     </select>
-    <label id="b_betrag">Betrag</label>
+    <label id="b_betrag" data-bind="text:i4l.buchen.betrag"></label>
     <input type="number" step="0.01" id="b_betrag" data-bind="value: buchen().selectedBuchung().betrag">
-    <label id="b_buchungsdatum">Buchungsdatum</label>
+    <label id="b_buchungsdatum" data-bind="text:i4l.buchen.buchungsdatum"></label>
     <input type="date" id="b_buchungsdatum" data-bind="value: buchen().selectedBuchung().datum">
-    <button data-bind="click: buchen().verbuchen">verbuchen</button>
+    <button data-bind="click: buchen().verbuchen, text:i4l.buchen.verbuchen"></button>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
     <h4 data-bind="text:i4l.general.copy"></h4>

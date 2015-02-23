@@ -11,7 +11,15 @@ hhb.i4l = {
         buchhaltung:'Buchhaltung',
         copy:'© 2013-2015 by Wolfgang Wiedermann',
     },
-    buchen:{},
+    buchen:{
+        aktuellste_buchungen:'Aktuellste Buchungen',
+        buchungstext:'Buchungstext',
+        sollkonto:'Soll-Konto',
+        habenkonto:'Haben-Konto',
+        betrag:'Betrag',
+        buchungsdatum:'Buchungsdatum',
+        verbuchen:'verbuchen',
+    },
     ergebnis:{
         standardauswertungen:'Standard-Auswertungen',
         bilanz:'Bilanz',

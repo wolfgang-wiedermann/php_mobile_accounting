@@ -1,10 +1,10 @@
 <div data-role="page" id="aktuellste_buchungen">
   <div data-role="header" data-position="fixed">
-    <a href="#buchen_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
+    <a href="#buchen_menue" data-role="button" data-icon="home" data-bind="text:i4l.general.back"></a>
     <h1 data-bind="text:i4l.general.buchhaltung"></h1>
   </div><!-- /header -->
   <div data-role="content">
-    <h4>Aktuellste Buchungen</h4>
+    <h4 data-bind="text:i4l.buchen.aktuellste_buchungen"></h4>
     <table data-bind="foreach: buchen().buchungen">
       <tr>
         <td data-bind="text:buchungsnummer"></td>
