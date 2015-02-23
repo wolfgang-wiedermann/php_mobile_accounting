@@ -15,6 +15,6 @@
     <canvas id="konto_monatssalden_grafik" style="width:100%; height:300px;"></canvas>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <h4>&copy; 2013-2015 by Wolfgang Wiedermann</h4>
+    <h4 data-bind="text:i4l.general.copy"></h4>
   </div><!-- /footer --> 
 </div><!-- /page -->

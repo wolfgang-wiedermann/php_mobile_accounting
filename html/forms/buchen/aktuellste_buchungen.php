@@ -1,7 +1,7 @@
 <div data-role="page" id="aktuellste_buchungen">
   <div data-role="header" data-position="fixed">
     <a href="#buchen_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
-    <h1>Buchhaltung</h1>
+    <h1 data-bind="text:i4l.general.buchhaltung"></h1>
   </div><!-- /header -->
   <div data-role="content">
     <h4>Aktuellste Buchungen</h4>
@@ -19,6 +19,6 @@
     </table>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <h4>&copy; by Wolfgang Wiedermann</h4>
+    <h4 data-bind="text:i4l.general.copy"></h4>
   </div><!-- /footer --> 
 </div><!-- /page -->

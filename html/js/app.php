@@ -21,6 +21,8 @@
 <?php
 // Content-Type auf application/javascript setzen
 header('Content-Type: application/javascript');
+// Sprachdatei einbetten
+include_once("../i4l/lang-de.js");
 // Laden und zusammenfassen aller Javascript-Code-Dateien aus den Formularen
 include_once("../forms/navigation/navigation_model.js");
 include_once("../forms/schnellbuchungen/schnellbuchungen_model.js");

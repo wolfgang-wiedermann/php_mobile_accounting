@@ -1,7 +1,7 @@
 <div data-role="page" id="buchungen_erfassen">
   <div data-role="header" data-position="fixed">
     <a href="#buchen_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
-    <h1>Buchhaltung</h1>
+    <h1 data-bind="text:i4l.general.buchhaltung"></h1>
   </div><!-- /header -->
   <div data-role="content">
     <label for="b_buchungstext">Buchungstext</label>
@@ -19,6 +19,6 @@
     <button data-bind="click: buchen().verbuchen">verbuchen</button>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <h4>&copy; by Wolfgang Wiedermann</h4>
+    <h4 data-bind="text:i4l.general.copy"></h4>
   </div><!-- /footer --> 
 </div><!-- /page -->

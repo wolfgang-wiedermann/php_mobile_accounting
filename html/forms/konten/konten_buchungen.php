@@ -20,6 +20,6 @@
     </table>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <h4>&copy; by Wolfgang Wiedermann</h4>
+    <h4 data-bind="text:i4l.general.copy"></h4>
   </div><!-- /footer --> 
 </div><!-- /page -->

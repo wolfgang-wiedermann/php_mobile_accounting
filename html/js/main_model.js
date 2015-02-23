@@ -33,6 +33,7 @@ hhb.model.types.MainModel = function() {
   self.kontenarten = ko.observableArray([]);
   hhb.model.types.Kontenart.load(self.kontenarten);
 
+  self.i4l = hhb.i4l;
   self.navigation = ko.observable(new hhb.model.types.NavigationModel());
   self.buchen = ko.observable(new hhb.model.types.BuchungenModel());
   self.konten = ko.observable(new hhb.model.types.KontenModel());

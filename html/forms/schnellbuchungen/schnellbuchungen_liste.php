@@ -1,7 +1,7 @@
 <div data-role="page" id="schnellbuchungen_liste">
   <div data-role="header" data-position="fixed">
     <a href="#hauptmenue" data-role="button" data-icon="home">Zur&uuml;ck</a>
-    <h1>Buchhaltung</h1>
+    <h1 data-bind="text:i4l.general.buchhaltung"></h1>
     <a href="#schnellbuchung_anlegen" data-role="button" data-icon="plus"
        data-bind="click: $root.schnellbuchungen().openNewForm">Schnellbuchung anlegen</a>
   </div><!-- /header -->
@@ -13,6 +13,6 @@
     </ul>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <h4>&copy; 2013-2015 by Wolfgang Wiedermann</h4>
+    <h4 data-bind="text:i4l.general.copy"></h4>
   </div><!-- /footer --> 
 </div><!-- /page -->
