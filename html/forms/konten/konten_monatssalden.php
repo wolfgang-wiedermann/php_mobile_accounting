@@ -1,6 +1,6 @@
 <div data-role="page" id="konto_monatssalden">
   <div data-role="header" data-position="fixed">
-    <a href="#konten_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
+    <a href="#konten_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1>Konto: <span data-bind="text: konten().selectedKonto().kontonummer"></span></h1>
   </div><!-- /header -->
   <div data-role="content">
@@ -15,6 +15,6 @@
     <canvas id="konto_monatssalden_grafik" style="width:100%; height:300px;"></canvas>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <h4 data-bind="text:i4l.general.copy"></h4>
+    <h4 data-bind="text:i18n.general.copy"></h4>
   </div><!-- /footer --> 
 </div><!-- /page -->

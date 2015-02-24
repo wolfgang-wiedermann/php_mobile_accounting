@@ -4,7 +4,7 @@
  */
 
 var hhb = hhb || {};
-hhb.i4l = {
+hhb.i18n = {
     general:{
         back:'Zurück',
         home:'Menü',
@@ -29,8 +29,14 @@ hhb.i4l = {
         guvjahr:'Gewinn und Verlust',
         guvmonat:'GuV (Monat)',
         guvprognose:'GuV Prognose',
+        konto:'Konto',
+        vormonat:'Vormonat',
+        aktuell:'Aktuell',
+        differenz:'Differenz',
     },
-    konten:{},
+    konten:{
+        anlegen:'Konto anlegen',
+    },
     navigation:{
 
     },

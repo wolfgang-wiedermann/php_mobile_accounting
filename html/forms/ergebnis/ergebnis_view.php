@@ -1,6 +1,6 @@
 <div data-role="page" id="ergebnis_view">
   <div data-role="header" data-position="fixed">
-    <a href="#ergebnis_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
+    <a href="#ergebnis_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1 data-bind="text: ergebnis().titel"></h1>
   </div><!-- /header -->
   <div data-role="content">
@@ -33,6 +33,6 @@
     </table>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <h4 data-bind="text:i4l.general.copy"></h4>
+    <h4 data-bind="text:i18n.general.copy"></h4>
   </div><!-- /footer --> 
 </div><!-- /page -->

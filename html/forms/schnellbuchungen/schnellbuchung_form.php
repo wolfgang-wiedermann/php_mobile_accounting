@@ -2,7 +2,7 @@
 <div data-role="page" id="schnellbuchung_anlegen">
   <div data-role="header" data-position="fixed">
     <a href="#schnellbuchungen_liste" data-role="button" data-icon="home">Zur&uuml;ck</a>
-    <h1 data-bind="text:i4l.general.buchhaltung"></h1>
+    <h1 data-bind="text:i18n.general.buchhaltung"></h1>
   </div><!-- /header -->
   <div data-role="content">
     <label for="sb_config_knz">Kurzbezeichnung</label>
@@ -20,7 +20,7 @@
     <button data-bind="click: schnellbuchungen().anlegen">Anlegen</button>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <h4 data-bind="text:i4l.general.copy"></h4>
+    <h4 data-bind="text:i18n.general.copy"></h4>
   </div><!-- /footer --> 
 </div><!-- /page -->
 
@@ -28,7 +28,7 @@
 <div data-role="page" id="schnellbuchung_bearbeiten">
   <div data-role="header" data-position="fixed">
     <a href="#schnellbuchungen_liste" data-role="button" data-icon="home">Zur&uuml;ck</a>
-    <h1 data-bind="text:i4l.general.buchhaltung"></h1>
+    <h1 data-bind="text:i18n.general.buchhaltung"></h1>
   </div><!-- /header -->
   <div data-role="content">
     <label for="sb_config_knz">Kurzbezeichnung</label>
@@ -47,6 +47,6 @@
     <button data-bind="click: schnellbuchungen().loeschen">L&ouml;schen</button>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <h4 data-bind="text:i4l.general.copy"></h4>
+    <h4 data-bind="text:i18n.general.copy"></h4>
   </div><!-- /footer -->
 </div><!-- /page -->

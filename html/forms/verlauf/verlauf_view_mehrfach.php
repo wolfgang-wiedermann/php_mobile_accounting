@@ -31,6 +31,6 @@
         </canvas>
     </div><!-- /content -->
     <div data-role="footer" data-position="fixed">
-        <h4>&copy; 2013-2015 by Wolfgang Wiedermann</h4>
+        <h4 data-bind="text:i18n.general.copy"></h4>
     </div><!-- /footer -->
 </div><!-- /page -->

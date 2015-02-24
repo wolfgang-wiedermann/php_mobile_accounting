@@ -1,18 +1,18 @@
 <div data-role="page" id="prognose_view">
   <div data-role="header" data-position="fixed">
-    <a href="#ergebnis_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
+    <a href="#ergebnis_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1 data-bind="text: ergebnis().titel"></h1>
   </div><!-- /header -->
   <div data-role="content">
     <b data-bind="text: ergebnis().untertitel"></b>
     <table>
       <tr>
-        <td colspan="4">Konto</td>
-        <td>Vormonat</td>
+        <td colspan="4" data-bind="text:i18n.ergebnis.konto"></td>
+        <td data-bind="text:i18n.ergebnis.vormonat">Vormonat</td>
         <td></td>
-        <td>Aktuell</td>
+        <td data-bind="text:i18n.ergebnis.aktuell">Aktuell</td>
         <td></td>
-        <td>Differenz</td>
+        <td data-bind="text:i18n.ergebnis.differenz">Differenz</td>
       </tr>
       <!-- ko foreach: ergebnis().prognose -->
       <tr>
@@ -40,6 +40,6 @@
     </table>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <h4 data-bind="text:i4l.general.copy"></h4>
+    <h4 data-bind="text:i18n.general.copy"></h4>
   </div><!-- /footer --> 
 </div><!-- /page -->

@@ -12,7 +12,7 @@
 <!-- Konto anlegen -->
 <div data-role="page" id="konto_neu">
   <div data-role="header" data-position="fixed">
-    <a href="#konten_liste" data-role="button" data-icon="home">Zur&uuml;ck</a>
+    <a href="#konten_liste" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1>Konto anlegen</h1>
   </div><!-- /header -->
   <div data-role="content">
@@ -20,14 +20,14 @@
     <button data-bind="click: konten().anlegen">Anlegen</button>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <h4 data-bind="text:i4l.general.copy"></h4>
+    <h4 data-bind="text:i18n.general.copy"></h4>
   </div><!-- /footer --> 
 </div><!-- /page -->
 
 <!-- Konto bearbeiten -->
 <div data-role="page" id="konto_bearbeiten">
   <div data-role="header" data-position="fixed">
-    <a href="#konten_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
+    <a href="#konten_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1>Konto bearbeiten</h1>
   </div><!-- /header -->
   <div data-role="content">
@@ -35,6 +35,6 @@
     <button data-bind="click: konten().speichern">Speichern</button>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
-    <h4 data-bind="text:i4l.general.copy"></h4>
+    <h4 data-bind="text:i18n.general.copy"></h4>
   </div><!-- /footer -->
 </div><!-- /page -->

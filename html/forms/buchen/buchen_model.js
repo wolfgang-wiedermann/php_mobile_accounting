@@ -91,10 +91,10 @@ hhb.model.types.BuchungenModel = function() {
     var jsonString = ko.toJSON(self.selectedBuchung);
     doPOSTwithQueue("buchung", "create", jsonString,
       function(data) {
-        alert(hhb.i4l.buchen.successful_created);
+        alert(hhb.i18n.buchen.successful_created);
       },
       function(error) {
-        util.showErrorMessage(error, hhb.i4l.buchen.error_on_create);
+        util.showErrorMessage(error, hhb.i18n.buchen.error_on_create);
       }
     );
   };
@@ -110,7 +110,7 @@ hhb.model.types.BuchungenModel = function() {
         }
       }, 
       function(error) {
-        util.showErrorMessage(error, hhb.i4l.buchen.error_on_load);
+        util.showErrorMessage(error, hhb.i18n.buchen.error_on_load);
       }
     ); 
   };
