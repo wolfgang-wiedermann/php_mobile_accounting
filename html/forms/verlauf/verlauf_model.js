@@ -57,6 +57,7 @@ hhb.model.types.VerlaufModel = function() {
 
     self.titel = ko.observable("Verlaufsauswertung");
     self.selected_monat = ko.observable("000000");
+    self.sollhaben = ko.observable("H");
 
     self.verlauf_einfach = ko.observableArray([]);
     self.verlauf_einfach.push(new hhb.model.types.VerlaufEintragEinfach());
@@ -94,7 +95,16 @@ hhb.model.types.VerlaufModel = function() {
     self.verlaufzuundabfluss = function() {
         self.titel('Zu- und Abfluss');
         jQuery.mobile.changePage('#verlauf_kontenliste');
-        // self.onchange = self.....
+    };
+
+    self.showVerlaufzuundabfluss = function(konto) {
+        self.verlauf_einfach.removeAll();
+        if(self.sollhaben() == 'S') {
+            self.titel('Zufluss: '+konto.kontonummer());
+        } else {
+            self.titel('Abfluss: '+konto.kontonummer());
+        }
+        self.loadVerlaufEinfach('verlauf', 'cashflow', {'id': konto.kontonummer(), 'side': self.sollhaben()});
     };
 
     self.loadVerlaufEinfach = function(controller, action, parameters) {

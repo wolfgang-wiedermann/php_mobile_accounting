@@ -4,10 +4,17 @@
     <h1 data-bind="text:i18n.general.buchhaltung"></h1>
   </div><!-- /header -->
   <div data-role="content">
+    <div>
+        <select data-bind="value: verlauf().sollhaben">
+            <option value="S">Soll-Buchungen</option>
+            <option value="H">Haben-Buchungen</option>
+        </select>
+        <br/>
+    </div>
     <!-- Hier eine Combo-Box einbauen -->
-    <ul data-role="listview" data-inset="false" data-filter="true" class="konten_liste">
+    <ul data-role="listview" data-inset="false" class="konten_liste">
       <!-- ko foreach: konten().aktivkonten -->
-      <li><a data-bind="text: tostring"></a></li>
+      <li><a data-bind="text: tostring, click: $root.verlauf().showVerlaufzuundabfluss"></a></li>
       <!-- /ko -->
     </ul>
   </div><!-- /content -->
