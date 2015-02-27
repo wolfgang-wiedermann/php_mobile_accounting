@@ -12,7 +12,7 @@
               <td data-bind="text:sollkonto"></td>
               <td data-bind="text:habenkonto"></td>
               <td data-bind="text:betrag" class="td_betrag"></td>
-              <td data-bind="text:datum_de"></td>
+              <td data-bind="text:datum_de" style="padding-left: 10pt;"></td>
           </tr>
       </table>
   </div><!-- /content -->
