@@ -114,4 +114,14 @@ hhb.model.types.BuchungenModel = function() {
       }
     ); 
   };
+
+  // Buchungswarteschlange aus dem Local-Storage des Browsers auslesen
+  // und als self.buchungen zur Verfügung stellen
+  self.getWarteschlange = function() {
+      self.buchungen.removeAll();
+      var queue = broker.queue.list("buchung", "create");
+      queue.forEach(function(elem) {
+          self.buchungen.push(new hhb.model.types.BuchungenModel(elem))
+      });
+  };
 }

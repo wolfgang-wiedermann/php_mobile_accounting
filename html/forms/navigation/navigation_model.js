@@ -120,7 +120,7 @@ hhb.model.types.NavigationModel = function() {
 
   self.buchungsmenue.push(new hhb.model.types.NavigationEntry({
     label:'Buchungs-Warteschlange',
-    target:'#queue',
+    target:'#buchungen_warteschlange',
     callback: function(data) {
       // TODO: Code zum laden und öffnen der Warteschlange aufrufen ...
       console.log(data.label());

@@ -6,10 +6,10 @@
 var hhb = hhb || {};
 hhb.i18n = {
     general:{
-        back:'Zurück',
-        home:'Menü',
+        back:'ZurÃ¼ck',
+        home:'MenÃ¼',
         buchhaltung:'Buchhaltung',
-        copy:'© 2013-2015 by Wolfgang Wiedermann',
+        copy:'(c) 2013-2015 by Wolfgang Wiedermann',
     },
     buchen:{
         aktuellste_buchungen:'Aktuellste Buchungen',
@@ -22,6 +22,7 @@ hhb.i18n = {
         successful_created:'Buchung erfolgreich angelegt',
         error_on_create:'Fehler beim Anlegen der Buchung aufgetreten',
         error_on_load:'Fehler beim Laden der Buchungen aufgetreten',
+        warteschlange:'Warteschlange',
     },
     ergebnis:{
         standardauswertungen:'Standard-Auswertungen',

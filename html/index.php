@@ -24,6 +24,7 @@
 <html lang="de">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
     <link rel="stylesheet" href="./css/lib/haushaltsbuch-theme.min.css" />
     <link rel="stylesheet" href="./css/lib/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="./css/lib/jquery.mobile.structure-1.4.5.min.css" />
@@ -46,6 +47,7 @@
   <!-- Masken aus dem Menü "Buchungen" -->
   <?php include_once("./forms/buchen/buchen.php"); ?>
   <?php include_once("./forms/buchen/aktuellste_buchungen.php"); ?>
+  <?php include_once("./forms/buchen/buchen_warteschlange.php"); ?>
   <!-- Masken aus dem Menü "Konten" -->
   <?php include_once("./forms/konten/konten_liste.php"); ?>
   <?php include_once("./forms/konten/konten_menue.php"); ?>
