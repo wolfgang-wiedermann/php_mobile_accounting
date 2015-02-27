@@ -91,6 +91,12 @@ hhb.model.types.VerlaufModel = function() {
         self.onchange = self.verlaufintern;
     };
 
+    self.verlaufzuundabfluss = function() {
+        self.titel('Zu- und Abfluss');
+        jQuery.mobile.changePage('#verlauf_kontenliste');
+        // self.onchange = self.....
+    };
+
     self.loadVerlaufEinfach = function(controller, action, parameters) {
         doGETwithCache(controller, action, parameters,
             function(data) {

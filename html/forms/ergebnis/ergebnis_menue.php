@@ -15,7 +15,7 @@
       <li><a data-bind="click: verlauf().verlaufertrag, text:i18n.verlauf.verlaufertrag" href="#ergebnis_view"></a></li>
       <li><a data-bind="click: verlauf().verlaufgewinn, text:i18n.verlauf.verlaufgewinn" href="#ergebnis_view"></a></li>
       <li><a data-bind="click: verlauf().verlaufintern, text:i18n.verlauf.verlaufintern" href="#ergebnis_view"></a></li>
-      <li><a data-bind="click: verlauf().verlaufzuundabfluss, text:i18n.verlauf.verlaufzuundabfluss" href="#ergebnis_view"></a></li>
+      <li><a data-bind="click: verlauf().verlaufzuundabfluss, text:i18n.verlauf.verlaufzuundabfluss" href="#verlauf_kontenliste"></a></li>
       <li><a data-bind="click: verlauf().verlauffrei, text:i18n.verlauf.verlauffrei" href="#ergebnis_view"></a></li>
       <li data-role="list-divider">Datenexport</li>
       <li><a data-bind="click: ergebnis().exportjournal" href="#ergebnis_view">Journal exportieren</a></li>

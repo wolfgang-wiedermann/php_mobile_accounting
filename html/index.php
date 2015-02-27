@@ -63,5 +63,6 @@
   <?php include_once("./forms/ergebnis/prognose_view.php"); ?>
   <?php include_once("./forms/verlauf/verlauf_view_einfach.php"); ?>
   <?php include_once("./forms/verlauf/verlauf_view_mehrfach.php"); ?>
+  <?php include_once("./forms/verlauf/verlauf_kontenliste.php"); ?>
 </body>
 </html>

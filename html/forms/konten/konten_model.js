@@ -70,6 +70,8 @@ hhb.model.types.KontenModel = function() {
   self.selectedKonto = ko.observable(new hhb.model.types.Konto());
   self.konten = ko.observableArray([]);
   self.konten.push(self.selectedKonto);
+  self.aktivkonten = ko.observableArray([]);
+  self.aktivkonten.push(self.selectedKonto);
   self.buchungen = ko.observableArray([]);
   self.buchungen.push(new hhb.model.types.KontoBuchung());
   self.saldo = ko.observable("");
@@ -79,10 +81,17 @@ hhb.model.types.KontenModel = function() {
   // self.konten mit den auf dem Server vorgehaltenen Konten befüllen
   self.refreshKonten = function() {
     self.konten.removeAll();
+    self.aktivkonten.removeAll();
+
     doGETwithCache("konto", "list", [], 
       function(data) {
         for(var i = 0; i < data.length; i++) {
-          self.konten.push(new hhb.model.types.Konto(data[i]));
+          var konto = new hhb.model.types.Konto(data[i]);
+
+          self.konten.push(konto);
+          if(data[i].kontenart_id == 1) {
+              self.aktivkonten.push(konto);
+          }
         }
         $(".konten_liste").listview();
         $(".konten_liste").listview("refresh");
