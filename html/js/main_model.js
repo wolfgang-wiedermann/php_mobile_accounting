@@ -40,6 +40,7 @@ hhb.model.types.MainModel = function() {
   self.schnellbuchungen = ko.observable(new hhb.model.types.SchnellbuchungModel());
   self.ergebnis = ko.observable(new hhb.model.types.ErgebnisModel());
   self.verlauf = ko.observable(new hhb.model.types.VerlaufModel());
+  self.exporte = ko.observable(new hhb.model.types.ExportModel());
 
   self.ergebnis().initialize();
 };

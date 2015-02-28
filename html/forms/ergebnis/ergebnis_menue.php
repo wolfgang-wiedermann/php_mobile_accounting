@@ -18,8 +18,8 @@
       <li><a data-bind="click: verlauf().verlaufzuundabfluss, text:i18n.verlauf.verlaufzuundabfluss" href="#verlauf_kontenliste"></a></li>
       <li><a data-bind="click: verlauf().verlauffrei, text:i18n.verlauf.verlauffrei" href="#ergebnis_view"></a></li>
       <li data-role="list-divider">Datenexport</li>
-      <li><a data-bind="click: ergebnis().exportjournal" href="#ergebnis_view">Journal exportieren</a></li>
-      <li><a data-bind="click: ergebnis().exportguvmonat" href="#ergebnis_view">GuV Monate exportieren</a></li>
+      <li><a data-bind="click: exporte().export_journal" href="#ergebnis_view">Journal exportieren</a></li>
+      <li><a data-bind="click: exporte().export_guv" href="#ergebnis_view">GuV Monate exportieren</a></li>
     </ul>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
