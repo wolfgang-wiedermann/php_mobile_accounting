@@ -35,7 +35,7 @@ hhb.model.types.Kontenart = function(config) {
         self.kontenart_id(config.kontenart_id);
         self.bezeichnung(config.bezeichnung);
     }
-}
+};
 
 /*
 * Statische Methode zum laden der Kontenarten
@@ -51,4 +51,4 @@ hhb.model.types.Kontenart.load = function(observableArray) {
             util.showErrorMessage(error, "Fehler beim Laden der Kontenarten aufgetreten");
         }
     )
-}
+};

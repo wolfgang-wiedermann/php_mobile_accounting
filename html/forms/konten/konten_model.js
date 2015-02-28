@@ -79,7 +79,7 @@ hhb.model.types.KontenModel = function() {
   self.salden.push(new hhb.model.types.SaldenEintrag());
 
   // self.konten mit den auf dem Server vorgehaltenen Konten befüllen
-  self.refreshKonten = function() {
+  self.refreshKonten = function(successHandler) {
     self.konten.removeAll();
     self.aktivkonten.removeAll();
 
@@ -95,6 +95,10 @@ hhb.model.types.KontenModel = function() {
         }
         $(".konten_liste").listview();
         $(".konten_liste").listview("refresh");
+
+        if(!!successHandler) {
+            successHandler(self);
+        }
       },
         function(error) {
           util.showErrorMessage(error, "Fehler beim Laden der Konten aufgetreten");

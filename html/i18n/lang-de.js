@@ -50,5 +50,6 @@ hhb.i18n = {
         verlaufintern:'Monatsinterner Verlauf',
         verlaufzuundabfluss:'Zu- und Abfluss',
         verlauffrei:'Frei kombiniert',
+        selektionsfehler:'Das ausgewählte Konto ist nicht mit der bestehenden Selektion kompatibel',
     },
 };

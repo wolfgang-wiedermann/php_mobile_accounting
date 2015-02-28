@@ -65,6 +65,9 @@ hhb.model.types.VerlaufModel = function() {
     self.verlauf_mehrfach = ko.observableArray([]);
     self.verlauf_mehrfach.push(new hhb.model.types.VerlaufEintragMehrfach());
 
+    self.konten_selectable = ko.observableArray([]);
+    self.konten_selected = ko.observableArray([]);
+
     self.onchange = null;
 
     self.verlaufaufwand = function() {
@@ -105,6 +108,54 @@ hhb.model.types.VerlaufModel = function() {
             self.titel('Abfluss: '+konto.kontonummer());
         }
         self.loadVerlaufEinfach('verlauf', 'cashflow', {'id': konto.kontonummer(), 'side': self.sollhaben()});
+    };
+
+    self.verlauffrei = function() {
+        self.konten_selected.removeAll();
+        self.konten_selectable.removeAll();
+        hhb.model.MainModel.konten().refreshKonten(function(kontenModel) {
+             for(var i = 0; i < kontenModel.konten().length; i++) {
+                 self.konten_selectable.push(kontenModel.konten()[i]);
+             }
+            jQuery.mobile.changePage("#verlauf_kontenauswahl");
+            $(".konten_liste2").listview();
+            $(".konten_liste2").listview("refresh");
+        });
+    };
+
+    self.verlauffrei_select = function(konto) {
+        if(self.konten_selected().length == 0) {
+            self.konten_selected_type = self.getKontenFamily(konto.kontenart_id());
+        }
+        if(self.konten_selected_type === self.getKontenFamily(konto.kontenart_id())) {
+            self.konten_selected.push(konto);
+            self.konten_selectable.remove(konto);
+            $(".konten_liste2").listview();
+            $(".konten_liste2").listview("refresh");
+        } else {
+            alert(hhb.i18n.verlauf.selektionsfehler);
+        }
+    };
+
+    self.getKontenFamily = function(kontenart_id) {
+        if(kontenart_id === '1' || kontenart_id === '2') {
+            return 1;
+        } else if(kontenart_id === '3' || kontenart_id === '4') {
+            return 2;
+        } else {
+            return 0;
+        }
+    };
+
+    self.verlauffrei_deselect = function(konto) {
+        self.konten_selectable.push(konto);
+        self.konten_selected.remove(konto);
+        $(".konten_liste2").listview();
+        $(".konten_liste2").listview("refresh");
+    };
+
+    self.showVerlauffrei = function() {
+        // TODO: Aufruf!
     };
 
     self.loadVerlaufEinfach = function(controller, action, parameters) {
