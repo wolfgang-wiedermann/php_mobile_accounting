@@ -172,7 +172,7 @@ hhb.model.types.ErgebnisModel = function() {
     self.bilanz = function() {
         self.jahr_selection_visible(false);
         self.monat_selection_visible(false);
-        priv.loadErgebnisrechnung("bilanz", "Bilanz", "Vermögen und Kapital", []);
+        priv.loadErgebnisrechnung("bilanz", hhb.i18n.ergebnis.bilanz, "Vermögen und Kapital", []);
     };
 
     // Funktion zum Laden der Daten der GuV-Rechnung nach Jahren
@@ -180,7 +180,7 @@ hhb.model.types.ErgebnisModel = function() {
         self.jahr_selection_visible(true);
         self.monat_selection_visible(false);
         self.onchange = self.guvjahr;
-        priv.loadErgebnisrechnung("guv", "Gewinn und Verlust", "Aufwand und Ertrag pro Jahr",
+        priv.loadErgebnisrechnung("guv", hhb.i18n.ergebnis.guvjahr, "Aufwand und Ertrag pro Jahr",
                                   {'year':self.selected_jahr()});
     };
 
@@ -189,7 +189,7 @@ hhb.model.types.ErgebnisModel = function() {
         self.jahr_selection_visible(false);
         self.monat_selection_visible(true);
         self.onchange = self.guvmonat;
-        priv.loadErgebnisrechnung("guv_month", "Gewinn und Verlust", "Aufwand und Ertrag pro Monat",
+        priv.loadErgebnisrechnung("guv_month", hhb.i18n.ergebnis.guvjahr, "Aufwand und Ertrag pro Monat",
                                   {'id':self.selected_monat()});
     };
 
@@ -227,11 +227,11 @@ hhb.model.types.ErgebnisModel = function() {
                 for (var key in data.ergebnisse) {
                     var line = data.ergebnisse[key];
                     var bezeichnung = '';
-                    if (line.kontenart_id === '1') bezeichnung = 'Aktiva';
-                    else if (line.kontenart_id === '2') bezeichnung = 'Passiva';
-                    else if (line.kontenart_id === '3') bezeichnung = 'Aufwand';
-                    else if (line.kontenart_id === '4') bezeichnung = 'Ertrag';
-                    else if (line.kontenart_id === '5') bezeichnung = 'Saldo';
+                    if (line.kontenart_id === '1') bezeichnung = hhb.i18n.general.aktiva;
+                    else if (line.kontenart_id === '2') bezeichnung = hhb.i18n.general.passiva;
+                    else if (line.kontenart_id === '3') bezeichnung = hhb.i18n.general.aufwand;
+                    else if (line.kontenart_id === '4') bezeichnung = hhb.i18n.general.ertrag;
+                    else if (line.kontenart_id === '5') bezeichnung = hhb.i18n.general.saldo;
 
                     var item = new hhb.model.types.ErgebnisRechnungSumme();
                     item.label(bezeichnung);

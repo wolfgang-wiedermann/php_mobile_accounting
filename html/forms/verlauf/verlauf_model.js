@@ -103,9 +103,9 @@ hhb.model.types.VerlaufModel = function() {
     self.showVerlaufzuundabfluss = function(konto) {
         self.verlauf_einfach.removeAll();
         if(self.sollhaben() == 'S') {
-            self.titel('Zufluss: '+konto.kontonummer());
+            self.titel(hhb.i18n.verlauf.zufluss+': '+konto.kontonummer());
         } else {
-            self.titel('Abfluss: '+konto.kontonummer());
+            self.titel(hhb.i18n.verlauf.abfluss+': '+konto.kontonummer());
         }
         self.loadVerlaufEinfach('verlauf', 'cashflow', {'id': konto.kontonummer(), 'side': self.sollhaben()});
     };

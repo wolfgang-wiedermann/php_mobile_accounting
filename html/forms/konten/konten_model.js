@@ -101,7 +101,7 @@ hhb.model.types.KontenModel = function() {
         }
       },
         function(error) {
-          util.showErrorMessage(error, "Fehler beim Laden der Konten aufgetreten");
+          util.showErrorMessage(error, hhb.i18n.konten.error_on_load);
         }
     ); 
   };
@@ -132,7 +132,7 @@ hhb.model.types.KontenModel = function() {
           jQuery.mobile.changePage("#konto_buchungen");
         },
         function(error) {
-          util.showErrorMessage(error, "Fehler beim Laden der Buchungen des Kontos aufgetreten");
+          util.showErrorMessage(error, hhb.i18n.konten.error_on_load_entries);
         }
     );
   };
@@ -153,7 +153,7 @@ hhb.model.types.KontenModel = function() {
           jQuery.mobile.changePage("#konto_monatssalden");
         },
         function(error) {
-          util.showErrorMessage(error, "Fehler beim Laden der Monatssalden aufgetreten");
+          util.showErrorMessage(error, hhb.i18n.konten.error_on_load_saldo);
         }
     );
   };
@@ -166,7 +166,7 @@ hhb.model.types.KontenModel = function() {
           alert('Das Konto wurde angelegt');
         },
         function(error) {
-          util.showErrorMessage(error, "Fehler beim Anlegen des Kontos aufgetreten");
+          util.showErrorMessage(error, hhb.i18n.konten.error_on_create);
         }
     );
   };
@@ -179,7 +179,7 @@ hhb.model.types.KontenModel = function() {
           alert('Die Änderungen wurden gespeichert');
         },
         function(error) {
-          util.showErrorMessage(error, "Fehler beim Speichern des Kontos aufgetreten");
+          util.showErrorMessage(error, hhb.i18n.konten.error_on_update);
         }
     );
   };

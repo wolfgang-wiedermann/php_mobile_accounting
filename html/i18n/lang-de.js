@@ -10,6 +10,11 @@ hhb.i18n = {
         home:'Menü',
         buchhaltung:'Buchhaltung',
         copy:'(c) 2013-2015 by Wolfgang Wiedermann',
+        aktiva:'Aktiva',
+        passiva:'Passiva',
+        aufwand:'Aufwand',
+        ertrag:'Ertrag',
+        saldo:'Saldo',
     },
     buchen:{
         aktuellste_buchungen:'Aktuellste Buchungen',
@@ -37,6 +42,11 @@ hhb.i18n = {
     },
     konten:{
         anlegen:'Konto anlegen',
+        error_on_load:'Fehler beim Laden der Konten aufgetreten',
+        error_on_load_entries:'Fehler beim Laden der Buchungen des Kontos aufgetreten',
+        error_on_load_saldo:'Fehler beim Laden der Monatssalden aufgetreten',
+        error_on_create:'Fehler beim Anlegen des Kontos aufgetreten',
+        error_on_update:'Fehler beim Speichern des Kontos aufgetreten',
     },
     navigation:{
 
@@ -57,5 +67,7 @@ hhb.i18n = {
         verlaufgewinn_title:'Verlauf: Gewinn',
         verlaufertrag_title:'Verlauf: Ertrag',
         verlaufaufwand_title:'Verlauf: Aufwand',
+        zufluss:'Zufluss',
+        abfluss:'Abfluss'
     },
 };
