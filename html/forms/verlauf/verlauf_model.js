@@ -55,7 +55,7 @@ hhb.model.types.VerlaufEintragMehrfach = function(data) {
 hhb.model.types.VerlaufModel = function() {
     var self = this;
 
-    self.titel = ko.observable("Verlaufsauswertung");
+    self.titel = ko.observable(hhb.i18n.verlauf.verlaufsauswertung);
     self.selected_monat = ko.observable("000000");
     self.sollhaben = ko.observable("H");
 
@@ -71,32 +71,32 @@ hhb.model.types.VerlaufModel = function() {
     self.onchange = null;
 
     self.verlaufaufwand = function() {
-        self.titel('Verlauf: Aufwand');
+        self.titel(hhb.i18n.verlauf.verlaufaufwand_title);
         self.verlauf_einfach.removeAll();
         self.loadVerlaufEinfach('ergebnis', 'verlauf', {'id': 3});
     };
 
     self.verlaufertrag = function() {
-        self.titel('Verlauf: Ertrag');
+        self.titel(hhb.i18n.verlauf.verlaufertrag_title);
         self.verlauf_einfach.removeAll();
         self.loadVerlaufEinfach('ergebnis', 'verlauf', {'id': 4});
     };
 
     self.verlaufgewinn = function() {
-        self.titel('Verlauf: Gewinn');
+        self.titel(hhb.i18n.verlauf.verlaufgewinn_title);
         self.verlauf_einfach.removeAll();
         self.loadVerlaufEinfach('ergebnis', 'verlauf_gewinn', {});
     };
 
     self.verlaufintern = function() {
-        self.titel('Monatsinterne Verlaufsauswertung');
+        self.titel(hhb.i18n.verlauf.monatsinternerverlauf_title);
         self.verlauf_mehrfach.removeAll();
         self.loadVerlaufMehrfach('verlauf', 'intramonth', {'month_id': self.selected_monat()});
         self.onchange = self.verlaufintern;
     };
 
     self.verlaufzuundabfluss = function() {
-        self.titel('Zu- und Abfluss');
+        self.titel(hhb.i18n.verlauf.zuundabfluss_title);
         jQuery.mobile.changePage('#verlauf_kontenliste');
     };
 

@@ -44,6 +44,7 @@ hhb.i18n = {
     schnellbuchungen:{},
     verlauf:{
         verlaufsauswertungen:'Verlaufs-Auswertungen',
+        verlaufsauswertung:'Verlaufsauswertung',
         verlaufaufwand:'Aufwand (Monate)',
         verlaufertrag:'Ertrag (Monate)',
         verlaufgewinn:'Gewinn (Monate)',
@@ -51,5 +52,10 @@ hhb.i18n = {
         verlaufzuundabfluss:'Zu- und Abfluss',
         verlauffrei:'Frei kombiniert',
         selektionsfehler:'Das ausgewählte Konto ist nicht mit der bestehenden Selektion kompatibel',
+        monatsinternerverlauf_title:'Monatsinterne Verlaufsauswertung',
+        zuundabfluss_title:'Zu- und Abfluss',
+        verlaufgewinn_title:'Verlauf: Gewinn',
+        verlaufertrag_title:'Verlauf: Ertrag',
+        verlaufaufwand_title:'Verlauf: Aufwand',
     },
 };
