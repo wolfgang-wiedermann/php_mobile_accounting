@@ -16,6 +16,8 @@
         <li><a data-bind="text: tostring, click: $root.verlauf().verlauffrei_deselect"></a></li>
         <!-- /ko -->
     </ul>
+    <br/>
+    <button data-bind="click: verlauf().showVerlauffrei">Anzeigen</button>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">
     <h4 data-bind="text:i18n.general.copy"></h4>

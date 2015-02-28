@@ -137,16 +137,6 @@ hhb.model.types.VerlaufModel = function() {
         }
     };
 
-    self.getKontenFamily = function(kontenart_id) {
-        if(kontenart_id === '1' || kontenart_id === '2') {
-            return 1;
-        } else if(kontenart_id === '3' || kontenart_id === '4') {
-            return 2;
-        } else {
-            return 0;
-        }
-    };
-
     self.verlauffrei_deselect = function(konto) {
         self.konten_selectable.push(konto);
         self.konten_selected.remove(konto);
@@ -155,7 +145,17 @@ hhb.model.types.VerlaufModel = function() {
     };
 
     self.showVerlauffrei = function() {
-        // TODO: Aufruf!
+        var kontoNumbers = "";
+        var length = self.konten_selected().length;
+        self.verlauf_einfach.removeAll();
+        
+        for(var i = 0; i < length; i++) {
+            kontoNumbers += self.konten_selected()[i].kontonummer();
+            if(i < length-1) {
+                kontoNumbers += ",";
+            }
+        }
+        self.loadVerlaufEinfach('verlauf', 'monatssalden', {'id':kontoNumbers});
     };
 
     self.loadVerlaufEinfach = function(controller, action, parameters) {
@@ -203,5 +203,16 @@ hhb.model.types.VerlaufModel = function() {
                 util.showErrorMessage(error);
             }
         );
+    };
+
+
+    self.getKontenFamily = function(kontenart_id) {
+        if(kontenart_id === '1' || kontenart_id === '2') {
+            return 1;
+        } else if(kontenart_id === '3' || kontenart_id === '4') {
+            return 2;
+        } else {
+            return 0;
+        }
     };
 };
