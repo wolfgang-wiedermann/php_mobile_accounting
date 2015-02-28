@@ -1,0 +1,26 @@
+<html>
+<head>
+<script src="./jquery-2.1.3.min.js"></script>
+<script src="./diagram.js"></script>
+</head>
+<body>
+<h1>Diagramm-Test</h1>
+<script>
+$(document).ready(function() {
+    d.init("dcanvas");
+    d.setToWindowWidth();
+    d.drawMultiLineDiagramFor([[1, 3, 2, 4, 3, 5],[3, 2, 1, 2, 4, 3],[6, 5, 3, 4, 2, 1],[-1, -2, -5, -8, -9, -2]]);
+
+    d.init("dcanvas2");
+    d.setToWindowWidth();
+    d.drawLineDiagramFor([1,3,2,4,3,5]);
+});
+</script>
+<canvas id="dcanvas" width="400" height="400">
+</canvas>
+<br/>
+<br/>
+<canvas id="dcanvas2" width="400" height="400">
+</canvas>
+</body>
+</html>

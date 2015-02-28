@@ -50,7 +50,7 @@ var d = {
         // Farben
         var colors = ['darkblue', 'red', 'orange', 'green', 'yellow', 'white', 'black', 'gray'];
         // Fläche neuzeichnen
-        d.drawRect(0, 0, d.getWidth(), d.getHeight());
+        d.drawRect(0, 0, d.getWidth(), d.getHeight(), min, max, first, scaleFactor);
         d.drawLine(0, d.getHeight()/2, d.getWidth(), d.getHeight()/2);
         // Schrittweise zeichnen
         for(var lineIdx in values) {
@@ -59,7 +59,7 @@ var d = {
             ctx.strokeStyle = colors[lineIdx]; //"hsla(30,80%,60%,4.9)";
             ctx.lineWidth = 0;
             ctx.beginPath();
-            ctx.lineTo(0, d.getHeight()/2);
+            ctx.moveTo(0, d.getHeight()/2);
             ctx.lineWidth = 1;
             for(var idx in values[lineIdx]) {
                 var val = (values[lineIdx][idx] - first) * scaleFactor;
@@ -85,15 +85,16 @@ var d = {
         var scaleFactor = ((d.getHeight()-20) / 2) / absMax;
         var currentStep = 5;
         // Fläche neuzeichnen
-        d.drawRect(0, 0, d.getWidth(), d.getHeight());
+        d.drawRect(0, 0, d.getWidth(), d.getHeight(), min, max, first, scaleFactor);
         d.drawLine(0, d.getHeight()/2, d.getWidth(), d.getHeight()/2);
+
         // Schrittweise zeichnen
         var ctx = d.context;
         ctx.fillStyle = "darkblue"; //"hsla(30,80%,60%,4.9)";
         ctx.strokeStyle = "darkblue"; //"hsla(30,80%,60%,4.9)";
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.lineTo(0, d.getHeight()/2);
+        ctx.moveTo(0, d.getHeight()/2);
         for(var idx in values) {
             var val = (values[idx] - first) * scaleFactor;
             ctx.lineTo(currentStep, (d.getHeight()/2) - val);
@@ -173,17 +174,17 @@ var d = {
         } else {
             return value *-1;
         }
-    },
+    }
     },
     // End-Utilities
 
     // Hellblaues Rechteck zeichnen (fuer Hintergrund)
-    drawRect: function(x1, y1, x2, y2) {
+    drawRect: function(x1, y1, x2, y2, min, max, middle, scaleFactor) {
         if(!!d.context) {
-            d.context.fillStyle = "lightblue";
+            d.context.fillStyle = "#dddddd";
             d.context.lineStyle = 3;
             d.context.lineWidth = 0.5;
-            d.context.fillRect(x1, y1, x2 - x1, y2 - y1); 
+            d.context.fillRect(x1, y1, x2 - x1, y2 - y1);
         } else {
             alert('Fehler: d ist nicht initialisiert');
         }
@@ -193,7 +194,8 @@ var d = {
     drawLine: function(x1, y1, x2, y2) {
         if(!!d.context) {
             var ctx = d.context;
-            ctx.strokeStyle = "hsla(30,80%,60%,0.9)";
+            //ctx.strokeStyle = "hsla(30,80%,60%,0.9)";
+            ctx.strokeStyle = "#666666";
             ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.lineTo(x1, y1);
