@@ -39,6 +39,7 @@
     <script src="./js/util.js"></script>
     <script src="./js/diagram.js"></script>
     <script src="./js/app.php"></script>
+    <script src="./js/update_app.js"></script>
 </head>
 <body>
   <!-- Menüs -->
@@ -65,5 +66,9 @@
   <?php include_once("./forms/verlauf/verlauf_view_mehrfach.php"); ?>
   <?php include_once("./forms/verlauf/verlauf_kontenliste.php"); ?>
   <?php include_once("./forms/verlauf/verlauf_kontenauswahl.php"); ?>
+  <!-- Update-Handling -->
+  <script type="text/javascript">
+      de.ww.updater.handlers.onUpdateReady(function() { alert('Die Buchhaltung wurde auf eine neue Version aktualisiert'); });
+  </script>
 </body>
 </html>
