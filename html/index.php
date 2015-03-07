@@ -20,8 +20,8 @@
 ?>
 <?php define("MAIN_PAGE", 1); ?>
 <!DOCTYPE html>
-<!--<html lang="de" manifest="manifest.php"> -->
-<html lang="de">
+<html lang="de" manifest="manifest.php">
+<!-- <html lang="de"> -->
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
