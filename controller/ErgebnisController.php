@@ -58,9 +58,9 @@ function getBilanz() {
     $result = array();
     $db = getDbConnection();
 
-    $sql =  "select konto, kontenname, saldo from fi_ergebnisrechnungen ";
-    $sql .= "where mandant_id = $this->mandant_id and kontenart_id in (1, 2) ";
-    $sql .= "order by konto";
+    $query = new QueryHandler("bilanz_detail.sql");
+    $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+    $sql = $query->getSql();
     $rs = mysqli_query($db, $sql);
 
     $zeilen = array();
@@ -69,14 +69,11 @@ function getBilanz() {
     }
     $result['zeilen'] = $zeilen;
 
-    $sql = "select kontenart_id, sum(saldo) saldo from fi_ergebnisrechnungen
-        where kontenart_id in (1, 2) and mandant_id = $this->mandant_id
-        group by kontenart_id
-        union 
-        select '5', sum(saldo) saldo from fi_ergebnisrechnungen 
-        where kontenart_id in (1, 2) and mandant_id = $this->mandant_id";
-
+    $query = new QueryHandler("bilanz_summen.sql");
+    $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+    $sql = $query->getSql();
     $rs = mysqli_query($db, $sql);
+
     $ergebnisse = array();
     while($erg = mysqli_fetch_object($rs)) {
         $ergebnisse[] = $erg;

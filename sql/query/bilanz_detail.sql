@@ -1,7 +1,8 @@
-select konten.kontonummer, konten.bezeichnung, 
+select konten.kontonummer as konto,
+  konten.bezeichnung as kontenname,
 case 
-when konten.kontenart_id = 1 then soll.betrag-haben.betrag 
-else haben.betrag - soll.betrag end as betrag 
+when konten.kontenart_id = 1 then coalesce(soll.betrag, 0)-coalesce(haben.betrag, 0)
+else coalesce(haben.betrag, 0)-coalesce(soll.betrag, 0) end as saldo
 from fi_konto as konten 
 left outer join 
 (
