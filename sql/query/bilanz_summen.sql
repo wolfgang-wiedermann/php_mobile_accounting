@@ -23,3 +23,26 @@ left outer join (
     ) as haben
 on ka.kontenart_id = haben.kontenart_id
 where ka.kontenart_id in (1, 2)
+
+UNION
+
+select 5 as kontenart_id, 'Gewinn' as Bezeichnung, soll.betrag - haben.betrag
+from (
+       select b.mandant_id, sum(b.betrag) as betrag
+       from fi_buchungen b
+         inner join fi_konto k
+           on b.mandant_id = k.mandant_id
+              and b.sollkonto = k.kontonummer
+              and k.kontenart_id in (1, 2)
+       group by b.mandant_id
+     ) as soll
+left outer join (
+       select b.mandant_id, k.kontenart_id, sum(b.betrag) as betrag
+       from fi_buchungen b
+         inner join fi_konto k
+           on b.mandant_id = k.mandant_id
+              and b.habenkonto = k.kontonummer
+              and k.kontenart_id in (1, 2)
+       group by b.mandant_id
+     ) as haben
+  on soll.mandant_id = haben.mandant_id
