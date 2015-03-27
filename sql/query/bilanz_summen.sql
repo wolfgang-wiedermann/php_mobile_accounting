@@ -9,6 +9,7 @@ left outer join (
     from fi_buchungen b
     inner join fi_konto k
         on b.mandant_id = k.mandant_id
+        and b.mandant_id = #mandant_id#
         and b.sollkonto = k.kontonummer
     group by b.mandant_id, k.kontenart_id
     ) as soll
@@ -18,6 +19,7 @@ left outer join (
     from fi_buchungen b
     inner join fi_konto k
           on b.mandant_id = k.mandant_id
+          and b.mandant_id = #mandant_id#
           and b.habenkonto = k.kontonummer
     group by b.mandant_id, k.kontenart_id
     ) as haben
@@ -32,6 +34,7 @@ from (
        from fi_buchungen b
          inner join fi_konto k
            on b.mandant_id = k.mandant_id
+              and b.mandant_id = #mandant_id#
               and b.sollkonto = k.kontonummer
               and k.kontenart_id in (1, 2)
        group by b.mandant_id
@@ -41,6 +44,7 @@ left outer join (
        from fi_buchungen b
          inner join fi_konto k
            on b.mandant_id = k.mandant_id
+              and b.mandant_id = #mandant_id#
               and b.habenkonto = k.kontonummer
               and k.kontenart_id in (1, 2)
        group by b.mandant_id
