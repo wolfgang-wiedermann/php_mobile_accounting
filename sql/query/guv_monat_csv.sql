@@ -1,7 +1,14 @@
-select monat_id as monat_id, kontonummer as konto, 
-bezeichnung as kontenname,
-case when kontenart_id = 4 then format(sum(betrag)*-1, 2, 'de_DE')
-     else format(sum(betrag), 2, 'de_DE') end as saldo
+select substr(cast(base_view.monat_id as char(6)), 1, 4) as jahr,
+  base_view.monat_id as monat_id,
+  base_view.kontenart_id,
+  fi_kontenart.bezeichnung as kontenart,
+  substr(base_view.kontonummer, 1, 1) as k1,
+  substr(base_view.kontonummer, 1, 2) as k2,
+  base_view.kontonummer as konto,
+  base_view.bezeichnung as kontenname,
+  case when base_view.kontenart_id = 4
+       then format(sum(base_view.betrag)*-1, 2, 'de_DE')
+       else format(sum(base_view.betrag), 2, 'de_DE') end as saldo
 from (
 
 select (year(b.datum)*100)+month(b.datum) as monat_id, 
@@ -36,4 +43,7 @@ group by (year(b.datum)*100)+month(b.datum), k.kontonummer, k.bezeichnung
 
 ) as base_view
 
-group by monat_id, kontonummer, bezeichnung
+  left outer join fi_kontenart
+  on base_view.kontenart_id = fi_kontenart.kontenart_id
+
+group by base_view.monat_id, base_view.kontonummer, base_view.bezeichnung
