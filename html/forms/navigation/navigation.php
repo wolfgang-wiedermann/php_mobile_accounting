@@ -4,15 +4,15 @@
   </div><!-- /header -->
   <div data-role="content">
     <ul id="h_navigation" data-role="listview" data-inset="false" data-filter="true">
-      <li data-role="list-divider">Basisfunktionen</li>
+      <li data-role="list-divider" data-bind="text:i18n.navigation.basisfunktionen"></li>
       <!-- ko foreach: navigation().basisfunktionen -->
       <li><a data-bind="text: label, click:callback"></a></li>
       <!-- /ko -->
-      <li data-role="list-divider">Administration</li>
+      <li data-role="list-divider" data-bind="text:i18n.navigation.administration"></li>
       <!-- ko foreach: navigation().administration -->
       <li><a data-bind="text: label, click: callback"></a></li>
       <!-- /ko -->
-      <li data-role="list-divider">Schnellbuchungen</li>
+      <li data-role="list-divider" data-bind="text:i18n.navigation.schnellbuchungen"></li>
       <!-- ko foreach: schnellbuchungen().schnellbuchungen_navigation -->
       <li><a data-bind="text:label, click: callback"></a></li>
       <!-- /ko -->

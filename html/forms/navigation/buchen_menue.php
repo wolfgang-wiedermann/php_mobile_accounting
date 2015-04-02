@@ -1,6 +1,6 @@
 <div data-role="page" id="buchen_menue">
   <div data-role="header" data-position="fixed">
-    <a href="#hauptmenue" data-role="button" data-icon="home">Men&uuml;</a>
+    <a href="#hauptmenue" data-role="button" data-icon="home" data-bind="text:i18n.general.home"></a>
     <h1 data-bind="text:i18n.general.buchhaltung"></h1>
   </div><!-- /header -->
   <div data-role="content">

@@ -172,7 +172,7 @@ hhb.model.types.ErgebnisModel = function() {
     self.bilanz = function() {
         self.jahr_selection_visible(false);
         self.monat_selection_visible(false);
-        priv.loadErgebnisrechnung("bilanz", hhb.i18n.ergebnis.bilanz, "Vermögen und Kapital", []);
+        priv.loadErgebnisrechnung("bilanz", hhb.i18n.ergebnis.bilanz, hhb.i18n.ergebnis.vermoegen_und_kapital, []);
     };
 
     // Funktion zum Laden der Daten der GuV-Rechnung nach Jahren
@@ -180,7 +180,7 @@ hhb.model.types.ErgebnisModel = function() {
         self.jahr_selection_visible(true);
         self.monat_selection_visible(false);
         self.onchange = self.guvjahr;
-        priv.loadErgebnisrechnung("guv", hhb.i18n.ergebnis.guvjahr, "Aufwand und Ertrag pro Jahr",
+        priv.loadErgebnisrechnung("guv", hhb.i18n.ergebnis.guvjahr, hhb.i18n.ergebnis.aufwand_ertrag_jahr,
                                   {'year':self.selected_jahr()});
     };
 
@@ -189,7 +189,7 @@ hhb.model.types.ErgebnisModel = function() {
         self.jahr_selection_visible(false);
         self.monat_selection_visible(true);
         self.onchange = self.guvmonat;
-        priv.loadErgebnisrechnung("guv_month", hhb.i18n.ergebnis.guvjahr, "Aufwand und Ertrag pro Monat",
+        priv.loadErgebnisrechnung("guv_month", hhb.i18n.ergebnis.guvjahr, hhb.i18n.ergebnis.aufwand_ertrag_monat,
                                   {'id':self.selected_monat()});
     };
 
@@ -198,7 +198,8 @@ hhb.model.types.ErgebnisModel = function() {
         self.jahr_selection_visible(false);
         self.monat_selection_visible(true);
         self.onchange = self.guvprognose;
-        priv.loadPrognoserechnung("guv_prognose", "Gewinn und Verlust", "Monatsvergleich", []);
+        priv.loadPrognoserechnung("guv_prognose", hhb.i18n.ergebnis.gewinn_verlust,
+                                  hhb.i18n.ergebnis.monatsvergleich, []);
     };
 
     // Allgemeine Funktion zum Laden von Bilanz und GuV-Rechnungen

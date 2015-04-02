@@ -1,6 +1,6 @@
 <div data-role="page" id="verlauf_einfach_view">
     <div data-role="header" data-position="fixed">
-        <a href="#ergebnis_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
+        <a href="#ergebnis_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
         <h1 data-bind="text: verlauf().titel"></h1>
     </div><!-- /header -->
     <div data-role="content">

@@ -1,7 +1,7 @@
 <!-- Formular: Schnellbuchung anlegen -->
 <div data-role="page" id="schnellbuchung_anlegen">
   <div data-role="header" data-position="fixed">
-    <a href="#schnellbuchungen_liste" data-role="button" data-icon="home">Zur&uuml;ck</a>
+    <a href="#schnellbuchungen_liste" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1 data-bind="text:i18n.general.buchhaltung"></h1>
   </div><!-- /header -->
   <div data-role="content">
@@ -27,7 +27,7 @@
 <!-- Formular: Schnellbuchung bearbeiten -->
 <div data-role="page" id="schnellbuchung_bearbeiten">
   <div data-role="header" data-position="fixed">
-    <a href="#schnellbuchungen_liste" data-role="button" data-icon="home">Zur&uuml;ck</a>
+    <a href="#schnellbuchungen_liste" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1 data-bind="text:i18n.general.buchhaltung"></h1>
   </div><!-- /header -->
   <div data-role="content">

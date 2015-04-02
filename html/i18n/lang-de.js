@@ -39,6 +39,11 @@ hhb.i18n = {
         vormonat:'Vormonat',
         aktuell:'Aktuell',
         differenz:'Differenz',
+        vermoegen_und_kapital:'Vermögen und Kapital',
+        aufwand_ertrag_jahr:'Aufwand und Ertrag pro Jahr',
+        aufwand_ertrag_monat:'Aufwand und Ertrag pro Monat',
+        gewinn_verlust:'Gewinn und Verlust',
+        monatsvergleich:'Monatsvergleich',
     },
     konten:{
         anlegen:'Konto anlegen',
@@ -49,9 +54,17 @@ hhb.i18n = {
         error_on_update:'Fehler beim Speichern des Kontos aufgetreten',
     },
     navigation:{
-
+        buchen:'Buchen',
+        konten:'Konten',
+        auswertungen:'Auswertungen',
+        schnellbuchungen:'Schnellbuchungen verwalten',
+        buchung_erfassen:'Buchung erfassen',
+        basisfunktionen:'Basisfunktionen',
+        administration:'Administration',
     },
-    schnellbuchungen:{},
+    schnellbuchungen:{
+        anlegen:'Schnellbuchung anlegen',
+    },
     verlauf:{
         verlaufsauswertungen:'Verlaufs-Auswertungen',
         verlaufsauswertung:'Verlaufsauswertung',
@@ -68,6 +81,9 @@ hhb.i18n = {
         verlaufertrag_title:'Verlauf: Ertrag',
         verlaufaufwand_title:'Verlauf: Aufwand',
         zufluss:'Zufluss',
-        abfluss:'Abfluss'
+        abfluss:'Abfluss',
+        tag:'Day',
+        vormonat:'Previous Month',
+        aktuell:'Current',
     },
 };

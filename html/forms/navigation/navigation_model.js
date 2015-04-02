@@ -50,7 +50,7 @@ hhb.model.types.NavigationModel = function() {
   self.basisfunktionen = ko.observableArray([]);
 
   self.basisfunktionen.push(new hhb.model.types.NavigationEntry({
-    label:'Buchen', 
+    label:hhb.i18n.navigation.buchen, // Buchen
     target:'#buchen_menue',
     callback: function(data) {
       console.log(data.label());
@@ -59,7 +59,7 @@ hhb.model.types.NavigationModel = function() {
   }));
 
   self.basisfunktionen.push(new hhb.model.types.NavigationEntry({
-    label:'Konten',
+    label:hhb.i18n.navigation.konten, // Konten
     target:'#konten_liste',
     callback: function(data) {
       hhb.model.MainModel.konten().refreshKonten();
@@ -69,7 +69,7 @@ hhb.model.types.NavigationModel = function() {
   }));
 
   self.basisfunktionen.push(new hhb.model.types.NavigationEntry({
-    label:'Auswertungen',
+    label:hhb.i18n.navigation.auswertungen, // Auswertungen
     target:'#ergebnis_menue',
     callback: function(data) {
       console.log(data.label());
@@ -81,7 +81,7 @@ hhb.model.types.NavigationModel = function() {
   self.administration = ko.observableArray([]);
 
   self.administration.push(new hhb.model.types.NavigationEntry({
-    label:'Schnellbuchungen verwalten',
+    label:hhb.i18n.navigation.schnellbuchungen, // Schnellbuchungen verwalten
     target:'#schnellbuchungen_liste',
     callback: function(data) {
       console.log(data.label());
@@ -93,7 +93,7 @@ hhb.model.types.NavigationModel = function() {
   self.buchungsmenue = ko.observableArray([]);
 
   self.buchungsmenue.push(new hhb.model.types.NavigationEntry({
-    label:'Buchung erfassen',
+    label:hhb.i18n.navigation.buchung_erfassen, // Buchung erfassen
     target:'#buchungen_erfassen',
     callback: function(data) {
       hhb.model.MainModel.konten().refreshKonten()
@@ -109,7 +109,7 @@ hhb.model.types.NavigationModel = function() {
   }));
 
   self.buchungsmenue.push(new hhb.model.types.NavigationEntry({
-    label:'Aktuellste Buchungen',
+    label:hhb.i18n.buchen.aktuellste_buchungen, // Aktuellste Buchungen
     target:'#aktuellste_buchungen',
     callback: function(data) {
       hhb.model.MainModel.buchen().loadAktuellsteBuchungen();
@@ -119,7 +119,7 @@ hhb.model.types.NavigationModel = function() {
   }));
 
   self.buchungsmenue.push(new hhb.model.types.NavigationEntry({
-    label:'Buchungs-Warteschlange',
+    label:hhb.i18n.buchen.warteschlange, // Buchungs-Warteschlange
     target:'#buchungen_warteschlange',
     callback: function(data) {
       // TODO: Code zum laden und öffnen der Warteschlange aufrufen ...

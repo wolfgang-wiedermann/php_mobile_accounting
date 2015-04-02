@@ -1,9 +1,9 @@
 <div data-role="page" id="schnellbuchungen_liste">
   <div data-role="header" data-position="fixed">
-    <a href="#hauptmenue" data-role="button" data-icon="home">Zur&uuml;ck</a>
+    <a href="#hauptmenue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1 data-bind="text:i18n.general.buchhaltung"></h1>
     <a href="#schnellbuchung_anlegen" data-role="button" data-icon="plus"
-       data-bind="click: $root.schnellbuchungen().openNewForm">Schnellbuchung anlegen</a>
+       data-bind="click: $root.schnellbuchungen().openNewForm, text:i18n.schnellbuchungen.anlegen"></a>
   </div><!-- /header -->
   <div data-role="content">
     <ul data-role="listview" data-inset="false" data-filter="true" id="s_liste">

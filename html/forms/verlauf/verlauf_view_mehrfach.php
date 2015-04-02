@@ -1,6 +1,6 @@
 <div data-role="page" id="verlauf_mehrfach_view">
     <div data-role="header" data-position="fixed">
-        <a href="#ergebnis_menue" data-role="button" data-icon="home">Zur&uuml;ck</a>
+        <a href="#ergebnis_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
         <h1 data-bind="text: verlauf().titel"></h1>
     </div><!-- /header -->
     <div data-role="content">
@@ -11,11 +11,11 @@
         </div>
         <table>
             <tr>
-                <td>Tag</td>
+                <td data-bind="text:i18n.verlauf.tag"></td>
                 <td>&nbsp;&nbsp;</td>
-                <td>Vormonat</td>
+                <td data-bind="text:i18n.verlauf.vormonat"></td>
                 <td>&nbsp;&nbsp;</td>
-                <td>Aktuell</td>
+                <td data-bind="text:i18n.verlauf.aktuell"></td>
             </tr>
             <!-- ko foreach: verlauf().verlauf_mehrfach -->
             <tr>
