@@ -2,11 +2,11 @@
 <html lang="de">
 <head>
 <meta name="viewport" content="width:device-width, initial-scale=1">
-<link rel="stylesheet" href="./html/css/jquery.mobile-1.3.1.css"/>
+<link rel="stylesheet" href="./html/css/lib/jquery.mobile-1.4.5.min.css"/>
 <!-- Standard-Bibliotheken -->
-<script src="./html/js/jquery-2.0.2.min.js"></script>
-<script src="./html/js/jquery.mobile-1.3.1.js"></script>
-<script src="./html/js/knockout-2.2.1.js"></script>
+<script src="./html/js/jquery-2.1.3.min.js"></script>
+<script src="./html/js/jquery.mobile-1.4.5.min.js"></script>
+<script src="./html/js/knockout-3.2.0.js"></script>
 <!-- Installer-spezifische Code-Dateien -->
 <script src="./install/install.js"></script>
 <title>html5-haushaltsbuch Installation</title>
