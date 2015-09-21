@@ -46,7 +46,11 @@ hhb.i18n = {
         monatsvergleich:'Monatsvergleich',
     },
     konten:{
+        konto:'Konto',
         anlegen:'Konto anlegen',
+        monatssalden:'Monatssalden',
+        buchungen_anzeigen:'Buchungen anzeigen',
+        konto_bearbeiten:'Konto bearbeiten',
         error_on_load:'Fehler beim Laden der Konten aufgetreten',
         error_on_load_entries:'Fehler beim Laden der Buchungen des Kontos aufgetreten',
         error_on_load_saldo:'Fehler beim Laden der Monatssalden aufgetreten',

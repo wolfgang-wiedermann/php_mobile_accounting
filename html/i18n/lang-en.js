@@ -46,7 +46,11 @@ hhb.i18n = {
         monatsvergleich:'Month comparison',
     },
     konten:{
+        konto:'Account',
         anlegen:'New Account',
+        monatssalden:'Monthly totals',
+        buchungen_anzeigen:'Show entries',
+        konto_bearbeiten:'Edit account settings',
         error_on_load:'Error loading accounts',
         error_on_load_entries:'Error loading the booking entries of the account',
         error_on_load_saldo:'Error loading the accounts balance',
