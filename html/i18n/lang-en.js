@@ -76,6 +76,9 @@ hhb.i18n = {
         anlegen:'Create Shortcut',
     },
     verlauf:{
+        kontenauswahl:'Account selection',
+        ausgewaehltekonten:'Selected accounts',
+        anzeigen:'Execute report',
         verlaufsauswertungen:'Trend analysis reports',
         verlaufsauswertung:'Trend analysis',
         verlaufaufwand:'Trend of Costs (Months)',
@@ -96,4 +99,9 @@ hhb.i18n = {
         vormonat:'Previous Month',
         aktuell:'Current',
     },
+    export:{
+        datenexport:'Data export functions',
+        journal:'Export Journal',
+        guvmonate:'Export Income and Costs (Months)'
+    }
 };

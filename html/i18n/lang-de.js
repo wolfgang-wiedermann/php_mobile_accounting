@@ -76,6 +76,9 @@ hhb.i18n = {
         anlegen:'Schnellbuchung anlegen',
     },
     verlauf:{
+        kontenauswahl:'Kontenauswahl',
+        ausgewaehltekonten:'Ausgewählte Konten',
+        anzeigen:'Anzeigen',
         verlaufsauswertungen:'Verlaufs-Auswertungen',
         verlaufsauswertung:'Verlaufsauswertung',
         verlaufaufwand:'Aufwand (Monate)',
@@ -92,8 +95,13 @@ hhb.i18n = {
         verlaufaufwand_title:'Verlauf: Aufwand',
         zufluss:'Zufluss',
         abfluss:'Abfluss',
-        tag:'Day',
-        vormonat:'Previous Month',
-        aktuell:'Current',
+        tag:'Tag',
+        vormonat:'Vormonat',
+        aktuell:'Aktueller Monat',
     },
+    export:{
+        datenexport:'Datenexport',
+        journal:'Journal exportieren',
+        guvmonate:'GuV Monate exportieren'
+    }
 };
