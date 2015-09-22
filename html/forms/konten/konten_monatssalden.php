@@ -1,10 +1,10 @@
 <div data-role="page" id="konto_monatssalden">
   <div data-role="header" data-position="fixed">
     <a href="#konten_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
-    <h1>Konto: <span data-bind="text: konten().selectedKonto().kontonummer"></span></h1>
+    <h1><span data-bind="text:i18n.konten.konto"></span>: <span data-bind="text: konten().selectedKonto().kontonummer"></span></h1>
   </div><!-- /header -->
   <div data-role="content">
-    <b>Monatssalden</b>
+    <b data-bind="text:i18n.konten.monatssalden"></b>
     <table data-bind="foreach: konten().salden">
       <tr>
         <td data-bind="text: grouping"></td>
