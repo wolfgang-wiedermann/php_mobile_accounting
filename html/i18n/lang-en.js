@@ -74,6 +74,10 @@ hhb.i18n = {
     },
     schnellbuchungen:{
         anlegen:'Create Shortcut',
+        kurzbezeichnung:'Short description',
+        buchungstext:'Text',
+        loeschen:'Delete',
+        anlegen:'Create'
     },
     verlauf:{
         kontenauswahl:'Account selection',
