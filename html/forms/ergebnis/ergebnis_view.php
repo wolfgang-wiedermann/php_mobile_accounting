@@ -5,9 +5,17 @@
   </div><!-- /header -->
   <div data-role="content">
     <div id="monat_selection_view" data-bind="visible: ergebnis().monat_selection_visible">
-      <select data-bind="value: ergebnis().selected_monat, options: ergebnis().monate,
-                         optionsText: 'monat', optionsValue: 'monat', event:{'change': ergebnis().onchange}">
-      </select>
+      <table width="100%">
+        <tr>
+          <td>
+            <select data-bind="value: ergebnis().selected_monat, options: ergebnis().monate,
+                    optionsText: 'monat', optionsValue: 'monat', event:{'change': ergebnis().onchange}">
+            </select>
+          </td><td width="25px">
+            <button data-bind="click: ergebnis().updateMonate">Refresh</button>
+          </td>
+        </tr>
+      </table>
     </div>
     <div id="jahr_selection_view" data-bind="visible: ergebnis().jahr_selection_visible">
       <select data-bind="value: ergebnis().selected_jahr, options: ergebnis().jahre,

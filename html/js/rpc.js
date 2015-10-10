@@ -24,7 +24,9 @@ function doGET(controller, action, parameters, successHandler, errorHandler) {
         } else {
             broker.setConnected();
         }
-        errorHandler(error);
+        if(error.status >= 299) {
+            errorHandler(error);
+        }
     });
 }
 
@@ -52,7 +54,9 @@ function doPOST(controller, action, parameterObject, successHandler, errorHandle
         } else {
             broker.setConnected();
         }
-        errorHandler(error);
+        if(error.status >= 299) {
+            errorHandler(error);
+        }
     });
 }
 

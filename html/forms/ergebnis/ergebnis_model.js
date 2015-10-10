@@ -126,7 +126,7 @@ hhb.model.types.ErgebnisModel = function() {
                     }
                 }
 
-                if(!!successHandler) {
+                if(!!successHandler && $.isFunction(successHandler)) {
                     successHandler();
                 }
             },
