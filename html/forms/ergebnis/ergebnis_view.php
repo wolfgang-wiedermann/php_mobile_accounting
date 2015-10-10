@@ -12,7 +12,8 @@
                     optionsText: 'monat', optionsValue: 'monat', event:{'change': ergebnis().onchange}">
             </select>
           </td><td width="25px">
-            <button data-bind="click: ergebnis().updateMonate">Refresh</button>
+            <a href="#refresh" data-bind="click: ergebnis().updateMonate"
+               class="ui-btn ui-btn-icon-notext ui-icon-refresh ui-corner-all"></a>
           </td>
         </tr>
       </table>
