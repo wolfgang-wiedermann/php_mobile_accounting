@@ -122,7 +122,7 @@ hhb.model.types.NavigationModel = function() {
     label:hhb.i18n.buchen.warteschlange, // Buchungs-Warteschlange
     target:'#buchungen_warteschlange',
     callback: function(data) {
-      // TODO: Code zum laden und öffnen der Warteschlange aufrufen ...
+      hhb.model.MainModel.buchen().getWarteschlange();
       console.log(data.label());
       jQuery.mobile.changePage(data.target());
     }
