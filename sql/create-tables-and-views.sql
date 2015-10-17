@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `fi_buchungen` (
   `betrag` decimal(10,2) NOT NULL,
   `datum` date NOT NULL,
   `bearbeiter_user_id` integer DEFAULT NULL,
+  `is_offener_posten` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`buchungsnummer`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 

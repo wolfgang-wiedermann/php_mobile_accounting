@@ -39,6 +39,7 @@ hhb.model.types.Buchung = function(config) {
     return util.formatDateAtG(self.datum());
   });
   self.benutzer = ko.observable("");
+  self.is_offener_posten = ko.observable(false);
 
   if(!!config) {
     self.buchungstext(config.buchungstext);
@@ -48,6 +49,12 @@ hhb.model.types.Buchung = function(config) {
     self.betrag(config.betrag);
     self.datum(config.datum);
     self.benutzer(config.benutzer);
+    self.is_offener_posten(!!config.is_offener_posten);
+  }
+
+  self.closePosten = function(p) {
+    hhb.model.MainModel.buchen().closePosten(p.buchungsnummer());
+    console.log("closePosten");
   }
 };
 
@@ -66,6 +73,7 @@ hhb.model.types.KontoBuchung = function(config) {
     return util.formatDateAtG(self.datum());
   });
   self.benutzer = ko.observable("");
+  self.is_offener_posten = ko.observable(0);
 
   if(!!config) {
     self.buchungstext(config.buchungstext);
@@ -74,6 +82,7 @@ hhb.model.types.KontoBuchung = function(config) {
     self.betrag(config.betrag);
     self.datum(config.datum);
     self.benutzer(config.benutzer);
+    self.is_offener_posten(config.is_offener_posten);
   }
 };
 
@@ -118,10 +127,40 @@ hhb.model.types.BuchungenModel = function() {
   // Buchungswarteschlange aus dem Local-Storage des Browsers auslesen
   // und als self.buchungen zur Verfügung stellen
   self.getWarteschlange = function() {
-      self.buchungen.removeAll();
-      var queue = broker.queue.list("buchung", "create");
-      queue.forEach(function(elem) {
-          self.buchungen.push(new hhb.model.types.BuchungenModel(elem))
-      });
+    self.buchungen.removeAll();
+    var queue = broker.queue.list("buchung", "create");
+    queue.forEach(function(elem) {
+        self.buchungen.push(new hhb.model.types.BuchungenModel(elem))
+    });
   };
+
+  // Offene Posten liste laden
+  self.getOffenePosten = function() {
+    self.buchungen.removeAll();
+    doGETwithCache("buchung", "listoffeneposten", [],
+      function(data) {
+        for(var i = 0; i < data.length; i++) {
+          self.buchungen.push(new hhb.model.types.Buchung(data[i]));
+        }
+      },
+      function(error) {
+        util.showErrorMessage(error, hhb.i18n.buchen.error_on_load);
+      }
+    );
+  };
+
+  // Offenen Posten schließen
+  self.closePosten = function(buchungsnummer) {
+    self.buchungen.removeAll();
+    doGETwithCache("buchung", "closeop", {'id':buchungsnummer},
+      function(data) {
+        for(var i = 0; i < data.length; i++) {
+          self.buchungen.push(new hhb.model.types.Buchung(data[i]));
+        }
+      },
+      function(error) {
+        util.showErrorMessage(error, hhb.i18n.buchen.error_on_load);
+      }
+    );
+  }
 }

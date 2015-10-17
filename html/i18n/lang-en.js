@@ -24,6 +24,8 @@ hhb.i18n = {
         betrag:'Amount',
         buchungsdatum:'Date',
         verbuchen:'Save',
+        offene_posten:'Open Items',
+        offenen_posten_schliessen:'Close Item',
         successful_created:'Accounting entry successfully created',
         error_on_create:'Error creating the accounting entry',
         error_on_load:'Error on loading accountring entries',

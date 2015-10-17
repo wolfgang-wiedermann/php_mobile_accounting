@@ -16,6 +16,7 @@
     <input type="number" step="0.01" id="b_betrag" data-bind="value: buchen().selectedBuchung().betrag">
     <label id="b_buchungsdatum" data-bind="text:i18n.buchen.buchungsdatum"></label>
     <input type="date" id="b_buchungsdatum" data-bind="value: buchen().selectedBuchung().datum">
+    <label><input type="checkbox" data-bind="jqmChecked: buchen().selectedBuchung().is_offener_posten"> Offener Posten</label>
     <button data-bind="click: buchen().verbuchen, text:i18n.buchen.verbuchen"></button>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">

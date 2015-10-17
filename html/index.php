@@ -49,6 +49,7 @@
   <?php include_once("./forms/buchen/buchen.php"); ?>
   <?php include_once("./forms/buchen/aktuellste_buchungen.php"); ?>
   <?php include_once("./forms/buchen/buchen_warteschlange.php"); ?>
+  <?php include_once("./forms/buchen/offene_posten.php"); ?>
   <!-- Masken aus dem Menü "Konten" -->
   <?php include_once("./forms/konten/konten_liste.php"); ?>
   <?php include_once("./forms/konten/konten_menue.php"); ?>

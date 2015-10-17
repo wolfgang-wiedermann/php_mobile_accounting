@@ -119,6 +119,16 @@ hhb.model.types.NavigationModel = function() {
   }));
 
   self.buchungsmenue.push(new hhb.model.types.NavigationEntry({
+    label:hhb.i18n.buchen.offene_posten, // Offene Posten
+    target:'#offene_posten',
+    callback: function(data) {
+      hhb.model.MainModel.buchen().getOffenePosten();
+      console.log(data.label());
+      jQuery.mobile.changePage(data.target());
+    }
+  }));
+
+  self.buchungsmenue.push(new hhb.model.types.NavigationEntry({
     label:hhb.i18n.buchen.warteschlange, // Buchungs-Warteschlange
     target:'#buchungen_warteschlange',
     callback: function(data) {

@@ -32,9 +32,13 @@ function invoke($action, $request, $dispatcher) {
         case "create":
             return $this->createBuchung($request);
         case "aktuellste":
-            return $this->getTop25($request);
+            return $this->getTop25();
         case "listbykonto":
             return $this->getListByKonto($request);
+        case "listoffeneposten":
+            return $this->getOpList();
+        case "closeop":
+            return $this->closeOpAndGetList($request);
         default:
             $message = array();
             $message['message'] = "Unbekannte Action";
@@ -48,11 +52,17 @@ function createBuchung($request) {
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
     if($this->isValidBuchung($input)) {
+        if($input['is_offener_posten']) {
+            $temp_op = 1;
+        } else {
+            $temp_op = 0;
+        }
+
         $sql = "insert into fi_buchungen (mandant_id, buchungstext, sollkonto, habenkonto, "
-              ."betrag, datum, bearbeiter_user_id)"
+              ."betrag, datum, bearbeiter_user_id, is_offener_posten)"
               ." values ($this->mandant_id, '".$input['buchungstext']
               ."', '".$input['sollkonto']."', '".$input['habenkonto']."', ".$input['betrag'].", '"
-              .$input['datum']."', ".$this->dispatcher->getUserId().")";
+              .$input['datum']."', ".$this->dispatcher->getUserId().", ".$temp_op.")";
         mysqli_query($db, $sql);
         mysqli_close($db);
 
@@ -65,11 +75,53 @@ function createBuchung($request) {
 }
 
 # liest die aktuellsten 25 Buchungen aus
-function getTop25($request) {
+function getTop25() {
     $db = getDbConnection();
     $top = array();
-    $rs = mysqli_query($db, "select * from fi_buchungen where mandant_id = $this->mandant_id "
-                           ."order by buchungsnummer desc limit 25");
+    $rs = mysqli_query($db, "select * from fi_buchungen "
+        ."where mandant_id = $this->mandant_id "
+        ."order by buchungsnummer desc limit 25");
+
+    while($obj = mysqli_fetch_object($rs)) {
+        $top[] = $obj;
+    }
+
+    mysqli_close($db);
+    return wrap_response($top);
+}
+
+# liest die offenen Posten aus
+function getOpList() {
+    $db = getDbConnection();
+    $top = array();
+    $rs = mysqli_query($db, "select * from fi_buchungen "
+        ."where mandant_id = $this->mandant_id "
+        ."and is_offener_posten = 1 "
+        ."order by buchungsnummer");
+
+    while($obj = mysqli_fetch_object($rs)) {
+        $top[] = $obj;
+    }
+
+    mysqli_close($db);
+    return wrap_response($top);
+}
+
+# liest die offenen Posten aus
+function closeOpAndGetList($request) {
+    $db = getDbConnection();
+    $buchungsnummer = $request['id'];
+    if(is_numeric($buchungsnummer)) {
+        $sql = "update fi_buchungen set is_offener_posten = 0"
+            . " where mandant_id = $this->mandant_id "
+            . " and buchungsnummer = $buchungsnummer";
+        mysqli_query($db, $sql);
+    }
+    $top = array();
+    $rs = mysqli_query($db, "select * from fi_buchungen "
+        ."where mandant_id = $this->mandant_id "
+        ."and is_offener_posten = 1 "
+        ."order by buchungsnummer");
 
     while($obj = mysqli_fetch_object($rs)) {
         $top[] = $obj;
@@ -89,11 +141,11 @@ function getListByKonto($request) {
         $result_list = array(); 
 
         // Buchungen laden
-        $sql =  "SELECT buchungsnummer, buchungstext, habenkonto as gegenkonto, betrag, datum ";
+        $sql =  "SELECT buchungsnummer, buchungstext, habenkonto as gegenkonto, betrag, datum, is_offener_posten ";
         $sql .= "FROM fi_buchungen "; 
         $sql .= "WHERE mandant_id = $this->mandant_id and sollkonto = '$kontonummer' ";
         $sql .= "union ";
-        $sql .= "select buchungsnummer, buchungstext, sollkonto as gegenkonto, betrag*-1 as betrag, datum ";
+        $sql .= "select buchungsnummer, buchungstext, sollkonto as gegenkonto, betrag*-1 as betrag, datum, is_offener_posten ";
         $sql .= "from fi_buchungen ";
         $sql .= "where mandant_id = $this->mandant_id and habenkonto = '$kontonummer' ";
         $sql .= "order by buchungsnummer desc";
@@ -146,16 +198,17 @@ function isValidBuchung($buchung) {
 # gueltigen Felder enthalten ist.
 function isInValidFields($key) {
    switch($key) {
-       case 'mandant_id':     return true;
-       case 'buchungsnummer': return true;
-       case 'buchungstext':   return true;
-       case 'sollkonto':      return true;
-       case 'habenkonto':     return true;
-       case 'betrag':         return true;
-       case 'datum':          return true;
-       case 'datum_de':          return true;
-       case 'benutzer':       return true;
-       default:               return false;
+       case 'mandant_id':       return true;
+       case 'buchungsnummer':   return true;
+       case 'buchungstext':     return true;
+       case 'sollkonto':        return true;
+       case 'habenkonto':       return true;
+       case 'betrag':           return true;
+       case 'datum':            return true;
+       case 'datum_de':         return true;
+       case 'benutzer':         return true;
+       case 'is_offener_posten':return true;
+       default:                 return false;
    }
 }
 
@@ -177,6 +230,8 @@ function isValidValueForField($key, $value) {
             $pattern = '/[\']/';
             preg_match($pattern, $value, $results);
             return count($results) == 0;
+       case 'is_offener_posten':
+            return $value == 'true' || $value == 'false';
        default: return true;
    }
 }

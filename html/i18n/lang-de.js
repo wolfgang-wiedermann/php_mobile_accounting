@@ -24,6 +24,8 @@ hhb.i18n = {
         betrag:'Betrag',
         buchungsdatum:'Buchungsdatum',
         verbuchen:'verbuchen',
+        offene_posten:'Offene Posten',
+        offenen_posten_schliessen:'Schließen',
         successful_created:'Buchung erfolgreich angelegt',
         error_on_create:'Fehler beim Anlegen der Buchung aufgetreten',
         error_on_load:'Fehler beim Laden der Buchungen aufgetreten',
