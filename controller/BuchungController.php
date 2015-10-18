@@ -231,7 +231,7 @@ function isValidValueForField($key, $value) {
             preg_match($pattern, $value, $results);
             return count($results) == 0;
        case 'is_offener_posten':
-            return $value == 'true' || $value == 'false';
+            return $value === false || $value === true;
        default: return true;
    }
 }
