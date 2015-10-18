@@ -1,4 +1,4 @@
-<div data-role="page" id="verlauf_mehrfach_view">
+<div data-role="page" data-theme="b" id="verlauf_mehrfach_view">
     <div data-role="header" data-position="fixed">
         <a href="#ergebnis_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
         <h1 data-bind="text: verlauf().titel"></h1>

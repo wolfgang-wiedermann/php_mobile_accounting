@@ -10,7 +10,7 @@
 </script>
 
 <!-- Konto anlegen -->
-<div data-role="page" id="konto_neu">
+<div data-role="page" data-theme="b" id="konto_neu">
   <div data-role="header" data-position="fixed">
     <a href="#konten_liste" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1 data-bind="text:i18n.konten.anlegen"></h1>
@@ -25,7 +25,7 @@
 </div><!-- /page -->
 
 <!-- Konto bearbeiten -->
-<div data-role="page" id="konto_bearbeiten">
+<div data-role="page" data-theme="b" id="konto_bearbeiten">
   <div data-role="header" data-position="fixed">
     <a href="#konten_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1 data-bind="text:i18n.konten.konto_bearbeiten"></h1>

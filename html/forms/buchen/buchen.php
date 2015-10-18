@@ -1,4 +1,4 @@
-<div data-role="page" id="buchungen_erfassen">
+<div data-role="page" data-theme="b" id="buchungen_erfassen">
   <div data-role="header" data-position="fixed">
     <a href="#buchen_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1 data-bind="text:i18n.general.buchhaltung"></h1>

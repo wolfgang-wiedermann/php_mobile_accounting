@@ -1,4 +1,4 @@
-<div data-role="page" id="verlauf_kontenliste">
+<div data-role="page" data-theme="b" id="verlauf_kontenliste">
   <div data-role="header" data-position="fixed">
     <a href="#ergebnis_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1 data-bind="text:i18n.general.buchhaltung"></h1>
@@ -14,7 +14,7 @@
     <!-- Hier eine Combo-Box einbauen -->
     <ul data-role="listview" data-inset="false" class="konten_liste">
       <!-- ko foreach: konten().aktivkonten -->
-      <li><a data-bind="text: tostring, click: $root.verlauf().showVerlaufzuundabfluss"></a></li>
+      <li data-theme="c"><a data-bind="text: tostring, click: $root.verlauf().showVerlaufzuundabfluss"></a></li>
       <!-- /ko -->
     </ul>
   </div><!-- /content -->

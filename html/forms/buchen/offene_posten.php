@@ -1,4 +1,4 @@
-<div data-role="page" id="offene_posten">
+<div data-role="page" data-theme="b" id="offene_posten">
     <div data-role="header" data-position="fixed">
         <a href="#buchen_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
         <h1 data-bind="text:i18n.buchen.offene_posten"></h1>

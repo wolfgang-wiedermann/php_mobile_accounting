@@ -1,4 +1,4 @@
-<div data-role="page" id="aktuellste_buchungen">
+<div data-role="page" data-theme="b" id="aktuellste_buchungen">
   <div data-role="header" data-position="fixed">
     <a href="#buchen_menue" data-role="button" data-icon="home" data-bind="text:i18n.general.back"></a>
     <h1 data-bind="text:i18n.general.buchhaltung"></h1>
