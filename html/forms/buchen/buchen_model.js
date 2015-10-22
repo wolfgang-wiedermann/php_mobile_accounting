@@ -52,9 +52,20 @@ hhb.model.types.Buchung = function(config) {
     self.is_offener_posten(!!config.is_offener_posten);
   }
 
-  self.closePosten = function(p) {
-    hhb.model.MainModel.buchen().closePosten(p.buchungsnummer());
-    console.log("closePosten");
+  self.closePostenShowAusbuchen = function(p) {
+    var bm = hhb.model.MainModel.buchen();
+    bm.selectedOffenerPosten(p);
+    // Aufhebungs-Buchung zusammenbauen
+    bm.selectedBuchung().buchungstext("OP Auflösung "+ p.buchungsnummer()
+                                      +"; "+ p.buchungstext().substr(0, 20));
+    bm.selectedBuchung().sollkonto(p.habenkonto());
+    bm.selectedBuchung().habenkonto(p.sollkonto());
+    bm.selectedBuchung().betrag(p.betrag());
+    // jQuery-Mobile Selectboxen neu laden
+    $("#offenen_posten_ausbuchen select").selectmenu();
+    $("#offenen_posten_ausbuchen select").selectmenu('refresh');
+    // Seite anzeigen
+    jQuery.mobile.changePage("#offenen_posten_ausbuchen");
   }
 };
 
@@ -94,6 +105,7 @@ hhb.model.types.BuchungenModel = function() {
   
   self.selectedBuchung = ko.observable(new hhb.model.types.Buchung());
   self.buchungen = ko.observableArray([]);
+  self.selectedOffenerPosten = ko.observable(new hhb.model.types.Buchung());
 
   // Event-Handler für den Klick auf den Verbuchen-Button
   self.verbuchen = function() {
@@ -150,17 +162,22 @@ hhb.model.types.BuchungenModel = function() {
   };
 
   // Offenen Posten schließen
-  self.closePosten = function(buchungsnummer) {
+  self.closePosten = function() {
     self.buchungen.removeAll();
-    doGETwithCache("buchung", "closeop", {'id':buchungsnummer},
+    var bnr = self.selectedOffenerPosten().buchungsnummer();
+    var response = ko.toJSON({'offenerposten':bnr, 'buchung':self.selectedBuchung});
+    if(bnr !== 0) {
+      doPOSTwithQueue("buchung", "closeop", response,
       function(data) {
         for(var i = 0; i < data.length; i++) {
-          self.buchungen.push(new hhb.model.types.Buchung(data[i]));
+           self.buchungen.push(new hhb.model.types.Buchung(data[i]));
         }
-      },
-      function(error) {
-        util.showErrorMessage(error, hhb.i18n.buchen.error_on_load);
-      }
-    );
+        jQuery.mobile.changePage("#offene_posten");
+       },
+       function(error) {
+         util.showErrorMessage(error, hhb.i18n.buchen.error_on_load);
+       }
+       );
+    }
   }
 }

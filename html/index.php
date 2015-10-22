@@ -50,6 +50,7 @@
   <?php include_once("./forms/buchen/aktuellste_buchungen.php"); ?>
   <?php include_once("./forms/buchen/buchen_warteschlange.php"); ?>
   <?php include_once("./forms/buchen/offene_posten.php"); ?>
+  <?php include_once("./forms/buchen/offene_posten_ausbuchen.php"); ?>
   <!-- Masken aus dem Menü "Konten" -->
   <?php include_once("./forms/konten/konten_liste.php"); ?>
   <?php include_once("./forms/konten/konten_menue.php"); ?>

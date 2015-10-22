@@ -19,7 +19,8 @@
             <tr>
                 <td colspan="4">
                     <a href="#offene_posten" class="ui-btn"
-                       data-bind="click:closePosten, text:$root.i18n.buchen.offenen_posten_schliessen"></a>
+                       data-bind="click:closePostenShowAusbuchen,
+                                  text:$root.i18n.buchen.offenen_posten_schliessen"></a>
                 </td>
             </tr>
         </table>
