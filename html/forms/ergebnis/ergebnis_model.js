@@ -38,7 +38,7 @@ hhb.model.types.ErgebnisRechnungEintrag = function(data) {
     }
 };
 
-// Eintrag f�r die GuV-Prognose-Rechnung
+// Eintrag f�r die GuV-Prognose-Rechnung
 hhb.model.types.PrognoseRechnungEintrag = function(data) {
     var self = this;
 
@@ -112,19 +112,31 @@ hhb.model.types.ErgebnisModel = function() {
     self.prognose_summen = ko.observableArray([]);
     self.prognose_summen.push(new hhb.model.types.PrognoseRechnungSumme());
 
+    // Event-Handler für den Refresh-Button in der GuV-Monats-Rechnung
+    self.onGuVUpdateMonate = function() {
+        self.updateMonate(function() {
+           self.guvmonat();
+        });
+    }
+
     // Liste der auswählbaren Monate aktualisieren
     self.updateMonate = function(successHandler) {
         doGETwithCache("ergebnis", "months", [],
             function(data) {
-                self.monate.removeAll();
+                var array = [];
                 for(var i = 0; i < data.length; i++) {
-                    if(i+1 === data.length) {
-                        self.monate.push({'monat':data[i], 'selected':true});
+                    if(i === 0) {
+                        array.push({'monat':data[i], 'selected':true});
                         self.selected_monat(data[i]);
                     } else {
-                        self.monate.push({'monat':data[i], 'selected':false});
+                        array.push({'monat':data[i], 'selected':false});
                     }
                 }
+                self.monate(array);
+
+                // jQuery-Mobile Selectboxen neu laden
+                $("#ergebnis_view select").selectmenu();
+                $("#ergebnis_view select").selectmenu('refresh');
 
                 if(!!successHandler && $.isFunction(successHandler)) {
                     successHandler();
@@ -142,13 +154,17 @@ hhb.model.types.ErgebnisModel = function() {
             function(data) {
                 self.jahre.removeAll();
                 for(var i = 0; i < data.length; i++) {
-                    if(i+1 === data.length) {
+                    if(i === 0) {
                         self.jahre.push({'jahr':data[i], 'selected':true});
                         self.selected_jahr(data[i]);
                     } else {
                         self.jahre.push({'jahr':data[i], 'selected':false});
                     }
                 }
+
+                // jQuery-Mobile Selectboxen neu laden
+                $("#ergebnis_view select").selectmenu();
+                $("#ergebnis_view select").selectmenu('refresh');
 
                 if(!!successHandler) {
                     successHandler();

@@ -12,7 +12,7 @@
                     optionsText: 'monat', optionsValue: 'monat', event:{'change': ergebnis().onchange}">
             </select>
           </td><td width="25px">
-            <a href="#refresh" data-bind="click: ergebnis().updateMonate"
+            <a href="#refresh" data-bind="click: ergebnis().onGuVUpdateMonate"
                class="ui-btn ui-btn-icon-notext ui-icon-refresh ui-corner-all"></a>
           </td>
         </tr>
