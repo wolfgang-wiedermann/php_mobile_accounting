@@ -212,7 +212,7 @@ function getMonths() {
 
     $sql =  "select distinct (year(datum)*100)+month(datum) as yearmonth ";
     $sql .= " from fi_buchungen where mandant_id = ".$this->mandant_id;
-    $sql .= " order by yearmonth";
+    $sql .= " order by yearmonth desc";
 
     $rs = mysqli_query($db, $sql);
     while($obj = mysqli_fetch_object($rs)) {
@@ -231,7 +231,7 @@ function getYears() {
 
     $sql = "select distinct year(datum) as year ";
     $sql .= "from fi_buchungen where mandant_id = ".$this->mandant_id;
-    $sql .= " order by year";
+    $sql .= " order by year desc";
 
     $rs = mysqli_query($db, $sql);
     while($obj = mysqli_fetch_object($rs)) {
