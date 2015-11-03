@@ -18,7 +18,7 @@
  * USA
  */
 
-# Controller für die Schnellbuchungs-Menüeinträge
+# Controller für die globale Konfiguration des Haushaltsbuchs
 class ConfigController {
 
     private $dispatcher, $mandant_id;
