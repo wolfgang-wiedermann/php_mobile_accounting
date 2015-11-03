@@ -41,6 +41,7 @@ hhb.model.types.MainModel = function() {
   self.ergebnis = ko.observable(new hhb.model.types.ErgebnisModel());
   self.verlauf = ko.observable(new hhb.model.types.VerlaufModel());
   self.exporte = ko.observable(new hhb.model.types.ExportModel());
+  self.configuration = ko.observable(new hhb.model.types.ConfigurationModel());
 
   self.ergebnis().initialize();
 };

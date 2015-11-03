@@ -38,4 +38,33 @@ class Response {
     public $format;
 }
 
+#
+# Ermittelt einen Konfigurations-Key incl. aller seiner Parameter
+#
+function get_config_key($param_knz) {
+    $db = getDbConnection();
+    if(is_legal_string($param_knz)) {
+        $sql = "select * from fi_config_params where mandant_id = $this->mandant_id and param_knz = '$param_knz'";
+        $rs = mysqli_query($db, $sql);
+        if($obj = mysqli_fetch_object($rs)) {
+            mysqli_close($db);
+            return $obj;
+        } else {
+            mysqli_close($db);
+            throw new ErrorException("Parameter nicht gefunden");
+        }
+    } else {
+        throw new ErrorException("Param_knz enthält ungültige Zeichen");
+    }
+}
+
+#
+# Prüft, ob ein String Hochkommas enthält
+#
+function is_legal_string($value) {
+    $pattern = '/[\']/';
+    preg_match($pattern, $value, $results);
+    return count($results) == 0;
+}
+
 ?>

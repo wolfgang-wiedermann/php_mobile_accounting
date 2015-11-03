@@ -32,6 +32,7 @@ include_once("../forms/buchen/buchen_model.js");
 include_once("../forms/ergebnis/ergebnis_model.js");
 include_once("../forms/verlauf/verlauf_model.js");
 include_once("../forms/export/export_model.js");
+include_once("../forms/configuration/configuration_model.js");
 
 // MainModel importieren
 include_once("./main_model.js");

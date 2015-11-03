@@ -89,6 +89,16 @@ hhb.model.types.NavigationModel = function() {
     }
   }));
 
+  self.administration.push(new hhb.model.types.NavigationEntry({
+    label:hhb.i18n.navigation.configuration, // Konfigurationsparameter verwalten
+    target:'#configuration_liste',
+    callback: function(data) {
+      hhb.model.MainModel.configuration().load();
+      console.log(data.label());
+      jQuery.mobile.changePage(data.target());
+    }
+  }));
+
   // Buchungsmenü (Untermenü in/für Formular buchen_menue.php)
   self.buchungsmenue = ko.observableArray([]);
 

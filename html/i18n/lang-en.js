@@ -70,6 +70,7 @@ hhb.i18n = {
         konten:'Accounts',
         auswertungen:'Reporting',
         schnellbuchungen:'Accounting Shortcuts',
+        configuration:'Configuration',
         buchung_erfassen:'Create Accounting Entry',
         basisfunktionen:'Core Functions',
         administration:'Administration',

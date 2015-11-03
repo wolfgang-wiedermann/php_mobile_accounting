@@ -70,6 +70,7 @@ hhb.i18n = {
         konten:'Konten',
         auswertungen:'Auswertungen',
         schnellbuchungen:'Schnellbuchungen verwalten',
+        configuration:'Konfiguration',
         buchung_erfassen:'Buchung erfassen',
         basisfunktionen:'Basisfunktionen',
         administration:'Administration',

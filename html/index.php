@@ -60,6 +60,8 @@
   <!-- Masken aus dem Menü "Administration" -->
   <?php include_once("./forms/schnellbuchungen/schnellbuchungen_liste.php"); ?>
   <?php include_once("./forms/schnellbuchungen/schnellbuchung_form.php"); ?>
+  <?php include_once("./forms/configuration/configuration_liste.php"); ?>
+  <?php include_once("./forms/configuration/configuration_form.php"); ?>
   <!-- Ergebnisrechnungen aus dem Menü "Auswertungen" -->
   <?php include_once("./forms/ergebnis/ergebnis_view.php"); ?>
   <?php include_once("./forms/ergebnis/ergebnis_menue.php"); ?>
