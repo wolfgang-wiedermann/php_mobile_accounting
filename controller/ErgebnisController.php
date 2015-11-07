@@ -93,7 +93,11 @@ function getGuV($request) {
         $query = new QueryHandler("guv_jahr.sql");
         $query->setParameterUnchecked("mandant_id", $this->mandant_id);
         $query->setParameterUnchecked("jahr_id", $year);
+        $query->setParameterUnchecked("geschj_start_monat",
+            get_config_key("geschj_start_monat", $this->mandant_id)->param_value);
         $sql = $query->getSql();
+
+        #echo $sql;
    
         $rs = mysqli_query($db, $sql);
         $zeilen = array();
@@ -106,6 +110,8 @@ function getGuV($request) {
         $query = new QueryHandler("guv_jahr_summen.sql");
         $query->setParameterUnchecked("mandant_id", $this->mandant_id);
         $query->setParameterUnchecked("jahr_id", $year);
+        $query->setParameterUnchecked("geschj_start_monat",
+            get_config_key("geschj_start_monat", $this->mandant_id)->param_value);
         $sql2  = $query->getSql();
 
         $rs = mysqli_query($db, $sql2);

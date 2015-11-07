@@ -12,7 +12,7 @@ and b.mandant_id = gk.mandant_id
 where b.mandant_id = #mandant_id#
 and k.kontenart_id in (3, 4)
 and gk.kontenart_id <> 5
-and year(b.datum) = #jahr_id#
+and year(date_add(b.datum, INTERVAL 13-#geschj_start_monat# MONTH))-1 = #jahr_id#
 group by k.kontenart_id
 
 union
@@ -28,7 +28,7 @@ and b.mandant_id = gk.mandant_id
 where b.mandant_id = #mandant_id#
 and k.kontenart_id in (3, 4)
 and gk.kontenart_id <> 5
-and year(b.datum) = #jahr_id#
+and year(date_add(b.datum, INTERVAL 13-#geschj_start_monat# MONTH))-1 = #jahr_id#
 group by k.kontenart_id
 
 union
@@ -44,7 +44,7 @@ and b.mandant_id = gk.mandant_id
 where b.mandant_id = #mandant_id#
 and k.kontenart_id in (3, 4)
 and gk.kontenart_id <> 5
-and year(b.datum) = #jahr_id#
+and year(date_add(b.datum, INTERVAL 13-#geschj_start_monat# MONTH))-1 = #jahr_id#
 
 union
 
@@ -59,7 +59,7 @@ and b.mandant_id = gk.mandant_id
 where b.mandant_id = #mandant_id#
 and k.kontenart_id in (3, 4)
 and gk.kontenart_id <> 5
-and year(b.datum) = #jahr_id#
+and year(date_add(b.datum, INTERVAL 13-#geschj_start_monat# MONTH))-1 = #jahr_id#
 
 ) as base_view
 group by kontenart_id

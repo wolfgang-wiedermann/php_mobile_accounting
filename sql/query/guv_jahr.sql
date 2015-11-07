@@ -16,7 +16,7 @@ inner join fi_konto as gk
 on b.habenkonto = gk.kontonummer
 and b.mandant_id = gk.mandant_id
 where k.mandant_id = #mandant_id#
-and year(b.datum) = #jahr_id#
+and year(date_add(b.datum, INTERVAL 13-#geschj_start_monat# MONTH))-1 = #jahr_id#
 and k.kontenart_id in (3, 4)
 and gk.kontenart_id <> 5
 group by k.kontonummer, k.bezeichnung
@@ -36,7 +36,7 @@ inner join fi_konto as gk
 on b.sollkonto = gk.kontonummer
 and b.mandant_id = gk.mandant_id
 where k.mandant_id = #mandant_id#
-and year(b.datum) = #jahr_id#
+and year(date_add(b.datum, INTERVAL 13-#geschj_start_monat# MONTH))-1 = #jahr_id#
 and k.kontenart_id in (3, 4)
 and gk.kontenart_id <> 5
 group by k.kontonummer, k.bezeichnung
