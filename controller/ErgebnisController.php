@@ -96,8 +96,6 @@ function getGuV($request) {
         $query->setParameterUnchecked("geschj_start_monat",
             get_config_key("geschj_start_monat", $this->mandant_id)->param_value);
         $sql = $query->getSql();
-
-        #echo $sql;
    
         $rs = mysqli_query($db, $sql);
         $zeilen = array();
@@ -235,7 +233,8 @@ function getYears() {
     $db = getDbConnection();
     $years = array();
 
-    $sql = "select distinct year(datum) as year ";
+    $sql = "select distinct year(date_add(b.datum, INTERVAL 13-";
+    $sql .= get_config_key("geschj_start_monat", $this->mandant_id)->param_value." MONTH))-1 as year ";
     $sql .= "from fi_buchungen where mandant_id = ".$this->mandant_id;
     $sql .= " order by year desc";
 
