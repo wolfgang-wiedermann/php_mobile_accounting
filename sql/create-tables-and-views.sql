@@ -161,7 +161,8 @@ CREATE TABLE IF NOT EXISTS fi_config_params (
 ALTER TABLE fi_config_params ADD UNIQUE fi_config_params_unique_knz(mandant_id, param_knz);
 
 INSERT INTO fi_config_params (mandant_id, param_knz, param_desc, param_value) values
-  (1, 'geschj_start_monat', 'Startmonat des Geschaeftsjahres', '1');
+  (1, 'geschj_start_monat', 'Startmonat des Geschaeftsjahres', '1'),
+  (1, 'op_schliessen_txt', 'Buchungsvorl. OP schliessen', 'Aufl. OP #op_nr# - #op_btxt#');
 
 --
 -- Struktur des Views `fi_buchungen_view`
