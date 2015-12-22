@@ -292,6 +292,14 @@ hhb.model.types.ErgebnisModel = function() {
 
                 for (var key in data.summen) {
                     var line = data.summen[key];
+
+                    // Übersetzung von Aufwand, Ertrag und Gewinn/Verlust einbauen
+                    if (line.kontenart_id === '1') line.bezeichnung = hhb.i18n.general.aktiva;
+                    else if (line.kontenart_id === '2') line.bezeichnung = hhb.i18n.general.passiva;
+                    else if (line.kontenart_id === '3') line.bezeichnung = hhb.i18n.general.aufwand;
+                    else if (line.kontenart_id === '4') line.bezeichnung = hhb.i18n.general.ertrag;
+                    else if (line.kontenart_id === '5') line.bezeichnung = hhb.i18n.general.saldo;
+
                     var item = new hhb.model.types.PrognoseRechnungSumme(line);
                     self.prognose_summen.push(item);
                 }
