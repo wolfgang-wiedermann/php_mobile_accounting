@@ -49,6 +49,7 @@ function getQuickMenu() {
     while($obj = mysqli_fetch_object($rs)) {
         $lst[] = $obj;
     }
+    mysqli_free_result($rs);
     mysqli_close($db);
     return wrap_response($lst);
 }
@@ -60,9 +61,11 @@ function getQuickMenuById($request) {
     if(is_numeric($id)) {
         $rs = mysqli_query($db, "select * from fi_quick_config where mandant_id = $this->mandant_id and config_id = $id");
         if($obj = mysqli_fetch_object($rs)) {
+            mysqli_free_result($rs);
             mysqli_close($db);
             return wrap_response($obj);
         } else {
+            mysqli_free_result($rs);
             mysqli_close($db);
             return wrap_response(null);
         }

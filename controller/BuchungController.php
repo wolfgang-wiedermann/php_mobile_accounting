@@ -93,6 +93,7 @@ function getTop25() {
         $top[] = $obj;
     }
 
+    mysqli_free_result($rs);
     mysqli_close($db);
     return wrap_response($top);
 }
@@ -110,6 +111,7 @@ function getOpList() {
         $top[] = $obj;
     }
 
+    mysqli_free_result($rs);
     mysqli_close($db);
     return wrap_response($top);
 }
@@ -148,6 +150,8 @@ function closeOpAndGetList($request) {
         while ($obj = mysqli_fetch_object($rs)) {
             $top[] = $obj;
         }
+
+        mysqli_free_result($rs);
         mysqli_close($db);
         return wrap_response($top);
     } else {
@@ -180,6 +184,8 @@ function getListByKonto($request) {
         while($obj = mysqli_fetch_object($rs)) {
             $result_list[] = $obj;
         }
+
+        mysqli_free_result($rs);
         $result['list'] = $result_list;
 
         // Saldo laden: 
@@ -194,6 +200,8 @@ function getListByKonto($request) {
         } else {
             $result['saldo'] = "unbekannt";
         }
+
+        mysqli_free_result($rs);
         mysqli_close($db);
         return wrap_response($result);
     # Wenn konto keine Ziffernfolge ist, leeres Ergebnis zurück liefern

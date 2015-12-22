@@ -45,6 +45,7 @@ class ConfigController {
         while($obj = mysqli_fetch_object($rs)) {
             $lst[] = $obj;
         }
+        mysqli_free_result($rs);
         mysqli_close($db);
         return wrap_response($lst);
     }
@@ -59,9 +60,11 @@ class ConfigController {
         if(is_numeric($id)) {
             $rs = mysqli_query($db, "select * from fi_config_params where mandant_id = $this->mandant_id and param_id = $id");
             if($obj = mysqli_fetch_object($rs)) {
+                mysqli_free_result($rs);
                 mysqli_close($db);
                 return wrap_response($obj);
             } else {
+                mysqli_free_result($rs);
                 mysqli_close($db);
                 return wrap_response(null);
             }

@@ -250,7 +250,6 @@ function getYears() {
 
 # Verlauf Aufwand, Ertrag, Aktiva und Passiva in Monatsraster
 function getVerlauf($request) {
-    $db = getDbConnection();
     $result = array();
 
     if(!array_key_exists('id', $request)) 
@@ -279,6 +278,7 @@ function getVerlauf($request) {
             $result[] = $erg;
         }
 
+        mysqli_free_result($rs);
         mysqli_close($db);
     } 
     return wrap_response($result);
@@ -286,9 +286,7 @@ function getVerlauf($request) {
 
 # Verlauf des Gewinns in Monatsraster
 function getVerlaufGewinn() {
-    $db = getDbConnection();
     $result = array();
-
     $db = getDbConnection();
 
     $sql =  "select (year(datum)*100)+month(datum) as grouping, sum(betrag*-1) as saldo ";
@@ -306,6 +304,7 @@ function getVerlaufGewinn() {
         $result[] = $erg;
     }
 
+    mysqli_free_result($rs);
     mysqli_close($db);
     
     return wrap_response($result);
