@@ -180,6 +180,7 @@ function isAktivKonto($kontonummer) {
     if($obj = mysqli_fetch_object($rs)) {
         $isActive = $obj->kontenart_id == 1; // Ist Aktiv-Konto
     }
+    mysqli_free_result($rs);
     mysqli_close($db);
     return $isActive;
 }
