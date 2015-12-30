@@ -109,6 +109,7 @@ hhb.i18n = {
     export:{
         datenexport:'Datenexport',
         journal:'Journal exportieren',
-        guvmonate:'GuV Monate exportieren'
+        guvmonate:'GuV Monate exportieren',
+        bilanzmonate:"Bilanz n. Monaten exportieren"
     }
 };
