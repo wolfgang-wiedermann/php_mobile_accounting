@@ -8,7 +8,7 @@ select
   format(sum(
     case when b.sollkonto = b.habenkonto then 0
          when k.kontonummer = b.sollkonto then b.betrag 
-	 when k.kontonummer = b.habenkonto then b.betrag * -1 
+	       when k.kontonummer = b.habenkonto then b.betrag * -1
     end
   ), 2, 'de_DE') as saldo
 from fi_buchungen as b
@@ -25,6 +25,5 @@ from fi_buchungen as b
     select distinct year(bint.datum) as jahr, month(bint.datum) as monat 
     from fi_buchungen as bint
   ) as t
-  on year(b.datum) <= t.jahr
-    and month(b.datum) <= t.monat
-group by t.jahr, t.monat, k.kontonummer, k.bezeichnung, k.kontenart_id
+  on (year(b.datum)*100)+month(b.datum) <= (t.jahr*100)+t.monat
+group by t.jahr, t.monat, k.kontonummer, substr(k.kontonummer, 1, 1), k.bezeichnung, k.kontenart_id
