@@ -11,6 +11,7 @@ left outer join (
         on b.mandant_id = k.mandant_id
         and b.mandant_id = #mandant_id#
         and b.sollkonto = k.kontonummer
+        and b.datum < '#year#-01-01'
     group by b.mandant_id, k.kontenart_id
     ) as soll
 on ka.kontenart_id = soll.kontenart_id
@@ -21,6 +22,7 @@ left outer join (
           on b.mandant_id = k.mandant_id
           and b.mandant_id = #mandant_id#
           and b.habenkonto = k.kontonummer
+          and b.datum < '#year#-01-01'
     group by b.mandant_id, k.kontenart_id
     ) as haben
 on ka.kontenart_id = haben.kontenart_id
@@ -37,6 +39,7 @@ from (
               and b.mandant_id = #mandant_id#
               and b.sollkonto = k.kontonummer
               and k.kontenart_id in (1, 2)
+              and b.datum < '#year#-01-01'
        group by b.mandant_id
      ) as soll
 left outer join (
@@ -47,6 +50,7 @@ left outer join (
               and b.mandant_id = #mandant_id#
               and b.habenkonto = k.kontonummer
               and k.kontenart_id in (1, 2)
+              and b.datum < '#year#-01-01'
        group by b.mandant_id
      ) as haben
   on soll.mandant_id = haben.mandant_id

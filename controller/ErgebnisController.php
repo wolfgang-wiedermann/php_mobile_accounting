@@ -30,7 +30,7 @@ function invoke($action, $request, $dispatcher) {
 
     switch($action) {
         case "bilanz":
-            return $this->getBilanz();
+            return $this->getBilanz($request);
         case "guv":
             return $this->getGuV($request);
         case "guv_month":
@@ -54,33 +54,41 @@ function invoke($action, $request, $dispatcher) {
 
 # Berechnet eine aktuelle Bilanz und liefert
 # sie als Array zurück
-function getBilanz() {
+function getBilanz($request) {
     $result = array();
     $db = getDbConnection();
+    $year = $request['year'];
 
-    $query = new QueryHandler("bilanz_detail.sql");
-    $query->setParameterUnchecked("mandant_id", $this->mandant_id);
-    $sql = $query->getSql();
-    $rs = mysqli_query($db, $sql);
+    if($this->isValidYear($year)) {
+        $query = new QueryHandler("bilanz_detail.sql");
+        $query->setNumericParameter("year", $year+1);
+        $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+        $sql = $query->getSql();
 
-    $zeilen = array();
-    while($erg = mysqli_fetch_object($rs)) {
-        $zeilen[] = $erg;
+        $rs = mysqli_query($db, $sql);
+
+        $zeilen = array();
+        while ($erg = mysqli_fetch_object($rs)) {
+            $zeilen[] = $erg;
+        }
+        $result['zeilen'] = $zeilen;
+
+        $query = new QueryHandler("bilanz_summen.sql");
+        $query->setNumericParameter("year", $year+1);
+        $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+        $sql = $query->getSql();
+        $rs = mysqli_query($db, $sql);
+
+        $ergebnisse = array();
+        while ($erg = mysqli_fetch_object($rs)) {
+            $ergebnisse[] = $erg;
+        }
+        $result['ergebnisse'] = $ergebnisse;
+        mysqli_close($db);
+        return wrap_response($result);
+    } else {
+        return wrap_response("Fehler aufgetreten, das angegebene Jahr hat ein ungültiges Format");
     }
-    $result['zeilen'] = $zeilen;
-
-    $query = new QueryHandler("bilanz_summen.sql");
-    $query->setParameterUnchecked("mandant_id", $this->mandant_id);
-    $sql = $query->getSql();
-    $rs = mysqli_query($db, $sql);
-
-    $ergebnisse = array();
-    while($erg = mysqli_fetch_object($rs)) {
-        $ergebnisse[] = $erg;
-    }
-    $result['ergebnisse'] = $ergebnisse;
-    mysqli_close($db); 
-    return wrap_response($result);
 }
 
 # Berechnet eine aktuelle GuV-Rechnung und liefert

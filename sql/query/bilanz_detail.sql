@@ -9,6 +9,7 @@ left outer join
   select sollkonto as konto, 'S' as buchungstyp, sum(betrag) as betrag
   from fi_buchungen
   where mandant_id = #mandant_id#
+  and datum < '#year#-01-01'
   group by sollkonto, 'S'
 ) as soll
 on konten.kontonummer = soll.konto
@@ -18,9 +19,10 @@ left outer join
   select habenkonto as konto, 'H' as buchungstyp, sum(betrag) as betrag
   from fi_buchungen
   where mandant_id = #mandant_id#
+  and datum < '#year#-01-01'
   group by habenkonto, 'H'
 ) as haben
 on konten.kontonummer = haben.konto
 and konten.mandant_id = #mandant_id#
 where konten.kontenart_id in (1, 2) 
-and (soll.konto is not null or haben.konto is not null) 
+and (soll.konto is not null or haben.konto is not null)

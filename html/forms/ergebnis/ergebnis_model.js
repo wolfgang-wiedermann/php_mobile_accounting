@@ -184,11 +184,13 @@ hhb.model.types.ErgebnisModel = function() {
     // Dummy-Funktion die jeweils durch self.bilanz, self.guvjahr etc. ersetzt wird
     self.onchange = function() {};
 
-    // Funktionen zum Laden der Daten Bilanz
+    // Funktionen zum Laden der Daten der Bilanz nach Jahren
     self.bilanz = function() {
-        self.jahr_selection_visible(false);
+        self.jahr_selection_visible(true);
         self.monat_selection_visible(false);
-        priv.loadErgebnisrechnung("bilanz", hhb.i18n.ergebnis.bilanz, hhb.i18n.ergebnis.vermoegen_und_kapital, []);
+        self.onchange = self.bilanz;
+        priv.loadErgebnisrechnung("bilanz", hhb.i18n.ergebnis.bilanz, hhb.i18n.ergebnis.vermoegen_und_kapital,
+            {'year':self.selected_jahr()});
     };
 
     // Funktion zum Laden der Daten der GuV-Rechnung nach Jahren
@@ -197,7 +199,7 @@ hhb.model.types.ErgebnisModel = function() {
         self.monat_selection_visible(false);
         self.onchange = self.guvjahr;
         priv.loadErgebnisrechnung("guv", hhb.i18n.ergebnis.guvjahr, hhb.i18n.ergebnis.aufwand_ertrag_jahr,
-                                  {'year':self.selected_jahr()});
+            {'year':self.selected_jahr()});
     };
 
     // Funktion zum Laden der Daten der GuV-Rechnung nach Monaten
