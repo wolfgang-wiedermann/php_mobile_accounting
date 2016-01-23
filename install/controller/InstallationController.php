@@ -26,6 +26,8 @@ private $dispatcher;
 function invoke($action, $request, $dispatcher) {
     $this->dispatcher = $dispatcher;
     switch($action) {
+	case "checksystem":
+            return $this->checkSystem();
         case "checkdbsettings":
             return $this->checkDatabaseSettings($request);
         case "storedbsettings":
@@ -39,6 +41,50 @@ function invoke($action, $request, $dispatcher) {
         default:
             throw new ErrorException("Unbekannte Action");
     }
+}
+
+# Überprüft das System auf bekannte Installationsprobleme
+function checkSystem() {
+    $result = array();
+
+    # Prüfen ob die Datenbankverbindung bereits konfiguriert ist, bzw. 
+    # nach der Konfiguration gespeichert werden kann.
+    $db_config_path = $this->getAppRootDir()."lib/Database.php";
+    if(file_exists($db_config_path)) {
+        $result[] = "Die Datenbank-Konfigurationsdatei $db_config_path existiert bereits";
+        if(is_writeable($db_config_path)) {
+            $result[] = "Die Datenbank-Konfiguration kann überschrieben werden";
+        } else {
+            $result[] = "Die Datenbank-Konfigurationsdatei ist schreibgeschützt";
+        }
+    } else {
+        $db_config_folder = $this->getAppRootDir()."lib/";
+        if(is_writeable($db_config_folder)) {
+            $result[] = "Die Datenbank-Konfiguration kann durch dieses Installationsprogramm im Ordner $db_config_folder angelegt werden";
+        } else {
+            $result[] = "Bitte heben Sie den Schreibschutz auf den Ordner $db_config_folder für die Dauer der Installation auf";
+        }
+    }
+
+    # Prüfen ob die .htaccess-Datei bereits konfiguriert ist
+    $htaccess_path = $this->getAppRootDir().".htaccess";
+    if(file_exists($htaccess_path)) {
+        $result[] = "Die .htaccess-Datei existiert bereits unter $htaccess_path";
+    }
+
+    $apache_conf_path = "/etc/apache2/apache2.conf";
+    if(file_exists($apache_conf_path) && is_readable($apache_conf_path)) {
+    	$apache_conf = file_get_contents($apache_conf_path);
+	if(strpos($apache_conf, "#AccessFileName .htaccess") !== false) {
+            $result[] = "Bitte entfernen Sie # am Anfang der Zeile #AccessFileName .htaccess in $apache_conf_path";
+        } else {
+            $result[] = "Stellen Sie sicher, dass in $apache_conf_path im Directory-Eintrag zu / AllowOverride All steht";
+        }
+    } else {
+	$result[] = "Stellen Sie sicher, dass Ihre Apache-Installation .htaccess-Dateien auswertet";
+    }
+
+    return wrap_response($result);
 }
 
 # Liest eines einzelnes Konto aus und liefert

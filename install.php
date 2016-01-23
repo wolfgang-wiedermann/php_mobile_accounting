@@ -14,6 +14,7 @@
 <title>html5-haushaltsbuch Installation</title>
 </head>
 <body>
+
 <!-- Startseite -->
 <div data-role="page" data-theme="b" id="startseite">
 <div data-role="header">
@@ -21,6 +22,13 @@
 </div>
 <div data-role="content">
 Installationsprogramm f&uuml;r das HTML5-Haushaltsbuch.<br>
+<!-- ko if: analysis.hasResults -->
+<br/>
+Die Analyse Ihres Systems ergab die folgenden Hinweise:
+<ul data-bind="foreach: analysis.results">
+  <li data-bind="text: description"></li>
+</ul>
+<!-- /ko -->
 Bitte folgen Sie den Anweisungen auf dem Bildschirm, das Programm wird Sie durch die Installation des HTML5-Haushaltsbuchs leiten.<br>
 <br>
 Bitte beginnen Sie die Installation durch einen Klick auf den Button "Weiter"<br>

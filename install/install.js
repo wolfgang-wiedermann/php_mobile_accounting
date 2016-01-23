@@ -42,8 +42,27 @@ function doPOST(controller, action, parameterObject, successHandler, errorHandle
 // Knockout-Model für den Installer
 function InstallerModel() {
   var self = this;
+  self.analysis = new AnalysisModel();
   self.database = new DatabaseModel();
   self.user = new UserModel();
+
+  // Systemanalyse starten
+  self.onCheckSystem = function() {
+    doPOST("installation", "checksystem", "",
+      function (data) {
+        if(!data.isError) {
+           var messages = [];
+           for(var i = 0; i < data.length; i++) {
+               messages.push({"description":data[i]});
+           }
+           self.analysis.results(messages);
+        }
+      },
+      function (error) {
+        alert("Fehler aufgetreten: "+error.statusText);
+      }
+    );
+  };
 
   // hier noch die Aktionen Auflisten, die ich auf data-bind:click registriere!
   self.onCreateDbSchema = function() {
@@ -83,6 +102,23 @@ function InstallerModel() {
       }
     );
   };
+  
+  // Zur Initialisierung onCheckSystem aufrufen
+  self.onCheckSystem();
+}
+
+function AnalysisModel() {
+  var self = this;
+
+  self.results = ko.observableArray([]);
+
+  self.hasResults = ko.computed(function() {
+    if(!!self.results()) {
+      return self.results().length;
+    } else {
+      return 0;
+    }
+  });
 }
 
 // Model für die Datenbank-Verbindungsdaten
