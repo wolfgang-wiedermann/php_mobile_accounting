@@ -61,8 +61,10 @@ function getBilanz($request) {
 
     if($this->isValidYear($year)) {
         $query = new QueryHandler("bilanz_detail.sql");
-        $query->setNumericParameter("year", $year+1);
         $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+        $query->setNumericParameter("year", $year+1);
+        $query->setNumericParameter("geschj_start_monat",
+            get_config_key("geschj_start_monat", $this->mandant_id)->param_value);
         $sql = $query->getSql();
 
         $rs = mysqli_query($db, $sql);
@@ -74,8 +76,10 @@ function getBilanz($request) {
         $result['zeilen'] = $zeilen;
 
         $query = new QueryHandler("bilanz_summen.sql");
-        $query->setNumericParameter("year", $year+1);
         $query->setParameterUnchecked("mandant_id", $this->mandant_id);
+        $query->setNumericParameter("year", $year+1);
+        $query->setNumericParameter("geschj_start_monat",
+            get_config_key("geschj_start_monat", $this->mandant_id)->param_value);
         $sql = $query->getSql();
         $rs = mysqli_query($db, $sql);
 
