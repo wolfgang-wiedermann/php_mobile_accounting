@@ -5,6 +5,11 @@
   </div><!-- /header -->
   <div data-role="content">
     <div><span data-bind="text:i18n.konten.aktueller_saldo"></span>:  <span data-bind="text: konten().saldo"></span></div>
+    <div>
+      <select data-bind="value: konten().selectedJahr, options: ergebnis().jahre,
+                         optionsText: 'jahr', optionsValue: 'jahr', event:{'change': konten().openBuchungen}">
+      </select>
+    </div>
     <br/>
     <table data-bind="foreach: konten().buchungen">
       <tr>

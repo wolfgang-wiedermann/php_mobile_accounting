@@ -68,6 +68,7 @@ hhb.model.types.KontenModel = function() {
   var self = this;
   
   self.selectedKonto = ko.observable(new hhb.model.types.Konto());
+  self.selectedJahr = ko.observable('2016');
   self.konten = ko.observableArray([]);
   self.konten.push(self.selectedKonto);
   self.aktivkonten = ko.observableArray([]);
@@ -122,7 +123,8 @@ hhb.model.types.KontenModel = function() {
   self.openBuchungen = function() {
     self.buchungen.removeAll();
     var kontonummer = self.selectedKonto().kontonummer();
-    doGETwithCache("buchung", "listbykonto", {'konto':kontonummer},
+    var jahr = self.selectedJahr();
+    doGETwithCache("buchung", "listbykonto", {'konto':kontonummer, 'jahr':jahr},
         function(data) {
           var list = data.list;
           self.saldo(data.saldo);

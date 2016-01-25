@@ -163,8 +163,9 @@ function closeOpAndGetList($request) {
 function getListByKonto($request) {
     $db = getDbConnection();
     $kontonummer = $request['konto'];
+    $jahr = $request['jahr'];
     # Nur verarbeiten, wenn konto eine Ziffernfolge ist, um SQL-Injections zu vermeiden
-    if(is_numeric($kontonummer)) {
+    if(is_numeric($kontonummer) && is_numeric($jahr)) {
 
         $result = array();
         $result_list = array(); 
@@ -172,11 +173,11 @@ function getListByKonto($request) {
         // Buchungen laden
         $sql =  "SELECT buchungsnummer, buchungstext, habenkonto as gegenkonto, betrag, datum, is_offener_posten ";
         $sql .= "FROM fi_buchungen "; 
-        $sql .= "WHERE mandant_id = $this->mandant_id and sollkonto = '$kontonummer' ";
+        $sql .= "WHERE mandant_id = $this->mandant_id and sollkonto = '$kontonummer' and year(datum) = $jahr ";
         $sql .= "union ";
         $sql .= "select buchungsnummer, buchungstext, sollkonto as gegenkonto, betrag*-1 as betrag, datum, is_offener_posten ";
         $sql .= "from fi_buchungen ";
-        $sql .= "where mandant_id = $this->mandant_id and habenkonto = '$kontonummer' ";
+        $sql .= "where mandant_id = $this->mandant_id and habenkonto = '$kontonummer' and year(datum) = $jahr ";
         $sql .= "order by buchungsnummer desc";
 
         $rs = mysqli_query($db, $sql);
