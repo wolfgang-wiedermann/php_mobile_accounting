@@ -7,7 +7,7 @@
     <div><span data-bind="text:i18n.konten.aktueller_saldo"></span>:  <span data-bind="text: konten().saldo"></span></div>
     <div>
       <select data-bind="value: konten().selectedJahr, options: ergebnis().jahre,
-                         optionsText: 'jahr', optionsValue: 'jahr', event:{'change': konten().openBuchungen}">
+                         optionsText: 'jahr', optionsValue: 'jahr', event:{'change': konten().selectedJahrChanged}">
       </select>
     </div>
     <br/>

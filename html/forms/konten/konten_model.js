@@ -79,6 +79,9 @@ hhb.model.types.KontenModel = function() {
   self.salden = ko.observableArray([]);
   self.salden.push(new hhb.model.types.SaldenEintrag());
 
+  // Platzhalter für Eventhandler bei "Jahr-Auswahl wurde verändert"
+  self.selectedJahrChanged = function() {};
+
   // self.konten mit den auf dem Server vorgehaltenen Konten befüllen
   self.refreshKonten = function(successHandler) {
     self.konten.removeAll();
@@ -124,6 +127,7 @@ hhb.model.types.KontenModel = function() {
     self.buchungen.removeAll();
     var kontonummer = self.selectedKonto().kontonummer();
     var jahr = self.selectedJahr();
+
     doGETwithCache("buchung", "listbykonto", {'konto':kontonummer, 'jahr':jahr},
         function(data) {
           var list = data.list;
@@ -131,6 +135,9 @@ hhb.model.types.KontenModel = function() {
           for(var i = 0; i < list.length; i++) {
             self.buchungen.push(new hhb.model.types.KontoBuchung(list[i]));
           }
+          // Event-Handler für die Auswahl eines anderen Jahres registrieren
+          self.selectedJahrChanged = self.openBuchungen;
+          // Anzeige laden
           jQuery.mobile.changePage("#konto_buchungen");
         },
         function(error) {
