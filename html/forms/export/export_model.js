@@ -37,4 +37,8 @@ hhb.model.types.ExportModel = function() {
     self.export_bilanz = function() {
         var win = window.open("../index.php?controller=office&action=bilanzmonate&format=csv", "Download");
     };
+
+    self.export_sqlbackup = function() {
+        var win = window.open("../index.php?controller=backup&action=sqlbackup", "Download");
+    }
 };

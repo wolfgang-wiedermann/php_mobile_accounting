@@ -21,6 +21,7 @@
       <li data-theme="c"><a data-bind="click: exporte().export_journal, text:i18n.export.journal" href="#ergebnis_view">Journal exportieren</a></li>
       <li data-theme="c"><a data-bind="click: exporte().export_guv, text:i18n.export.guvmonate" href="#ergebnis_view">GuV Monate exportieren</a></li>
       <li data-theme="c"><a data-bind="click: exporte().export_bilanz, text:i18n.export.bilanzmonate" href="#ergebnis_view">Bilanz Monate exportieren</a></li>
+      <li data-theme="c"><a data-bind="click: exporte().export_sqlbackup, text:i18n.export.sqlbackup" href="#ergebnis_view">Backup exportieren</a></li>
     </ul>
   </div><!-- /content -->
   <div data-role="footer" data-position="fixed">

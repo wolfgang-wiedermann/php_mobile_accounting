@@ -110,6 +110,7 @@ hhb.i18n = {
         datenexport:'Data export functions',
         journal:'Export Journal',
         guvmonate:'Export Income and Costs (Months)',
-        bilanzmonate:"Export Balance (Months)"
+        bilanzmonate:"Export Balance (Months)",
+        sqlbackup:"Export Backup"
     }
 };

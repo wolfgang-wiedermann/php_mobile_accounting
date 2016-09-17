@@ -47,6 +47,19 @@ function invoke($request) {
             header("Content-Disposition: attachment; filename=$filename");
             header("Pragma: no-cache");
 	        return $this->csvEncode($response->obj);
+        } else if($response->format == "gz") { 
+            # Wenn der Action-Name keine ungültigen Zeichen enthält
+            # diesen als Dateinamen für den Export verwenden.
+            if($this->isValidActionName($action)) {
+                $filename = $action.".gz";
+            } else {
+                $filename = "export.gz";
+            }
+            # HTTP-Header auf application/x-gzip stellen
+            header("Content-type: application/x-gzip");
+            header("Content-Disposition: attachment; filename=$filename");
+            header("Pragma: no-cache");
+	        return $response->obj;
         } else {
             # HTTP-Header auf application/json stellen
             header("Content-type: application/json");
