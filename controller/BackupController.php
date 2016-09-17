@@ -39,14 +39,12 @@ function invoke($action, $request, $dispatcher) {
 # den Buchungen und Konten des aktuell angemeldeten Mandanten
 function getMysqlBackup($request) {
     $db = getDbConnection();
-    $format = "gz";
-
     $backup_sql = $this->getBuchungenBackup($db);
     $backup_sql .= $this->getKontenBackup($db);
-
     mysqli_close($db);
+
     $result = gzencode($backup_sql);
-    return wrap_response($result, $format);
+    return wrap_response($result, "gz");
 }
 
 # Insert-Statements für alle Buchungen des Mandanten generieren
@@ -84,7 +82,8 @@ private function getKontenBackup($db) {
 
     while($obj = mysqli_fetch_object($rs)) {
         $result .= "insert into fi_konto (mandant_id, kontonummer, bezeichnung, kontenart_id) values ";
-        $result .= "(".$obj->mandant_id.", '".$obj->kontonummer."', ";
+        $result .= "(".$obj->mandant_id.", ";
+        $result .= "'".mysqli_escape_string($db, $obj->kontonummer)."', ";
         $result .= "'".mysqli_escape_string($db, $obj->bezeichnung)."', ";
         $result .= "".$obj->kontenart_id."); \n";
     }
