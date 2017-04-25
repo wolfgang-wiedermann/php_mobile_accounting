@@ -58,6 +58,6 @@ group by (year(b.datum)*100)+month(b.datum)
 ) as base_view
 inner join fi_kontenart as ka
 on base_view.kontenart_id = ka.kontenart_id
-group by ka.bezeichnung, monat
+group by ka.kontenart_id, ka.bezeichnung, monat
 having monat is not null
 order by monat, ka.bezeichnung

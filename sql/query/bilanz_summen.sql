@@ -43,7 +43,7 @@ from (
        group by b.mandant_id
      ) as soll
 left outer join (
-       select b.mandant_id, k.kontenart_id, sum(b.betrag) as betrag
+       select b.mandant_id, sum(b.betrag) as betrag
        from fi_buchungen b
          inner join fi_konto k
            on b.mandant_id = k.mandant_id

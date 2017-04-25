@@ -282,7 +282,7 @@ function getVerlauf($request) {
         # Nur immer die letzten 12 Monate anzeigen
         $sql .= "and (year(datum)*100)+month(datum) >= ((year(now())*100)+month(now()))-100 ";
 
-        $sql .= "group by kontenart_id, year(datum), month(datum) ";
+        $sql .= "group by kontenart_id, grouping ";
         $sql .= "order by grouping";
 
         $rs = mysqli_query($db, $sql);
@@ -308,7 +308,7 @@ function getVerlaufGewinn() {
     # Nur immer die letzten 12 Monate anzeigen
     $sql .= "and (year(datum)*100)+month(datum) >= ((year(now())*100)+month(now()))-100 ";
 
-    $sql .= "group by year(datum), month(datum) ";
+    $sql .= "group by grouping ";
     $sql .= "order by grouping";
 
     $rs = mysqli_query($db, $sql);
