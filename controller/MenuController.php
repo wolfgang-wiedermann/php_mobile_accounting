@@ -43,30 +43,26 @@ function invoke($action, $request, $dispatcher) {
 }
 
 function getQuickMenu() {
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
     $lst = array();
-    $rs = mysqli_query($db, "select * from fi_quick_config where mandant_id = $this->mandant_id order by config_knz");
-    while($obj = mysqli_fetch_object($rs)) {
+    $stmt = $pdo->prepare("select * from fi_quick_config where mandant_id = :mandant_id order by config_knz");
+    $stmt->execute(array("mandant_id" => $this->mandant_id));
+    while($obj = $stmt->fetchObject()) {
         $lst[] = $obj;
     }
-    mysqli_free_result($rs);
-    mysqli_close($db);
     return wrap_response($lst);
 }
 
 
 function getQuickMenuById($request) {
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
     $id = $request['id'];
     if(is_numeric($id)) {
-        $rs = mysqli_query($db, "select * from fi_quick_config where mandant_id = $this->mandant_id and config_id = $id");
-        if($obj = mysqli_fetch_object($rs)) {
-            mysqli_free_result($rs);
-            mysqli_close($db);
+        $stmt = $pdo->prepare("select * from fi_quick_config where mandant_id = :mandant_id and config_id = :id");
+        $stmt->execute(array("mandant_id" => $this->mandant_id, "id" => $id));
+        if($obj = $stmt->fetchObject()) {            
             return wrap_response($obj);
-        } else {
-            mysqli_free_result($rs);
-            mysqli_close($db);
+        } else {            
             return wrap_response(null);
         }
     } else {
@@ -75,68 +71,75 @@ function getQuickMenuById($request) {
 }
 
 function addQuickMenu($request) {
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
     if($this->isValidQuickMenu($input)) { 
         $sql = "insert into fi_quick_config(config_knz, sollkonto, habenkonto, buchungstext,";
-        $sql .= " betrag, mandant_id) values ('".$input['config_knz']."', '".$input['sollkonto']."', ";
-        $sql .= "'".$input['habenkonto']."', '".$input['buchungstext']."', ".$input['betrag'].", ".$this->mandant_id.")";
+        $sql .= " betrag, mandant_id) values (:config_knz, :sollkonto, ";
+        $sql .= ":habenkonto, :buchungstext, :betrag, :mandant_id)";
 
-        mysqli_query($db, $sql);
-        $error = mysqli_error($db);
-        if($error) {
-           error_log($error);
-           error_log($sql);
+        $params = array();
+        $params["config_knz"] = $input['config_knz'];
+        $params["sollkonto"] = $input['sollkonto'];
+        $params["habenkonto"] = $input['habenkonto'];
+        $params["buchungstext"] = $input['buchungstext'];
+        $params["betrag"] = $input['betrag'];
+        $params["mandant_id"] = $this->mandant_id;
+
+        $stmt = $pdo->prepare($sql);
+        try {
+            $stmt->execute($params);        
+            return wrap_response("Erfolg");
+        } catch(Exception $e) {
+            return wrap_reponse("Error: ".$e);
         }
-        mysqli_close($db);
-        return wrap_response("Fehler: $error");
-    } else {
-        mysqli_close($db);
+    } else {        
         throw new ErrorException("Die uebergebene Schnellbuchungsvorlage ist nicht valide: ".$inputJSON);
     }
 }
 
 function updateQuickMenu($request) {
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
     if($this->isValidQuickMenu($input)) {
         $sql = "update fi_quick_config set ";
-        $sql .= "config_knz = '".$input['config_knz']."', ";
-        $sql .= "buchungstext = '".$input['buchungstext']."', ";
-        $sql .= "sollkonto = '".$input['sollkonto']."', ";
-        $sql .= "habenkonto = '".$input['habenkonto']."', ";
-        $sql .= "betrag = '".$input['betrag']."' ";
-        $sql .= "where mandant_id = ".$this->mandant_id;
-        $sql .= " and config_id = ".$input['config_id'];
+        $sql .= "config_knz = :config_knz, buchungstext = :buchungstext, ";
+        $sql .= "sollkonto = :sollkonto, habenkonto = :habenkonto, ";
+        $sql .= "betrag = :betrag ";
+        $sql .= "where mandant_id = :mandant_id and config_id = :config_id";
 
-        mysqli_query($db, $sql);
-        $error = mysqli_error($db);
-        if($error) {
-            error_log($error);
-            error_log($sql);
-            mysqli_close($db);
-            return wrap_response("Fehler: $error");
-        } else {
-            mysqli_close($db);
+        $params = array();
+        $params["config_id"] = $input['config_id'];
+        $params["config_knz"] = $input['config_knz'];
+        $params["sollkonto"] = $input['sollkonto'];
+        $params["habenkonto"] = $input['habenkonto'];
+        $params["buchungstext"] = $input['buchungstext'];
+        $params["betrag"] = $input['betrag'];
+        $params["mandant_id"] = $this->mandant_id;
+
+        $stmt = $pdo->prepare($sql);
+        try {
+            $stmt->execute($params);
             return wrap_response("Gelöscht");
+        } catch(Exception $ex) {
+            return wrap_response("Fehler: $error");
         }
-    } else {
-        mysqli_close($db);
+    } else {        
         throw new ErrorException("Die uebergebene Schnellbuchungsvorlage ist nicht valide: ".$inputJSON);
     }
 }
 
 function removeQuickMenu($request) {
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
     $id = $request['id'];
     if(is_numeric($id)) {
-        $sql =  "delete from fi_quick_config where mandant_id = $this->mandant_id";
-        $sql .= " and config_id = $id";
+        $sql =  "delete from fi_quick_config where mandant_id = :mandant_id";
+        $sql .= " and config_id = :config_id";
 
-        mysqli_query($db, $sql);
-        mysqli_close($db);
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array("mandant_id" => $this->mandant_id, "config_id" => $id));
 
         return wrap_response(null);
     } else {

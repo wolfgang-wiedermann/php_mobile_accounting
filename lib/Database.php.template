@@ -6,4 +6,10 @@ function getDbConnection() {
     return $db;
 }
 
+function getPdoConnection() {
+    $pdo = new PDO('mysql:host=hostname;dbname=databasename', 'username', 'password');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $pdo;
+}
+
 ?>
