@@ -39,8 +39,8 @@ function invoke($action, $request, $dispatcher) {
 # den Buchungen und Konten des aktuell angemeldeten Mandanten
 function getMysqlBackup($request) {
     $db = getDbConnection();
-    $backup_sql = $this->getBuchungenBackup($db);
-    $backup_sql .= $this->getKontenBackup($db);
+    $backup_sql = $this->getKontenBackup($db);
+    $backup_sql .= $this->getBuchungenBackup($db);
     mysqli_close($db);
 
     $result = gzencode($backup_sql);
