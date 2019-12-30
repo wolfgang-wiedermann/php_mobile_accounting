@@ -27,3 +27,4 @@ from fi_buchungen as b
   ) as t
   on (year(b.datum)*100)+month(b.datum) <= (t.jahr*100)+t.monat
 group by t.jahr, t.monat, k.kontonummer, substr(k.kontonummer, 1, 1), k.bezeichnung, k.kontenart_id
+order by t.jahr, t.monat, k.kontonummer

@@ -273,17 +273,17 @@ function getVerlauf($request) {
         $db = getDbConnection();
 
         if($kontenart_id == 4 || $kontenart_id == 1)
-            $sql =  "select (year(datum)*100)+month(datum) as grouping, sum(betrag)*-1 as saldo ";
+            $sql =  "select (year(datum)*100)+month(datum) as groupingx, sum(betrag)*-1 as saldo ";
         else
-            $sql =  "select (year(datum)*100)+month(datum) as grouping, sum(betrag) as saldo ";
+            $sql =  "select (year(datum)*100)+month(datum) as groupingx, sum(betrag) as saldo ";
         $sql .= "from fi_ergebnisrechnungen_base ";
         $sql .= "where kontenart_id = $kontenart_id and gegenkontenart_id <> 5 and mandant_id = $this->mandant_id ";
 
         # Nur immer die letzten 12 Monate anzeigen
         $sql .= "and (year(datum)*100)+month(datum) >= ((year(now())*100)+month(now()))-100 ";
 
-        $sql .= "group by kontenart_id, grouping ";
-        $sql .= "order by grouping";
+        $sql .= "group by kontenart_id, groupingx ";
+        $sql .= "order by groupingx";
 
         $rs = mysqli_query($db, $sql);
         while($erg = mysqli_fetch_object($rs)) {
@@ -301,15 +301,15 @@ function getVerlaufGewinn() {
     $result = array();
     $db = getDbConnection();
 
-    $sql =  "select (year(datum)*100)+month(datum) as grouping, sum(betrag*-1) as saldo ";
+    $sql =  "select (year(datum)*100)+month(datum) as groupingx, sum(betrag*-1) as saldo ";
     $sql .= "from fi_ergebnisrechnungen_base ";
     $sql .= "where kontenart_id in (3, 4) and gegenkontenart_id <> 5 and mandant_id = $this->mandant_id ";
 
     # Nur immer die letzten 12 Monate anzeigen
     $sql .= "and (year(datum)*100)+month(datum) >= ((year(now())*100)+month(now()))-100 ";
 
-    $sql .= "group by grouping ";
-    $sql .= "order by grouping";
+    $sql .= "group by groupingx ";
+    $sql .= "order by groupingx";
 
     $rs = mysqli_query($db, $sql);
     while($erg = mysqli_fetch_object($rs)) {

@@ -31,7 +31,7 @@ hhb.model.types.VerlaufEintragEinfach = function(data) {
     self.betrag = ko.observable(0);
 
     if(!!data) {
-        self.monat(data.grouping);
+        self.monat(data.groupingx);
         self.betrag(data.saldo);
     }
 };

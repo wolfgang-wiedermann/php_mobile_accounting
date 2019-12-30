@@ -36,3 +36,4 @@ group by k.kontonummer, k.bezeichnung
 ) as base_view
 
 group by kontonummer, bezeichnung
+order by kontonummer

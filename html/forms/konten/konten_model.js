@@ -52,11 +52,11 @@ hhb.model.types.Konto = function(config) {
 hhb.model.types.SaldenEintrag = function(obj) {
   var self = this;
 
-  self.grouping = ko.observable("000000");
+  self.groupingx = ko.observable("000000");
   self.saldo = ko.observable(0.00);
 
   if(!!obj) {
-    self.grouping(obj.grouping);
+    self.groupingx(obj.groupingx);
     self.saldo(obj.saldo);
   }
 };

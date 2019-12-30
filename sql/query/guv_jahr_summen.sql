@@ -63,3 +63,4 @@ and year(date_add(b.datum, INTERVAL 13-#geschj_start_monat# MONTH))-1 = #jahr_id
 
 ) as base_view
 group by kontenart_id
+order by kontenart_id

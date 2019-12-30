@@ -7,7 +7,7 @@
     <b data-bind="text:i18n.konten.monatssalden"></b>
     <table data-bind="foreach: konten().salden">
       <tr>
-        <td data-bind="text: grouping"></td>
+        <td data-bind="text: groupingx"></td>
         <td> : </td>
         <td data-bind="text: saldo" class="td_betrag"></td>
       </tr>

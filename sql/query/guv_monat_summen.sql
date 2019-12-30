@@ -47,3 +47,4 @@ and (year(b.datum)*100)+month(b.datum) = #monat_id#
 
 ) as base_view
 group by kontenart_id
+order by kontenart_id

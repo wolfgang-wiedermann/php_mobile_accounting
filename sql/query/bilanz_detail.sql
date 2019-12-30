@@ -26,3 +26,4 @@ on konten.kontonummer = haben.konto
 and konten.mandant_id = #mandant_id#
 where konten.kontenart_id in (1, 2) 
 and (soll.konto is not null or haben.konto is not null)
+order by konten.kontonummer

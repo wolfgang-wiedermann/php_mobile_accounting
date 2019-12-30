@@ -80,3 +80,4 @@ on a.tag <= d.xday
 group by d.xday
 ) as t2
 on t1.tag = t2.tag
+order by t1.tag
