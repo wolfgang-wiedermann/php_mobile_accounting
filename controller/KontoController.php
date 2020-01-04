@@ -46,10 +46,12 @@ function invoke($action, $request, $dispatcher) {
 # sie als Objekt zurück
 function getKonto($id) {
     if(is_numeric($id)) {
-        $db = getDbConnection();
-        $rs = mysqli_query($db, "select * from fi_konto where kontonummer = $id and mandant_id = $this->mandant_id");
-        $erg = mysqli_fetch_object($rs);
-        mysqli_close($db); 
+        $db = getPdoConnection();
+        $stmt = $db->prepare("select * from fi_konto where kontonumer = :kontonummer and mandant_id = :mandant_id");
+        $stmt->bindParam(":mandant_id", $this->mandant_id);
+        $stmt->bindParam(":kontonummer", $id);
+        $stmt->execute();
+        $erg = $stmt->fetchObject();
         return wrap_response($erg);
     } else throw new Exception("Kontonummer nicht numerisch");
 }
@@ -57,23 +59,28 @@ function getKonto($id) {
 # Ermittelt den aktuellen Saldo des Kontos
 function getSaldo($id) {
     if(is_numeric($id)) {
-        $db = getDbConnection();
-        $rs = mysqli_query($db, "select saldo from fi_ergebnisrechnungen where mandant_id = $this->mandant_id and konto = '$id'");
-        $erg = mysqli_fetch_object($rs);
-        mysqli_close($db);
+        $db = getPdoConnection();
+        $stmt = $db->prepare("select saldo from fi_ergebnisrechnungen where mandant_id = :mandant_id and konto = :kontonummer");
+        $stmt->bindParam(":mandant_id", $this->mandant_id);
+        $stmt->bindParam(":kontonummer", $id);
+        $stmt->execute();
+        $erg = $stmt->fetchObject();
         return wrap_response($erg->saldo);
     } else throw new Exception("Kontonummer nicht numerisch");
 }
 
 # Erstellt eine Liste aller Kontenarten
 function getKonten() {
-    $db = getDbConnection();
+    $db = getPdoConnection();
     $result = array();
-    $rs = mysqli_query($db, "select * from fi_konto where mandant_id = $this->mandant_id order by kontenart_id, kontonummer");
-    while($obj = mysqli_fetch_object($rs)) {
+    $stmt = $db->prepare("select * from fi_konto where mandant_id = :mandant_id order by kontenart_id, kontonummer");
+    $stmt->bindParam(":mandant_id", $this->mandant_id);
+    $stmt->execute();
+
+    while($obj = $stmt->fetchObject()) {
         $result[] = $obj;
     }
-    mysqli_close($db);
+    
     return wrap_response($result);
 }
 
