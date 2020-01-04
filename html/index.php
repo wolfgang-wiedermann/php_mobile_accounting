@@ -20,26 +20,27 @@
 ?>
 <?php define("MAIN_PAGE", 1); ?>
 <!DOCTYPE html>
-<html lang="de" manifest="manifest.php">
-<!-- <html lang="de"> -->
+<html lang="de">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="description" content="html5-haushaltsbuch">
+    <title>Buchhaltung</title>
     <link rel="stylesheet" href="./css/lib/haushaltsbuch-theme.min.css" />
     <link rel="stylesheet" href="./css/lib/jquery.mobile.icons.min.css" />
     <link rel="stylesheet" href="./css/lib/jquery.mobile.structure-1.4.5.min.css" />
     <link rel="stylesheet" href="./css/hhb.css" />
     <!-- Standard-Bibliotheken -->
-    <script src="./js/jquery-2.1.3.min.js"></script>
+    <script src="./js/jquery-2.2.4.min.js"></script>
     <script src="./js/jquery.mobile-1.4.5.min.js"></script>
-    <script src="./js/knockout-3.3.0.js"></script>
+    <script src="./js/knockout-3.5.1.js"></script>
     <!-- App-spezifische Code-Dateien -->
     <script src="./js/knockout-ext.js"></script>
     <script src="./js/rpc.js"></script>
     <script src="./js/util.js"></script>
     <script src="./js/diagram.js"></script>
     <script src="./js/app.php"></script>
-    <script src="./js/update_app.js"></script>
 </head>
 <body>
   <!-- Menüs -->
@@ -70,9 +71,5 @@
   <?php include_once("./forms/verlauf/verlauf_view_mehrfach.php"); ?>
   <?php include_once("./forms/verlauf/verlauf_kontenliste.php"); ?>
   <?php include_once("./forms/verlauf/verlauf_kontenauswahl.php"); ?>
-  <!-- Update-Handling -->
-  <script type="text/javascript">
-      de.ww.updater.handlers.onUpdateReady(function() { alert('Die Buchhaltung wurde auf eine neue Version aktualisiert'); });
-  </script>
 </body>
 </html>
