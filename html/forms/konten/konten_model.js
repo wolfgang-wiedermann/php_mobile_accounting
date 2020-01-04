@@ -31,6 +31,7 @@ hhb.model.types.Konto = function(config) {
 
   self.kontonummer = ko.observable("0000");
   self.bezeichnung = ko.observable("");
+  self.beschreibung = ko.observable("");
   self.kontenart_id = ko.observable(0);
   self.mandant_id = ko.observable(0);
 
@@ -41,6 +42,7 @@ hhb.model.types.Konto = function(config) {
   if(!!config) {
     self.kontonummer(config.kontonummer);
     self.bezeichnung(config.bezeichnung);
+    self.beschreibung(config.beschreibung);
     self.kontenart_id(config.kontenart_id);
     self.mandant_id(config.mandant_id);
   }

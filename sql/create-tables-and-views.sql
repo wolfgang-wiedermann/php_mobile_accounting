@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS `fi_konto` (
   `mandant_id` int(11) NOT NULL,
   `kontonummer` varchar(20) NOT NULL,
   `bezeichnung` varchar(256) NOT NULL,
+  `beschreibung` varchar(1024) NOT NULL default '',
   `kontenart_id` int(11) NOT NULL,
   PRIMARY KEY (`mandant_id`, `kontonummer`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

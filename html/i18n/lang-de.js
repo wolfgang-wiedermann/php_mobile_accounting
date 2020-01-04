@@ -58,6 +58,7 @@ hhb.i18n = {
         speichern_button:'Speichern',
         konto_nummer:'Kontonummer',
         konto_bezeichnung:'Bezeichnung',
+        konto_beschreibung: 'Beschreibung',
         konto_art:'Kontenart',
         error_on_load:'Fehler beim Laden der Konten aufgetreten',
         error_on_load_entries:'Fehler beim Laden der Buchungen des Kontos aufgetreten',

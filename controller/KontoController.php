@@ -51,7 +51,7 @@ function getKonto($id) {
         $erg = mysqli_fetch_object($rs);
         mysqli_close($db); 
         return wrap_response($erg);
-    } else throw Exception("Kontonummer nicht numerisch");
+    } else throw new Exception("Kontonummer nicht numerisch");
 }
 
 # Ermittelt den aktuellen Saldo des Kontos
@@ -62,7 +62,7 @@ function getSaldo($id) {
         $erg = mysqli_fetch_object($rs);
         mysqli_close($db);
         return wrap_response($erg->saldo);
-    } else throw Exception("Kontonummer nicht numerisch");
+    } else throw new Exception("Kontonummer nicht numerisch");
 }
 
 # Erstellt eine Liste aller Kontenarten
@@ -79,16 +79,27 @@ function getKonten() {
 
 # Speichert das als JSON-Objekt übergebene Konto
 function saveKonto($request) {
-    $db = getDbConnection();
+    $db = getPdoConnection();
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
     if($this->isValidKonto($input)) { 
-        $sql = "update fi_konto set bezeichnung = '".$input['bezeichnung']."', kontenart_id = ".$input['kontenart_id']
-              ." where kontonummer = ".$input['kontonummer']." and mandant_id = ".$this->mandant_id;
-        mysqli_query($db, $sql);
-        mysqli_close($db);
-        $void = array();
-        return wrap_response($void);
+        $sql = "update fi_konto set bezeichnung = :bezeichnung, kontenart_id = :kontenart_id, beschreibung = :beschreibung "
+              ."where mandant_id = :mandant_id and kontonummer = :kontonummer";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(":mandant_id", $this->mandant_id);
+        $stmt->bindParam(":kontonummer", $input['kontonummer']);
+        $stmt->bindParam(":bezeichnung", $input['bezeichnung']);
+        $stmt->bindParam(":beschreibung", $input['beschreibung']);
+        $stmt->bindParam(":kontenart_id", $input['kontenart_id']);
+
+        try {
+            $stmt->execute();
+            $void = array();
+            return wrap_response($void);
+        } catch(Exception $e) {
+            return wrap_response("ERROR: ". $e);
+        }
     } else {
         throw new Exception("Kontenobjekt enthaelt ungueltige Zeichen");
     }
@@ -96,17 +107,29 @@ function saveKonto($request) {
 
 # legt das als JSON-Objekt übergebene Konto an
 function createKonto($request) {
-    $db = getDbConnection();
+    $db = getPdoConnection();
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
     if($this->isValidKonto($input)) {
-        $sql = "insert into fi_konto (kontonummer, bezeichnung, kontenart_id, mandant_id) values ('"
-              .$input['kontonummer']."', '".$input['bezeichnung']
-              ."', ".$input['kontenart_id'].", ".$this->mandant_id.")";
-        mysqli_query($db, $sql);
-        mysqli_close($db);
-        $void = array();
-        return wrap_response($void);
+        $sql = "insert into fi_konto "
+              ."(kontonummer, bezeichnung, beschreibung, kontenart_id, mandant_id) "
+              ."values "
+              ."(:kontonummer, :bezeichnung, :beschreibung, :kontenart_id, :mandant_id)";
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(":mandant_id", $this->mandant_id);
+        $stmt->bindParam(":kontonummer", $input['kontonummer']);
+        $stmt->bindParam(":bezeichnung", $input['bezeichnung']);
+        $stmt->bindParam(":beschreibung", $input['beschreibung']);
+        $stmt->bindParam(":kontenart_id", $input['kontenart_id']);
+
+        try {
+            $stmt->execute();
+            $void = array();
+            return wrap_response($void);
+        } catch(Exception $e) {
+            return wrap_response("ERROR: ". $e);
+        }   
     } else {
         throw new Exception("Kontenobjekt enthaelt ungueltige Zeichen");
     }
@@ -132,6 +155,7 @@ function isValidFieldAndValue($key, $value) {
         case 'mandant_id': 
             return is_numeric($value);
         case 'bezeichnung':
+        case 'beschreibung':
         case 'tostring':
             $pattern = '/[\']/';
             preg_match($pattern, $value, $results);

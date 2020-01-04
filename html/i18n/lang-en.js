@@ -58,6 +58,7 @@ hhb.i18n = {
         speichern_button:'Save',
         konto_nummer:'Account ID',
         konto_bezeichnung:'Description',
+        konto_beschreibung: 'Details',
         konto_art:'Type of account',
         error_on_load:'Error loading accounts',
         error_on_load_entries:'Error loading the booking entries of the account',

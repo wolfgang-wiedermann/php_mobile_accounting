@@ -1,0 +1,1 @@
+alter table `fi_konto` add `beschreibung` varchar(1024) NOT NULL default '';

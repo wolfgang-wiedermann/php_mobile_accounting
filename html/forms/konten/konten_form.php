@@ -4,6 +4,8 @@
   <input type="text" id="k_kontonummer" data-bind="value: kontonummer">
   <label for="k_bezeichnung" data-bind="text:$root.i18n.konten.konto_bezeichnung"></label>
   <input type="text" id="k_bezeichnung" data-bind="value: bezeichnung">
+  <label for="k_beschreibung" data-bind="text:$root.i18n.konten.konto_beschreibung"></label>
+  <input type="text" id="k_beschreibung" data-bind="value: beschreibung">
   <label for="k_kontenart" data-bind="text:$root.i18n.konten.konto_art"></label>
   <select id="k_kontenart" data-bind="value: kontenart_id, options: $root.kontenarten,
     optionsValue: 'kontenart_id', optionsText: 'bezeichnung'"></select>
