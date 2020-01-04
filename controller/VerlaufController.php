@@ -47,29 +47,29 @@ function getMonatsSalden($kontonummer) {
         if($rechnungsart != 0) {
            if($rechnungsart == 2) {
                 // Monatssummen, fuer Aufwands- und Ertragskonten
-                $sql = "select grouping, sum(saldo)*-1 as saldo from "
-                      ."(select grouping, konto, sum(betrag) as saldo from "
-                      ."(select (year(v.datum)*100)+month(v.datum) as grouping, v.konto, v.betrag "
+                $sql = "select groupingx, sum(saldo)*-1 as saldo from "
+                      ."(select groupingx, konto, sum(betrag) as saldo from "
+                      ."(select (year(v.datum)*100)+month(v.datum) as groupingx, v.konto, v.betrag "
                       ."from fi_ergebnisrechnungen_base v inner join fi_konto kt "
                       ."on v.konto = kt.kontonummer and v.mandant_id = kt.mandant_id "
                       ."where v.mandant_id = $this->mandant_id "
                       ."and v.gegenkontenart_id <> 5) as x "
-                      ."group by grouping, konto) as y "
+                      ."group by groupingx, konto) as y "
                       ."where y.konto in ($kto_prepared) " 
-                      ."and y.grouping > ((year(now())*100)+month(now()))-100 "
-                      ."group by grouping ";
+                      ."and y.groupingx > ((year(now())*100)+month(now()))-100 "
+                      ."group by groupingx ";
 
                 $rs = mysqli_query($db, $sql);
             } else if($rechnungsart == 1) {
                 // Laufende Summen, fuer Bestandskonten
-                $sql = "select x1.grouping, sum(x2.betrag) as saldo "
-                      ."from (select distinct (year(datum)*100)+month(datum) as grouping from fi_buchungen_view "
+                $sql = "select x1.groupingx, sum(x2.betrag) as saldo "
+                      ."from (select distinct (year(datum)*100)+month(datum) as groupingx from fi_buchungen_view "
                       ."where mandant_id = '$this->mandant_id') x1 "
-                      ."inner join (select (year(datum)*100+month(datum)) as grouping, konto, betrag "
+                      ."inner join (select (year(datum)*100+month(datum)) as groupingx, konto, betrag "
                       ."from fi_buchungen_view where mandant_id = '$this->mandant_id') x2 "
-                      ."on x2.grouping <= x1.grouping "
-                      ."where konto in ($kto_prepared) and x1.grouping > ((year(now())*100)+month(now()))-100 "
-                      ."group by grouping";
+                      ."on x2.groupingx <= x1.groupingx "
+                      ."where konto in ($kto_prepared) and x1.groupingx > ((year(now())*100)+month(now()))-100 "
+                      ."group by groupingx";
 
                 $rs = mysqli_query($db, $sql);
             }
@@ -98,7 +98,7 @@ function getCashFlow($kontonummer, $side) {
         $db = getDbConnection();
         
         if($side == 'S') {
-            $sql  = "select (year(datum)*100)+month(datum) as grouping, sum(b.betrag) as saldo ";
+            $sql  = "select (year(datum)*100)+month(datum) as groupingx, sum(b.betrag) as saldo ";
             $sql .= "from fi_buchungen as b ";
             $sql .= " inner join fi_konto as k ";
             $sql .= " on k.mandant_id = b.mandant_id and k.kontonummer = b.habenkonto ";
@@ -109,7 +109,7 @@ function getCashFlow($kontonummer, $side) {
             $sql .= " and k.kontenart_id <> 5 ";
             $sql .= "group by (year(b.datum)*100)+month(b.datum);";
         } else if($side == 'H') {
-            $sql  = "select (year(b.datum)*100)+month(b.datum) as grouping, sum(b.betrag) as saldo ";
+            $sql  = "select (year(b.datum)*100)+month(b.datum) as groupingx, sum(b.betrag) as saldo ";
             $sql .= "from fi_buchungen as b ";
             $sql .= " inner join fi_konto as k ";
             $sql .= " on k.mandant_id = b.mandant_id and k.kontonummer = b.sollkonto ";
