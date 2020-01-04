@@ -26,6 +26,7 @@ CREATE TABLE `fi_konto` (
   `mandant_id` int(11) NOT NULL,
   `kontonummer` varchar(20) NOT NULL,
   `bezeichnung` varchar(256) NOT NULL,
+  `beschreibung` varchar(1024) NULL default '',
   `kontenart_id` int(11) NOT NULL,
   PRIMARY KEY (`mandant_id`,`kontonummer`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -37,7 +38,7 @@ CREATE TABLE `fi_konto` (
 
 LOCK TABLES `fi_konto` WRITE;
 /*!40000 ALTER TABLE `fi_konto` DISABLE KEYS */;
-INSERT INTO `fi_konto` VALUES (1,'2400','Forderungen',1),(1,'0500','GrundstÃ¼cke',1),(1,'0600','GebÃ¤ude',1),(1,'0700','Auto',1),(1,'2800','Girokonto',1),(1,'2850','Festgeld/Schatzbriefe etc.',1),(1,'2880','Geldbeutel',1),(1,'5000','Gehalt',4),(1,'5100','NebentÃ¤tigkeit',4),(1,'5200','Sonstige ErtrÃ¤ge',4),(1,'6000','Lebensmittel',3),(1,'6010','Kantine',3),(1,'6020','GaststÃ¤tten',3),(1,'6100','Miete',3),(1,'6101','Nebenkosten Wohn.',3),(1,'6102','GEZ',3),(1,'6103','MÃ¶bel',3),(1,'6200','Auto Tanken',3),(1,'6201','Auto Reparaturen',3),(1,'6202','Auto Steuer',3),(1,'6203','Auto Sonstiges',3),(1,'6300','Freizeit',3),(1,'6301','Sport',3),(1,'6400','Versicherungen',3),(1,'6450','Steuern',3),(1,'6500','Kommunikation',3),(1,'6501','Internet, Telefon, Handy',3),(1,'6502','Hardware',3),(1,'6503','Literatur',3),(1,'6900','Sonstige Aufwendungen',3),(1,'6901','Aufwendungen fÃ¼r Geschenke',3),(1,'6902','Inventurdifferenz negativ',3),(1,'3000','Eigenkapital',2),(1,'4400','Unbezahlte Rechnungen',2),(1,'4500','Kredite',2);
+INSERT INTO `fi_konto` (mandant_id, kontonummer, bezeichnung, kontenart_id) VALUES (1,'2400','Forderungen',1),(1,'0500','GrundstÃ¼cke',1),(1,'0600','GebÃ¤ude',1),(1,'0700','Auto',1),(1,'2800','Girokonto',1),(1,'2850','Festgeld/Schatzbriefe etc.',1),(1,'2880','Geldbeutel',1),(1,'5000','Gehalt',4),(1,'5100','NebentÃ¤tigkeit',4),(1,'5200','Sonstige ErtrÃ¤ge',4),(1,'6000','Lebensmittel',3),(1,'6010','Kantine',3),(1,'6020','GaststÃ¤tten',3),(1,'6100','Miete',3),(1,'6101','Nebenkosten Wohn.',3),(1,'6102','GEZ',3),(1,'6103','MÃ¶bel',3),(1,'6200','Auto Tanken',3),(1,'6201','Auto Reparaturen',3),(1,'6202','Auto Steuer',3),(1,'6203','Auto Sonstiges',3),(1,'6300','Freizeit',3),(1,'6301','Sport',3),(1,'6400','Versicherungen',3),(1,'6450','Steuern',3),(1,'6500','Kommunikation',3),(1,'6501','Internet, Telefon, Handy',3),(1,'6502','Hardware',3),(1,'6503','Literatur',3),(1,'6900','Sonstige Aufwendungen',3),(1,'6901','Aufwendungen fÃ¼r Geschenke',3),(1,'6902','Inventurdifferenz negativ',3),(1,'3000','Eigenkapital',2),(1,'4400','Unbezahlte Rechnungen',2),(1,'4500','Kredite',2);
 /*!40000 ALTER TABLE `fi_konto` ENABLE KEYS */;
 UNLOCK TABLES;
 
