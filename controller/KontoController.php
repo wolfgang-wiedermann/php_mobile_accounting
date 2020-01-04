@@ -100,13 +100,9 @@ function saveKonto($request) {
         $stmt->bindParam(":beschreibung", $input['beschreibung']);
         $stmt->bindParam(":kontenart_id", $input['kontenart_id']);
 
-        try {
-            $stmt->execute();
-            $void = array();
-            return wrap_response($void);
-        } catch(Exception $e) {
-            return wrap_response("ERROR: ". $e);
-        }
+        $stmt->execute();
+        $void = array();
+        return wrap_response($void);
     } else {
         throw new Exception("Kontenobjekt enthaelt ungueltige Zeichen");
     }
@@ -130,13 +126,9 @@ function createKonto($request) {
         $stmt->bindParam(":beschreibung", $input['beschreibung']);
         $stmt->bindParam(":kontenart_id", $input['kontenart_id']);
 
-        try {
-            $stmt->execute();
-            $void = array();
-            return wrap_response($void);
-        } catch(Exception $e) {
-            return wrap_response("ERROR: ". $e);
-        }   
+        $stmt->execute();
+        $void = array();
+        return wrap_response($void);  
     } else {
         throw new Exception("Kontenobjekt enthaelt ungueltige Zeichen");
     }
