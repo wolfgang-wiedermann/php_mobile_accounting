@@ -19,8 +19,8 @@ License Information
 The software is contributed under GPL (see license.txt) in this Folder.
 
 It contains JQuery, JQuery-Mobile and Knockout.js as clientside framework.
-On the serverside its code relies just on plain PHP5 (using mysqli for 
-database connectivity) with no additional frameworks.
+On the serverside its code relies just on plain PHP5 or PHP7 (currently using mysqli for 
+database connectivity - will be step by step ported to PDO) with no additional frameworks.
 
 Additional Information
 ----------------------
