@@ -39,33 +39,36 @@ class ConfigController {
     }
 
     function listConfigEntries() {
-        $db = getDbConnection();
+        $pdo = getPdoConnection();
         $lst = array();
-        $rs = mysqli_query($db, "select * from fi_config_params where mandant_id = $this->mandant_id order by param_desc");
-        while($obj = mysqli_fetch_object($rs)) {
+        $stmt = $pdo->prepare("select * from fi_config_params where mandant_id = :mandant_id order by param_desc");
+        $stmt->execute(array(
+            "mandant_id" => $this->mandant_id
+        ));
+
+        while($obj = $stmt->fetchObject()) {
             $lst[] = $obj;
         }
-        mysqli_free_result($rs);
-        mysqli_close($db);
+
         return wrap_response($lst);
     }
 
 
     function getConfigEntry($request) {
-        $db = getDbConnection();
+        $pdo = getPdoConnection();
         if(!isset($request['param_id'])) {
             throw new ErrorException("Parameter param_id nicht im Request enthalten");
         }
         $id = $request['param_id'];
         if(is_numeric($id)) {
-            $rs = mysqli_query($db, "select * from fi_config_params where mandant_id = $this->mandant_id and param_id = $id");
-            if($obj = mysqli_fetch_object($rs)) {
-                mysqli_free_result($rs);
-                mysqli_close($db);
+            $stmt = $pdo->prepare("select * from fi_config_params where mandant_id = :mandant_id and param_id = :id");
+            $stmt->execute(array(
+                "mandant_id" => $this->mandant_id,
+                "id" => $id
+            ));
+            if($obj = $stmt->fetchObject()) {
                 return wrap_response($obj);
             } else {
-                mysqli_free_result($rs);
-                mysqli_close($db);
                 return wrap_response(null);
             }
         } else {
@@ -74,22 +77,23 @@ class ConfigController {
     }
 
     function updateConfigEntry() {
-        $db = getDbConnection();
+        $pdo = getPdoConnection();
         $inputJSON = file_get_contents('php://input');
         $input = json_decode( $inputJSON, TRUE );
         if($this->isValidConfigEntry($input)) {
-            $sql = "update fi_config_params set param_knz='".$input['param_knz']."', ";
-            $sql .= "param_desc='".$input['param_desc']."', param_value='".$input['param_value']."' ";
-            $sql .= "where mandant_id = $this->mandant_id and param_id = ".$input['param_id'];
 
-            mysqli_query($db, $sql);
-            $error = mysqli_error($db);
-            if($error) {
-                error_log($error);
-                error_log($sql);
-            }
-            mysqli_close($db);
-            return wrap_response("Fehler: $error");
+            $query = new QueryHandler("configentry_update.sql");
+            $sql = $query->getSql();
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array(
+                "mandant_id" => $this->mandant_id,
+                "param_knz" => $input["param_knz"],
+                "param_desc" => $input["param_desc"],
+                "param_value" => $input["param_value"],
+                "param_id" => $input["param_id"]
+            ));
+           
+            return wrap_response("...");
         } else {
             mysqli_close($db);
             throw new ErrorException("Der übergebene Konfigurationsparameter ist nicht valide: ".$inputJSON);
