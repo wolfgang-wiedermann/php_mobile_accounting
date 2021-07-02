@@ -56,39 +56,44 @@ function invoke($action, $request, $dispatcher) {
 # sie als Array zurück
 function getBilanz($request) {
     $result = array();
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
     $year = $request['year'];
 
     if($this->isValidYear($year)) {
         $query = new QueryHandler("bilanz_detail.sql");
-        $query->setParameterUnchecked("mandant_id", $this->mandant_id);
         $query->setNumericParameter("year", $year+1);
         $query->setNumericParameter("geschj_start_monat",
             get_config_key("geschj_start_monat", $this->mandant_id)->param_value);
         $sql = $query->getSql();
 
-        $rs = mysqli_query($db, $sql);
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+            "mandant_id" => $this->mandant_id
+        ));
 
         $zeilen = array();
-        while ($erg = mysqli_fetch_object($rs)) {
+        while ($erg = $stmt->fetchObject()) {
             $zeilen[] = $erg;
         }
         $result['zeilen'] = $zeilen;
 
         $query = new QueryHandler("bilanz_summen.sql");
-        $query->setParameterUnchecked("mandant_id", $this->mandant_id);
         $query->setNumericParameter("year", $year+1);
         $query->setNumericParameter("geschj_start_monat",
             get_config_key("geschj_start_monat", $this->mandant_id)->param_value);
         $sql = $query->getSql();
-        $rs = mysqli_query($db, $sql);
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+            "mandant_id" => $this->mandant_id
+        ));
 
         $ergebnisse = array();
-        while ($erg = mysqli_fetch_object($rs)) {
+        while ($erg = $stmt->fetchObject()) {
             $ergebnisse[] = $erg;
         }
         $result['ergebnisse'] = $ergebnisse;
-        mysqli_close($db);
+        
         return wrap_response($result);
     } else {
         return wrap_response("Fehler aufgetreten, das angegebene Jahr hat ein ungültiges Format");

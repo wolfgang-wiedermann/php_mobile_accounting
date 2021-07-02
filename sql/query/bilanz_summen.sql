@@ -9,7 +9,7 @@ left outer join (
     from fi_buchungen b
     inner join fi_konto k
         on b.mandant_id = k.mandant_id
-        and b.mandant_id = #mandant_id#
+        and b.mandant_id = :mandant_id
         and b.sollkonto = k.kontonummer
         and b.datum < '#year#-#geschj_start_monat#-01'
     group by b.mandant_id, k.kontenart_id
@@ -20,7 +20,7 @@ left outer join (
     from fi_buchungen b
     inner join fi_konto k
           on b.mandant_id = k.mandant_id
-          and b.mandant_id = #mandant_id#
+          and b.mandant_id = :mandant_id
           and b.habenkonto = k.kontonummer
           and b.datum < '#year#-#geschj_start_monat#-01'
     group by b.mandant_id, k.kontenart_id
@@ -36,7 +36,7 @@ from (
        from fi_buchungen b
          inner join fi_konto k
            on b.mandant_id = k.mandant_id
-              and b.mandant_id = #mandant_id#
+              and b.mandant_id = :mandant_id
               and b.sollkonto = k.kontonummer
               and k.kontenart_id in (1, 2)
               and b.datum < '#year#-#geschj_start_monat#-01'
@@ -47,7 +47,7 @@ left outer join (
        from fi_buchungen b
          inner join fi_konto k
            on b.mandant_id = k.mandant_id
-              and b.mandant_id = #mandant_id#
+              and b.mandant_id = :mandant_id
               and b.habenkonto = k.kontonummer
               and k.kontenart_id in (1, 2)
               and b.datum < '#year#-#geschj_start_monat#-01'
