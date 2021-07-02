@@ -159,7 +159,7 @@ hhb.model.types.VerlaufModel = function() {
     };
 
     self.loadVerlaufEinfach = function(controller, action, parameters) {
-        doGETwithCache(controller, action, parameters,
+        doGET(controller, action, parameters,
             function(data) {
                 var diagramData = [];
 
@@ -181,7 +181,7 @@ hhb.model.types.VerlaufModel = function() {
     };
 
     self.loadVerlaufMehrfach = function(controller, action, parameters) {
-        doGETwithCache(controller, action, parameters,
+        doGET(controller, action, parameters,
             function(data) {
                 var diagramData = [];
                 diagramData[0] = [];

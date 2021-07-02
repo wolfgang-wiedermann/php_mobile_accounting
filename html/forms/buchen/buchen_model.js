@@ -110,7 +110,7 @@ hhb.model.types.BuchungenModel = function() {
   // Event-Handler für den Klick auf den Verbuchen-Button
   self.verbuchen = function() {
     var jsonString = ko.toJSON(self.selectedBuchung);
-    doPOSTwithQueue("buchung", "create", jsonString,
+    doPOST("buchung", "create", jsonString,
       function(data) {
         alert(hhb.i18n.buchen.successful_created);
       },
@@ -124,7 +124,7 @@ hhb.model.types.BuchungenModel = function() {
   // in die Variable self.buchungen
   self.loadAktuellsteBuchungen = function() {
     self.buchungen.removeAll();
-    doGETwithCache("buchung", "aktuellste", [], 
+    doGET("buchung", "aktuellste", [], 
       function(data) {
         for(var i = 0; i < data.length; i++) {
           self.buchungen.push(new hhb.model.types.Buchung(data[i]));
@@ -136,20 +136,10 @@ hhb.model.types.BuchungenModel = function() {
     ); 
   };
 
-  // Buchungswarteschlange aus dem Local-Storage des Browsers auslesen
-  // und als self.buchungen zur Verfügung stellen
-  self.getWarteschlange = function() {
-    self.buchungen.removeAll();
-    var queue = broker.queue.list("buchung", "create");
-    queue.forEach(function(elem) {
-        self.buchungen.push(new hhb.model.types.BuchungenModel(elem))
-    });
-  };
-
   // Offene Posten liste laden
   self.getOffenePosten = function() {
     self.buchungen.removeAll();
-    doGETwithCache("buchung", "listoffeneposten", [],
+    doGET("buchung", "listoffeneposten", [],
       function(data) {
         for(var i = 0; i < data.length; i++) {
           self.buchungen.push(new hhb.model.types.Buchung(data[i]));
@@ -167,7 +157,7 @@ hhb.model.types.BuchungenModel = function() {
     var bnr = self.selectedOffenerPosten().buchungsnummer();
     var response = ko.toJSON({'offenerposten':bnr, 'buchung':self.selectedBuchung});
     if(bnr !== 0) {
-      doPOSTwithQueue("buchung", "closeop", response,
+      doPOST("buchung", "closeop", response,
       function(data) {
         for(var i = 0; i < data.length; i++) {
            self.buchungen.push(new hhb.model.types.Buchung(data[i]));

@@ -20,8 +20,7 @@
 ?>
 <?php define("MAIN_PAGE", 1); ?>
 <!DOCTYPE html>
-<html lang="de" manifest="manifest.php">
-<!-- <html lang="de"> -->
+<html lang="de">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
@@ -39,7 +38,6 @@
     <script src="./js/util.js"></script>
     <script src="./js/diagram.js"></script>
     <script src="./js/app.php"></script>
-    <script src="./js/update_app.js"></script>
 </head>
 <body>
   <!-- Menüs -->
@@ -48,7 +46,6 @@
   <!-- Masken aus dem Menü "Buchungen" -->
   <?php include_once("./forms/buchen/buchen.php"); ?>
   <?php include_once("./forms/buchen/aktuellste_buchungen.php"); ?>
-  <?php include_once("./forms/buchen/buchen_warteschlange.php"); ?>
   <?php include_once("./forms/buchen/offene_posten.php"); ?>
   <?php include_once("./forms/buchen/offene_posten_ausbuchen.php"); ?>
   <!-- Masken aus dem Menü "Konten" -->
@@ -70,9 +67,5 @@
   <?php include_once("./forms/verlauf/verlauf_view_mehrfach.php"); ?>
   <?php include_once("./forms/verlauf/verlauf_kontenliste.php"); ?>
   <?php include_once("./forms/verlauf/verlauf_kontenauswahl.php"); ?>
-  <!-- Update-Handling -->
-  <script type="text/javascript">
-      de.ww.updater.handlers.onUpdateReady(function() { alert('Die Buchhaltung wurde auf eine neue Version aktualisiert'); });
-  </script>
 </body>
 </html>

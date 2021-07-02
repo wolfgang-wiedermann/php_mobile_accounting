@@ -121,7 +121,7 @@ hhb.model.types.ErgebnisModel = function() {
 
     // Liste der auswählbaren Monate aktualisieren
     self.updateMonate = function(successHandler) {
-        doGETwithCache("ergebnis", "months", [],
+        doGET("ergebnis", "months", [],
             function(data) {
                 var array = [];
                 for(var i = 0; i < data.length; i++) {
@@ -150,7 +150,7 @@ hhb.model.types.ErgebnisModel = function() {
 
     // Liste der auswählbaren Jahre aktualisieren
     self.updateJahre = function(successHandler) {
-        doGETwithCache("ergebnis", "years", [],
+        doGET("ergebnis", "years", [],
             function(data) {
                 self.jahre.removeAll();
                 for(var i = 0; i < data.length; i++) {
@@ -230,7 +230,7 @@ hhb.model.types.ErgebnisModel = function() {
         self.titel(titel);
         self.untertitel(untertitel);
 
-        doGETwithCache("ergebnis", action, parameters,
+        doGET("ergebnis", action, parameters,
             function (data) {
                 for (var key in data.zeilen) {
                     var line = data.zeilen[key];
@@ -277,7 +277,7 @@ hhb.model.types.ErgebnisModel = function() {
         self.titel(titel);
         self.untertitel(untertitel);
 
-        doGETwithCache("ergebnis", action, parameters,
+        doGET("ergebnis", action, parameters,
             function (data) {
                 for (var key in data.detail) {
                     var line = data.detail[key];

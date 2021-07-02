@@ -143,7 +143,7 @@ hhb.model.types.SchnellbuchungModel = function() {
     self.load = function() {
         self.schnellbuchungen.removeAll();
         self.schnellbuchungen_navigation.removeAll();
-        doGETwithCache("menu", "quick", [],
+        doGET("menu", "quick", [],
             function(data) {
                 for(var i = 0; i < data.length; i++) {
                     var entry = new hhb.model.types.Schnellbuchung(data[i]);

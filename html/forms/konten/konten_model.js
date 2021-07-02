@@ -87,7 +87,7 @@ hhb.model.types.KontenModel = function() {
     self.konten.removeAll();
     self.aktivkonten.removeAll();
 
-    doGETwithCache("konto", "list", [], 
+    doGET("konto", "list", [], 
       function(data) {
         for(var i = 0; i < data.length; i++) {
           var konto = new hhb.model.types.Konto(data[i]);
@@ -128,7 +128,7 @@ hhb.model.types.KontenModel = function() {
     var kontonummer = self.selectedKonto().kontonummer();
     var jahr = self.selectedJahr();
 
-    doGETwithCache("buchung", "listbykonto", {'konto':kontonummer, 'jahr':jahr},
+    doGET("buchung", "listbykonto", {'konto':kontonummer, 'jahr':jahr},
         function(data) {
           var list = data.list;
           self.saldo(data.saldo);
@@ -149,7 +149,7 @@ hhb.model.types.KontenModel = function() {
   // Grafik und Tabelle der Monatssalden anzeigen
   self.openMonatssalden = function() {
     self.salden.removeAll();
-    doGETwithCache("verlauf", "monatssalden", {'id':self.selectedKonto().kontonummer()},
+    doGET("verlauf", "monatssalden", {'id':self.selectedKonto().kontonummer()},
         function(data) {
           var diagramData = [];
           for(var i = 0; i < data.length; i++) {

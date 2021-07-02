@@ -49,7 +49,7 @@ hhb.model.types.ConfigurationModel = function(data) {
 
     // Laden der Liste der Konfigurationsparameter
     self.load = function() {
-        doGETwithCache("config", "list", [],
+        doGET("config", "list", [],
             function(data) {
                 var array = [];
                 for(var i = 0; i < data.length; i++) {
