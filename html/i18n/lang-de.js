@@ -9,7 +9,7 @@ hhb.i18n = {
         back:'Zurück',
         home:'Menü',
         buchhaltung:'Buchhaltung',
-        copy:'(c) 2013-2020 by Wolfgang Wiedermann',
+        copy:'(c) 2013-2021 by Wolfgang Wiedermann',
         aktiva:'Aktiva',
         passiva:'Passiva',
         aufwand:'Aufwand',
@@ -29,7 +29,6 @@ hhb.i18n = {
         successful_created:'Buchung erfolgreich angelegt',
         error_on_create:'Fehler beim Anlegen der Buchung aufgetreten',
         error_on_load:'Fehler beim Laden der Buchungen aufgetreten',
-        warteschlange:'Warteschlange',
     },
     ergebnis:{
         standardauswertungen:'Standard-Auswertungen',

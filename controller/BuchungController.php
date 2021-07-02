@@ -48,17 +48,16 @@ function invoke($action, $request, $dispatcher) {
 
 # legt das als JSON-Objekt übergebene Konto an
 function createBuchung($request) {
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
-    $result = $this->createBuchungInternal($input, $db);
-    mysqli_close($db);
+    $result = $this->createBuchungInternal($input, $pdo);
     return $result;
 }
 
 # Innerhalb dieses Controllers wiederverwendbare Funktion zum
 # Anlegen von Buchungen
-private function createBuchungInternal($input, $db) {
+private function createBuchungInternal($input, $pdo) {
     if($this->isValidBuchung($input)) {
         if($input['is_offener_posten']) {
             $temp_op = 1;
@@ -66,12 +65,19 @@ private function createBuchungInternal($input, $db) {
             $temp_op = 0;
         }
 
-        $sql = "insert into fi_buchungen (mandant_id, buchungstext, sollkonto, habenkonto, "
-            ."betrag, datum, bearbeiter_user_id, is_offener_posten)"
-            ." values ($this->mandant_id, '".$input['buchungstext']
-            ."', '".$input['sollkonto']."', '".$input['habenkonto']."', ".$input['betrag'].", '"
-            .$input['datum']."', ".$this->dispatcher->getUserId().", ".$temp_op.")";
-        mysqli_query($db, $sql);
+        $query = new QueryHandler("buchung_insert.sql");
+        $sql = $query->getSql();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+            "mandant_id" => $this->mandant_id,
+            "buchungstext" => $input["buchungstext"],
+            "sollkonto" => $input["sollkonto"],
+            "habenkonto" => $input["habenkonto"],
+            "betrag" => $input["betrag"],
+            "datum" => $input["datum"],
+            "bearbeiter_user_id" => $this->dispatcher->getUserId(),
+            "is_offener_posten" => $temp_op
+        ));
 
         $empty = array();
         return wrap_response($empty, "json");
@@ -83,76 +89,83 @@ private function createBuchungInternal($input, $db) {
 
 # liest die aktuellsten 25 Buchungen aus
 function getTop25() {
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
     $top = array();
-    $rs = mysqli_query($db, "select * from fi_buchungen "
-        ."where mandant_id = $this->mandant_id "
-        ."order by buchungsnummer desc limit 25");
 
-    while($obj = mysqli_fetch_object($rs)) {
+    $query = new QueryHandler("buchung_get_top25.sql");
+    $sql = $query->getSql();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array(
+        "mandant_id" => $this->mandant_id
+    ));
+
+    while($obj = $stmt->fetchObject()) {
         $top[] = $obj;
     }
 
-    mysqli_free_result($rs);
-    mysqli_close($db);
     return wrap_response($top);
 }
 
 # liest die offenen Posten aus
 function getOpList() {
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
     $top = array();
-    $rs = mysqli_query($db, "select * from fi_buchungen "
-        ."where mandant_id = $this->mandant_id "
-        ."and is_offener_posten = 1 "
-        ."order by buchungsnummer");
 
-    while($obj = mysqli_fetch_object($rs)) {
+    $query = new QueryHandler("buchung_get_oplist.sql");
+    $sql = $query->getSql();
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array(
+        "mandant_id" => $this->mandant_id
+    ));
+
+    while($obj = $stmt->fetchObject()) {
         $top[] = $obj;
     }
 
-    mysqli_free_result($rs);
-    mysqli_close($db);
     return wrap_response($top);
 }
 
 # liest die offenen Posten aus
 function closeOpAndGetList($request) {
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
     $inputJSON = file_get_contents('php://input');
     $input = json_decode( $inputJSON, TRUE );
     if($this->isValidOPCloseRequest($input)) {
-        $db->begin_transaction();
+        $pdo->beginTransaction();
         try {
             // Buchung anlegen
             $buchung = $input['buchung'];
-            $this->createBuchungInternal($buchung, $db);
+            $this->createBuchungInternal($buchung, $pdo);
             // Offener-Posten-Flag auf false setzen
             $buchungsnummer = $input['offenerposten'];
             if (is_numeric($buchungsnummer)) {
-                $sql = "update fi_buchungen set is_offener_posten = 0"
-                    . " where mandant_id = $this->mandant_id "
-                    . " and buchungsnummer = $buchungsnummer";
-                mysqli_query($db, $sql);
+                $query = new QueryHandler("buchung_close_op_update.sql");
+                $sql = $query->getSql();
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute(array(
+                    "mandant_id" => $this->mandant_id,
+                    "buchungsnummer" => $buchungsnummer
+                ));
+            } else {
+                $pdo->rollBack();
             }
-            $db->commit();
+            $pdo->commit();
         } catch (Exception $e) {
-            $db->rollback();
+            $pdo->rollBack();
             throw $e;
         }
         // Aktualisierte Offene-Posten-Liste an den Client liefern
         $top = array();
-        $rs = mysqli_query($db, "select * from fi_buchungen "
-            . "where mandant_id = $this->mandant_id "
-            . "and is_offener_posten = 1 "
-            . "order by buchungsnummer");
+        $query = new QueryHandler("buchung_get_oplist.sql");
+        $sql = $query->getSql();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+            "mandant_id" => $this->mandant_id
+        ));
 
-        while ($obj = mysqli_fetch_object($rs)) {
+        while($obj = $stmt->fetchObject()) {
             $top[] = $obj;
         }
-
-        mysqli_free_result($rs);
-        mysqli_close($db);
         return wrap_response($top);
     } else {
         mysqli_close($db);
@@ -161,7 +174,7 @@ function closeOpAndGetList($request) {
 }
 
 function getListByKonto($request) {
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
     $kontonummer = $request['konto'];
     $jahr = $request['jahr'];
     # Nur verarbeiten, wenn konto eine Ziffernfolge ist, um SQL-Injections zu vermeiden
@@ -171,39 +184,36 @@ function getListByKonto($request) {
         $result_list = array(); 
 
         // Buchungen laden
-        $sql =  "SELECT buchungsnummer, buchungstext, habenkonto as gegenkonto, betrag, datum, is_offener_posten ";
-        $sql .= "FROM fi_buchungen "; 
-        $sql .= "WHERE mandant_id = $this->mandant_id and sollkonto = '$kontonummer' and year(datum) = $jahr ";
-        $sql .= "union ";
-        $sql .= "select buchungsnummer, buchungstext, sollkonto as gegenkonto, betrag*-1 as betrag, datum, is_offener_posten ";
-        $sql .= "from fi_buchungen ";
-        $sql .= "where mandant_id = $this->mandant_id and habenkonto = '$kontonummer' and year(datum) = $jahr ";
-        $sql .= "order by buchungsnummer desc";
-
-        $rs = mysqli_query($db, $sql);
+        $query = new QueryHandler("buchung_list_by_konto_entries.sql");
+        $sql = $query->getSql();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+            "mandant_id" => $this->mandant_id,
+            "kontonummer" => $kontonummer,
+            "jahr" => $jahr
+        ));
         
-        while($obj = mysqli_fetch_object($rs)) {
+        while($obj = $stmt->fetchObject()) {
             $result_list[] = $obj;
         }
 
-        mysqli_free_result($rs);
         $result['list'] = $result_list;
 
         // Saldo laden: 
-        $sql =  "select sum(betrag) as saldo from (SELECT sum(betrag) as betrag from fi_buchungen ";
-        $sql .= "where mandant_id = $this->mandant_id and sollkonto = '$kontonummer' ";
-        $sql .= "union SELECT sum(betrag)*-1 as betrag from fi_buchungen ";
-        $sql .= "where mandant_id = $this->mandant_id and habenkonto = '$kontonummer' ) as a ";
+        $query = new QueryHandler("buchung_list_by_konto_saldo.sql");
+        $sql = $query->getSql();
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array(
+            "mandant_id" => $this->mandant_id,
+            "kontonummer" => $kontonummer
+        ));
 
-        $rs = mysqli_query($db, $sql);
-        if($obj = mysqli_fetch_object($rs)) {
+        if($obj = $stmt->fetchObject()) {
             $result['saldo'] = $obj->saldo;
         } else {
             $result['saldo'] = "unbekannt";
         }
 
-        mysqli_free_result($rs);
-        mysqli_close($db);
         return wrap_response($result);
     # Wenn konto keine Ziffernfolge ist, leeres Ergebnis zurück liefern
     } else {

@@ -3,11 +3,11 @@
 include_once("lib/Database.php");
 
 # Datenbankkonfig testen:
-$db = getDbConnection();
+$pdo = getPdoConnection();
 #print("ERROR?: " . mysqli_error($db));
-$rs = mysqli_query($db, "select * from information_schema.tables");
+$stmt = $pdo->prepare("select * from information_schema.tables");
+$stmt->execute();
 #print("ERROR?: " . mysqli_error($db));
-mysqli_close($db);
 
 
 $_REQUEST = array();

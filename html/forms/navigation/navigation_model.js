@@ -138,14 +138,4 @@ hhb.model.types.NavigationModel = function() {
     }
   }));
 
-  self.buchungsmenue.push(new hhb.model.types.NavigationEntry({
-    label:hhb.i18n.buchen.warteschlange, // Buchungs-Warteschlange
-    target:'#buchungen_warteschlange',
-    callback: function(data) {
-      hhb.model.MainModel.buchen().getWarteschlange();
-      console.log(data.label());
-      jQuery.mobile.changePage(data.target());
-    }
-  }));
-
 };

@@ -9,7 +9,7 @@ hhb.i18n = {
         back:'Back',
         home:'Menu',
         buchhaltung:'Accounting',
-        copy:'(c) 2013-2020 by Wolfgang Wiedermann',
+        copy:'(c) 2013-2021 by Wolfgang Wiedermann',
         aktiva:'Assets',
         passiva:'Liabilities and Capital',
         aufwand:'Costs',
@@ -29,7 +29,6 @@ hhb.i18n = {
         successful_created:'Accounting entry successfully created',
         error_on_create:'Error creating the accounting entry',
         error_on_load:'Error on loading accountring entries',
-        warteschlange:'Queue of Booking Entries',
     },
     ergebnis:{
         standardauswertungen:'Default reports',

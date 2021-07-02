@@ -38,56 +38,55 @@ function invoke($action, $request, $dispatcher) {
 # Erstellt ein Datenbankbackup (Insert-Statements) von 
 # den Buchungen und Konten des aktuell angemeldeten Mandanten
 function getMysqlBackup($request) {
-    $db = getDbConnection();
-    $backup_sql = $this->getKontenBackup($db);
-    $backup_sql .= $this->getBuchungenBackup($db);
-    mysqli_close($db);
+    $pdo = getPdoConnection();
+    $backup_sql = $this->getKontenBackup($pdo);
+    $backup_sql .= $this->getBuchungenBackup($pdo);
 
     $result = gzencode($backup_sql);
     return wrap_response($result, "gz");
 }
 
 # Insert-Statements für alle Buchungen des Mandanten generieren
-private function getBuchungenBackup($db) {
+private function getBuchungenBackup($pdo) {
     $sql = "select mandant_id, buchungsnummer, buchungstext, sollkonto, habenkonto, ";
     $sql .= "betrag, datum, bearbeiter_user_id, is_offener_posten ";
     $sql .= "from fi_buchungen ";
-    $sql .= "where mandant_id = $this->mandant_id";
+    $sql .= "where mandant_id = :mandant_id";
 
     $result = "";
-    $rs = mysqli_query($db, $sql);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array("mandant_id" => $this->mandant_id));
 
-    while($obj = mysqli_fetch_object($rs)) {
+    while($obj = $stmt->fetchObject()) {
         $result .= "insert into fi_buchungen (mandant_id, buchungsnummer, buchungstext, sollkonto, habenkonto, ";
         $result .= "betrag, datum, bearbeiter_user_id, is_offener_posten) values ";
         $result .= "(".$obj->mandant_id.", ".$obj->buchungsnummer.", ";
-        $result .= "'".mysqli_escape_string($db, $obj->buchungstext)."', ";
-        $result .= "'".mysqli_escape_string($db, $obj->sollkonto)."', ";
-        $result .= "'".mysqli_escape_string($db, $obj->habenkonto)."', ";
+        $result .= "".$pdo->quote($obj->buchungstext).", ";
+        $result .= "".$pdo->quote($obj->sollkonto).", ";
+        $result .= "".$pdo->quote($obj->habenkonto).", ";
         $result .= "".$obj->betrag.", '".$obj->datum."', ";
         $result .= "".$obj->bearbeiter_user_id.", ".$obj->is_offener_posten."); \n";
     }
-    mysqli_free_result($rs);
     return $result;
 }
 
 # Insert-Statements für alle Konten des Mandanten generieren
-private function getKontenBackup($db) {
+private function getKontenBackup($pdo) {
     $sql = "select mandant_id, kontonummer, bezeichnung, kontenart_id ";
     $sql .= "from fi_konto ";
-    $sql .= "where mandant_id = $this->mandant_id";
+    $sql .= "where mandant_id = :mandant_id";
 
     $result = "";
-    $rs = mysqli_query($db, $sql);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(array("mandant_id" => $this->mandant_id));
 
-    while($obj = mysqli_fetch_object($rs)) {
+    while($obj = $stmt->fetchObject()) {
         $result .= "insert into fi_konto (mandant_id, kontonummer, bezeichnung, kontenart_id) values ";
         $result .= "(".$obj->mandant_id.", ";
-        $result .= "'".mysqli_escape_string($db, $obj->kontonummer)."', ";
-        $result .= "'".mysqli_escape_string($db, $obj->bezeichnung)."', ";
+        $result .= "".$pdo->quote($obj->kontonummer).", ";
+        $result .= "".$pdo->quote($obj->bezeichnung).", ";
         $result .= "".$obj->kontenart_id."); \n";
     }
-    mysqli_free_result($rs);
     return $result;
 }
 }
