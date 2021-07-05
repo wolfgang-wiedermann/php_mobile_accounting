@@ -217,7 +217,7 @@ function getGuVPrognose() {
     ));
     
     $result['summen'] = array();
-    while($erg = mysqli_fetch_object($rs)) {
+    while($erg = $stmt->fetchObject()) {
         $result['summen'][] = $erg;
     }
 

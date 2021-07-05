@@ -19,7 +19,7 @@ from fi_buchungen b
 inner join fi_konto k
 on b.sollkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = #mandant_id#
+where b.mandant_id = :mandant_id
 and year(datum) = year(date_sub(now(), interval 1 month))
 and month(datum) = month(date_sub(now(), interval 1 month))
 group by k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum), month(datum)
@@ -31,7 +31,7 @@ from fi_buchungen b
 inner join fi_konto k
 on b.habenkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = #mandant_id#
+where b.mandant_id = :mandant_id
 and year(datum) = year(date_sub(now(), interval 1 month))
 and month(datum) = month(date_sub(now(), interval 1 month))
 group by k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum), month(datum)
@@ -43,7 +43,7 @@ group by kontenart_id, kontonummer, bezeichnung, jahr, monat, mandant_id
 
 on konten.mandant_id = vormonat_aggreg.mandant_id
 and konten.kontonummer = vormonat_aggreg.kontonummer
-where konten.mandant_id = #mandant_id#
+where konten.mandant_id = :mandant_id
 
 ) as vormonat,
 
@@ -63,7 +63,7 @@ from fi_buchungen b
 inner join fi_konto k
 on b.sollkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = #mandant_id# 
+where b.mandant_id = :mandant_id
 and year(datum) = year(now())
 and month(datum) = month(now())
 group by k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum), month(datum)
@@ -75,7 +75,7 @@ from fi_buchungen b
 inner join fi_konto k
 on b.habenkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = #mandant_id#
+where b.mandant_id = :mandant_id
 and year(datum) = year(now())
 and month(datum) = month(now())
 group by k.kontenart_id, k.kontonummer, k.bezeichnung, year(datum), month(datum)
@@ -87,7 +87,7 @@ group by kontenart_id, kontonummer, bezeichnung, jahr, monat, mandant_id
 
 on konten.mandant_id = aktmonat_aggreg.mandant_id
 and konten.kontonummer = aktmonat_aggreg.kontonummer
-where konten.mandant_id = #mandant_id#
+where konten.mandant_id = :mandant_id
 
 ) as aktuellermonat
 
