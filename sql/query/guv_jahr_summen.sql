@@ -9,7 +9,7 @@ and b.mandant_id = k.mandant_id
 inner join fi_konto as gk
 on b.habenkonto = gk.kontonummer
 and b.mandant_id = gk.mandant_id
-where b.mandant_id = #mandant_id#
+where b.mandant_id = :mandant_id
 and k.kontenart_id in (3, 4)
 and gk.kontenart_id <> 5
 and year(date_add(b.datum, INTERVAL 13-#geschj_start_monat# MONTH))-1 = #jahr_id#
@@ -25,7 +25,7 @@ and b.mandant_id = k.mandant_id
 inner join fi_konto as gk
 on b.sollkonto = gk.kontonummer
 and b.mandant_id = gk.mandant_id
-where b.mandant_id = #mandant_id#
+where b.mandant_id = :mandant_id
 and k.kontenart_id in (3, 4)
 and gk.kontenart_id <> 5
 and year(date_add(b.datum, INTERVAL 13-#geschj_start_monat# MONTH))-1 = #jahr_id#
@@ -41,7 +41,7 @@ and b.mandant_id = k.mandant_id
 inner join fi_konto as gk
 on b.habenkonto = gk.kontonummer
 and b.mandant_id = gk.mandant_id
-where b.mandant_id = #mandant_id#
+where b.mandant_id = :mandant_id
 and k.kontenart_id in (3, 4)
 and gk.kontenart_id <> 5
 and year(date_add(b.datum, INTERVAL 13-#geschj_start_monat# MONTH))-1 = #jahr_id#
@@ -56,7 +56,7 @@ and b.mandant_id = k.mandant_id
 inner join fi_konto as gk
 on b.sollkonto = gk.kontonummer
 and b.mandant_id = gk.mandant_id
-where b.mandant_id = #mandant_id#
+where b.mandant_id = :mandant_id
 and k.kontenart_id in (3, 4)
 and gk.kontenart_id <> 5
 and year(date_add(b.datum, INTERVAL 13-#geschj_start_monat# MONTH))-1 = #jahr_id#

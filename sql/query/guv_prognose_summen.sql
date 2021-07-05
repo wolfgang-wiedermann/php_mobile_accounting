@@ -7,7 +7,7 @@ from fi_buchungen as b
 inner join fi_konto as k
 on b.sollkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = #mandant_id#
+where b.mandant_id = :mandant_id
 and k.kontenart_id in (3, 4)
 and (year(b.datum)*100)+month(b.datum) 
     >= (year(date_sub(now(), interval 1 month))*100+month(date_sub(now(), interval 1 month)))
@@ -21,7 +21,7 @@ from fi_buchungen as b
 inner join fi_konto as k
 on b.habenkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = #mandant_id#
+where b.mandant_id = :mandant_id
 and k.kontenart_id in (3, 4)
 and (year(b.datum)*100)+month(b.datum)
     >= (year(date_sub(now(), interval 1 month))*100+month(date_sub(now(), interval 1 month)))
@@ -35,7 +35,7 @@ from fi_buchungen as b
 inner join fi_konto as k
 on b.sollkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = #mandant_id#
+where b.mandant_id = :mandant_id
 and k.kontenart_id in (3, 4)
 and (year(b.datum)*100)+month(b.datum)
     >= (year(date_sub(now(), interval 1 month))*100+month(date_sub(now(), interval 1 month)))
@@ -49,7 +49,7 @@ from fi_buchungen as b
 inner join fi_konto as k
 on b.habenkonto = k.kontonummer
 and b.mandant_id = k.mandant_id
-where b.mandant_id = #mandant_id#
+where b.mandant_id = :mandant_id
 and k.kontenart_id in (3, 4)
 and (year(b.datum)*100)+month(b.datum) 
     >= (year(date_sub(now(), interval 1 month))*100+month(date_sub(now(), interval 1 month)))
