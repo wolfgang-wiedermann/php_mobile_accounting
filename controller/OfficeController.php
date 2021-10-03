@@ -51,19 +51,18 @@ function getJournal($request) {
     } 
 	
     $result = array();
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
 
     $query = new QueryHandler("export_journal_to_excel.sql");
     $query->setParameterUnchecked("mandant_id", $this->mandant_id);
     $sql = $query->getSql();
 
-    $rs = mysqli_query($db, $sql);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
 		
-    while($obj = mysqli_fetch_object($rs)) {
+    while($obj = $stmt->fetchObject()) {
         $result[] = $obj;
     }
-    	
-    mysqli_close($db);
 	
     return wrap_response($result, $format);
 }
@@ -80,19 +79,18 @@ function getGuvMonate($request) {
     } 
         
     $result = array();
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
 
     $query = new QueryHandler("guv_monat_csv.sql");
     $query->setParameterUnchecked("mandant_id", $this->mandant_id);
     $sql = $query->getSql();
 
-    $rs = mysqli_query($db, $sql);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
 
-    while($obj = mysqli_fetch_object($rs)) {
+    while($obj = $stmt->fetchObject()) {
         $result[] = $obj;
     }
-
-    mysqli_close($db);
 
     return wrap_response($result, $format);
 }
@@ -109,19 +107,18 @@ function getBilanzMonate($request) {
     }
 
     $result = array();
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
 
     $query = new QueryHandler("bilanz_monat_csv.sql");
     $query->setParameterUnchecked("mandant_id", $this->mandant_id);
     $sql = $query->getSql();
 
-    $rs = mysqli_query($db, $sql);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
 
-    while($obj = mysqli_fetch_object($rs)) {
+    while($obj = $stmt->fetchObject()) {
         $result[] = $obj;
     }
-
-    mysqli_close($db);
 
     return wrap_response($result, $format);
 }
