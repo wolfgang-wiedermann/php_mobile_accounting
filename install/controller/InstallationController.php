@@ -168,14 +168,12 @@ function createDatabaseSchema() {
 
     $sql_statements = explode(";", $sql);
 
-    $db = getDbConnection();
+    $dbo = getDboConnection();
     foreach($sql_statements as $sql) {
       #error_log($sql);
-      mysqli_query($db, $sql);
+      $num = $pdo->exec($sql);
 
-      $error = mysqli_error($db);
-      if($error != null && $error != "Query was empty") {
-        mysqli_close($db);
+      if($num === false) {
         $result = array();
         $result['isError'] = TRUE;
         $result['message'] = "Datenbankfehler aufgetreten: $error";
@@ -185,7 +183,6 @@ function createDatabaseSchema() {
  
    }
 
-   mysqli_close($db);
    $result = array();
    $result['isError'] = FALSE;
    $result['message'] = "Schema erfolgreich angelegt.";
@@ -299,12 +296,10 @@ private function isValidBenutzerObject($input) {
 # Mit automatischer Zuordnung zu Mandant 1
 private function addUserToDb($username) {
     require_once("../lib/Database.php");
-    $db = getDbConnection();
+    $pdo = getPdoConnection();
 
     $sql = "insert into fi_user values(0, '$username', 'Benutzer: $username', 1, now())";
-    mysqli_query($db, $sql);
-
-    mysqli_close($db);
+    $pdo->exec($sql);
 }
 
 # Auslesen einer mglw. bestehenden .htpasswd-Datei
