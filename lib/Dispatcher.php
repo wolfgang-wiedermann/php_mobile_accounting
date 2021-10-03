@@ -124,16 +124,16 @@ function removeIllegalCsvChars($string) {
 # ermittelt den zugeordneten Mandanten und setzt dessen id in das Feld $this->mandant_id
 function setRemoteUser($user) {
     if($this->isValidUserName($user)) {
-        $db = getDbConnection();
+        $pdo = getPdoConnection();
         $this->user = $user;
-        $rs = mysqli_query($db, "select mandant_id, user_id from fi_user where user_name = '$user'");
-        if($rs && $obj = mysqli_fetch_object($rs)) {
+        $stmt = $pdo->prepare("select mandant_id, user_id from fi_user where user_name = %(user)s");
+        $stmt->execute(array("user" => $user));
+        if($obj = $stmt->fetchObject()) {
             $this->mandant = $obj->mandant_id;
             $this->user_id = $obj->user_id;
         } else {
             throw new Exception("Kein Mandant für den Benutzer $user konfiguriert");
         }
-        mysqli_close($db);
     } else {
         throw new Exception("Der Benutzername enthält ungültige Zeichen");
     }
