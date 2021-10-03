@@ -126,7 +126,7 @@ function setRemoteUser($user) {
     if($this->isValidUserName($user)) {
         $pdo = getPdoConnection();
         $this->user = $user;
-        $stmt = $pdo->prepare("select mandant_id, user_id from fi_user where user_name = %(user)s");
+        $stmt = $pdo->prepare("select mandant_id, user_id from fi_user where user_name = :user");
         $stmt->execute(array("user" => $user));
         if($obj = $stmt->fetchObject()) {
             $this->mandant = $obj->mandant_id;
