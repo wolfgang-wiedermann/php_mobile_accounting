@@ -4,7 +4,7 @@ with bebuchte_konten as (
   left outer join fi_buchungen
   on fi_konto.mandant_id = fi_buchungen.mandant_id
   and fi_konto.kontonummer in (fi_buchungen.sollkonto, fi_buchungen.habenkonto)
-  and year(fi_buchungen.datum) = year(now())
+  and year(fi_buchungen.datum) = #year#
 ) 
 select konten.kontonummer as konto,
   konten.bezeichnung as kontenname,
