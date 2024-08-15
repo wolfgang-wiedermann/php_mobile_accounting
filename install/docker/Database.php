@@ -7,13 +7,13 @@
 */
 function getDbConnection() {
     trigger_error("Deprecated function called.", E_USER_NOTICE);
-    $db = mysqli_connect("db", "fibu", "fibu");
+    $db = mysqli_connect("db", "root", "example");
     mysqli_select_db($db, "fibu");
     return $db;
 }
 
 function getPdoConnection() {
-    $pdo = new PDO('mysql:host=db;dbname=fibu', 'fibu', 'fibu');
+    $pdo = new PDO('mysql:host=db;dbname=fibu', 'root', 'example');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $pdo;
 }
