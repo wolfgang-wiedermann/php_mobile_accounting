@@ -168,9 +168,9 @@ function createDatabaseSchema() {
 
     $sql_statements = explode(";", $sql);
 
-    $dbo = getDboConnection();
+    $pdo = getPdoConnection();
     foreach($sql_statements as $sql) {
-      #error_log($sql);
+      error_log($sql);
       $num = $pdo->exec($sql);
 
       if($num === false) {
