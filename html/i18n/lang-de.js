@@ -9,7 +9,7 @@ hhb.i18n = {
         back:'Zurück',
         home:'Menü',
         buchhaltung:'Buchhaltung',
-        copy:'(c) 2013-2023 by Wolfgang Wiedermann',
+        copy:'(c) 2013-2025 by Wolfgang Wiedermann',
         aktiva:'Aktiva',
         passiva:'Passiva',
         aufwand:'Aufwand',
